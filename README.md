@@ -45,5 +45,3 @@ mvn spring-boot:run
 http://localhost:8080
 ```
 
-
-Dette projekt er lavet som eksamensprojekt og er ikke nødvendigvis tiltænkt produktion.
