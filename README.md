@@ -5,20 +5,20 @@ Applikationen gør det muligt at oprette projekter, opdele dem i delopgaver og s
 
 ## Features
 
-* Brugerlogin
-* Oprettelse af projekter
-* Oprettelse af delopgaver med tidsestimering
-* Registrering af faktisk tidsforbrug
-* Arkivering af afsluttede projekter
+Brugerlogin
+Oprettelse af projekter
+Oprettelse af delopgaver med tidsestimering
+Registrering af faktisk tidsforbrug
+Arkivering af afsluttede projekter
 
 ## Teknologier
 
-* Java 21
-* Spring Boot
-* Thymeleaf
-* JDBC
-* MySQL
-* H2 Database (til udvikling/test)
+Java 21
+Spring Boot
+Thymeleaf
+JDBC
+MySQL
+H2 Database (til udvikling/test)
 
 ## Installation
 
