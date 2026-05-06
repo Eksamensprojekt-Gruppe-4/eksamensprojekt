@@ -36,7 +36,7 @@ public class ManagerRepository {
                     manager_username,
                     manager_password
                 FROM manager
-                WHERE LOWER(user_email) = LOWER(?)
+                WHERE LOWER(manager_username) = LOWER(?)
                 """;
 
         try {

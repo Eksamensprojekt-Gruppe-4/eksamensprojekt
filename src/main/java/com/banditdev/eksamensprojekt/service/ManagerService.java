@@ -21,7 +21,7 @@ public class ManagerService {
         return managerRepository.findManagerByUsername(username);
     }
 
-    public boolean validateUser(String username, String userPassword) {
+    public boolean validateManager(String username, String userPassword) {
         Manager manager = managerRepository.findManagerByUsername(username);
         return manager != null && manager.getManagerPassword().equals(userPassword);
     }

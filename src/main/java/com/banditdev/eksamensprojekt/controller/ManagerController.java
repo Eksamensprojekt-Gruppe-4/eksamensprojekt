@@ -26,15 +26,15 @@ public class ManagerController {
         if (session.getAttribute("manager") == null) {
             return "loginPage";
         }
-        return "redirect:/profileOverview";
+        return "redirect:/profile/view"; //TODO ændrer til project board
     }
 
     @PostMapping("/authenticateLogin")
     public String login(@RequestParam String managerUsername, @RequestParam String managerPassword, HttpSession session) {
 
-        if (managerService.validateUser(managerUsername, managerPassword)) {
-            session.setAttribute("user", managerService.findManagerByUsername(managerUsername));
-            return "redirect:/profile/view";
+        if (managerService.validateManager(managerUsername, managerPassword)) {
+            session.setAttribute("manager", managerService.findManagerByUsername(managerUsername));
+            return "redirect:/profile/view"; //TODO ændrer til project board
         } else {
             return "loginPage";
         }
@@ -44,7 +44,7 @@ public class ManagerController {
     public String viewProfile(HttpSession session, Model model) {
         Manager currentLoggedInManager = (Manager) session.getAttribute("manager");
 
-        if (currentLoggedInManager == null) {
+        if (currentLoggedInManager == null) { //TODO logik skal tjekkes igennem og gøres universel
             return "redirect:/profile/login";
         }
 
@@ -56,7 +56,7 @@ public class ManagerController {
     public String editProfile(HttpSession session, Model model) {
         Manager currentLoggedInManager = (Manager) session.getAttribute("manager");
 
-        if (currentLoggedInManager == null) {
+        if (currentLoggedInManager == null) { //TODO logik skal tjekkes igennem og gøres universel
             return "redirect:/profile/login";
         }
 
@@ -64,14 +64,14 @@ public class ManagerController {
         return "profileEdit";
     }
 
-    @GetMapping("/logout")
+    @GetMapping("logout")
     public String logout(HttpSession session) {
         session.invalidate();
         return "loginPage";
     }
 
-    @PostMapping("save")
-    public String saveProfile(@ModelAttribute Manager manager, HttpSession session) {
+    @PostMapping("update")
+    public String updateProfile(@ModelAttribute Manager manager, HttpSession session) {
         managerService.updateManager(manager);
         session.setAttribute("manager", manager);
         return "redirect:/profile/view";
