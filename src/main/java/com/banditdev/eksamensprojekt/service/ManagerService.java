@@ -17,6 +17,12 @@ public class ManagerService {
         managerRepository.updateManager(manager);
     }
 
-    //TODO validateUser()
-    //TODO findManagerByUsername()
+    public Manager findManagerByUsername(String username) {
+        return managerRepository.findManagerByUsername(username);
+    }
+
+    public boolean validateUser(String username, String userPassword) {
+        Manager manager = managerRepository.findManagerByUsername(username);
+        return manager != null && manager.getManagerPassword().equals(userPassword);
+    }
 }
