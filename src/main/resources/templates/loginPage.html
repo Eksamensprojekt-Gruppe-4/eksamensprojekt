@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Alpha Solutions - Login</title>
+    <link rel="stylesheet" th:href="@{/styles.css}"/>
+</head>
+<body>
+<header>
+    <div class="logo">Alpha Solutions</div>
+</header>
+<main>
+    <div class="login-card">
+        <form th:action="@{/profile/authenticateLogin}" method="post" class="login-form">
+
+            <span class="field-label">Your details</span>
+
+            <input type="text" placeholder="Username" required autocomplete="on"/>
+            <input type="password" placeholder="Password" required autocomplete="current-password"/>
+
+            <div class="login-actions">
+                <button type="submit" class="btn-primary btn-full">
+                    Log in
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                         stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </button>
+            </div>
+        </form>
+    </div>
+
+</main>
+</body>
+</html>

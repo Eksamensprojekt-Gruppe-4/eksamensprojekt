@@ -1,0 +1,75 @@
+body {
+    background-color: var(--color-bg-alt);
+}
+
+main {
+    min-height: calc(100vh - 65px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.login-card {
+    background-color: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 2.5rem 2rem;
+    width: 100%;
+    max-width: 400px;
+}
+
+.field-label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+}
+
+.login-form input {
+    display: block;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    font-size: 0.95rem;
+    font-family: inherit;
+    color: var(--color-text);
+    background-color: #FAFAFA;
+    margin-bottom: 0.75rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.login-form input:focus {
+    border-color: var(--color-primary);
+}
+
+.login-actions {
+    margin-top: 1.25rem;
+}
+
+.btn-primary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.75rem 1.75rem;
+    background-color: var(--color-primary);
+    color: #ffffff;
+    border: 2px solid var(--color-primary-dark);
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-primary:hover {
+    background-color: var(--color-primary-dark);
+}
