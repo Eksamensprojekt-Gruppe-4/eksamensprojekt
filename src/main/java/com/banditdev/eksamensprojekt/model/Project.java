@@ -7,6 +7,8 @@ public class Project {
     private int projectEstimatedTimeMinutes;
     private int projectActualTimeMinutes;
 
+    public Project(){}
+
     public Project(int projectId, String projectName, String projectDescription, int projectEstimatedTimeMinutes, int projectActualTimeMinutes) {
         this.projectId = projectId;
         this.projectName = projectName;
