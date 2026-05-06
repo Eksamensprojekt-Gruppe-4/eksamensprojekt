@@ -21,7 +21,7 @@ public class ProjectRepository {
         String sql = """
                 INSERT INTO project (project_name,
                                      project_description,
-                                     manager_id)
+                                     project_manager_id)
                 VALUES (?, ?, ?)
                 """;
         KeyHolder kh = new GeneratedKeyHolder();
