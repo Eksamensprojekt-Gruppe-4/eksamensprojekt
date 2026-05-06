@@ -1,10 +1,52 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Profile — Alpha Solutions</title>
+    <link rel="stylesheet" th:href="@{/styles.css}"/>
+    <link rel="stylesheet" th:href="@{/profile.css}"/>
 </head>
 <body>
+
+<header>
+    <div class="logo">Alpha Solutions</div>
+    <nav>
+        <ul>
+            <li><a th:href="@{/projects}">My Projects</a></li>
+            <li><a th:href="@{/manager/logout}">Log out</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main>
+    <section class="container">
+
+        <h2>My Profile</h2>
+
+        <div class="card profile-card">
+
+            <p>
+                <strong>Name</strong><br/>
+                <span th:text="${manager.managerName}">Anders Nielsen</span>
+            </p>
+
+            <p>
+                <strong>Username</strong><br/>
+                <span th:text="${manager.managerUsername}">anders123</span>
+            </p>
+
+            <p>
+                <strong>Password</strong><br/>
+                ••••••••
+            </p>
+
+            <a th:href="@{/manager/profile/edit}" class="btn">Edit profile</a>
+
+        </div>
+
+    </section>
+</main>
 
 </body>
 </html>

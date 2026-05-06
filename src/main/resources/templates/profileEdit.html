@@ -1,10 +1,61 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Edit Profile — Alpha Solutions</title>
+    <link rel="stylesheet" th:href="@{/styles.css}"/>
+    <link rel="stylesheet" th:href="@{/profile.css}"/>
 </head>
 <body>
+
+<header>
+    <div class="logo">Alpha Solutions</div>
+    <nav>
+        <ul>
+            <li><a th:href="@{/projects}">My Projects</a></li>
+            <li><a th:href="@{/manager/logout}">Log out</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main>
+    <section class="container">
+
+        <h2>Edit Profile</h2>
+
+        <div class="card profile-card">
+
+            <form th:action="@{/profile/edit}" method="post">
+
+                <p>
+                    <label for="managerName"><strong>Name</strong></label>
+                    <input type="text" id="managerName" name="managerName"
+                           th:value="${manager.managerName}" required/>
+                </p>
+
+                <p>
+                    <label for="managerUsername"><strong>Username</strong></label>
+                    <input type="text" id="managerUsername" name="managerUsername"
+                           th:value="${manager.managerUsername}" required/>
+                </p>
+
+                <p>
+                    <label for="managerPassword"><strong>New password</strong></label>
+                    <input type="password" id="managerPassword" name="managerPassword"
+                           placeholder="Leave blank to keep current"/>
+                </p>
+
+                <div class="btn-row">
+                    <button type="submit" class="btn">Save changes</button>
+                    <a th:href="@{/manager/profile}" class="btn btn-outline">Cancel</a>
+                </div>
+            </form>
+
+        </div>
+
+    </section>
+</main>
 
 </body>
 </html>

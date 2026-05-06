@@ -23,14 +23,20 @@ public class ManagerController {
     public String viewProfile(HttpSession session, Model model) {
         Manager currentLoggedInManager = (Manager) session.getAttribute("manager");
         model.addAttribute("manager", currentLoggedInManager);
-        return "profileOverview"; // << TODO HTML PAGE
+        return "profileOverview";
     }
 
     @GetMapping("edit")
     public String editProfile(HttpSession session, Model model) {
         Manager currentLoggedInManager = (Manager) session.getAttribute("manager");
         model.addAttribute("manager", currentLoggedInManager);
-        return "profileEdit"; // << TODO HTML PAGE
+        return "profileEdit";
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "loginPage";
     }
 
     @PostMapping("save")
@@ -39,6 +45,4 @@ public class ManagerController {
         session.setAttribute("manager", manager);
         return "redirect:/profile/view";
     }
-
-
 }
