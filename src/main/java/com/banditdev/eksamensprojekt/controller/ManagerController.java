@@ -21,10 +21,6 @@ public class ManagerController {
         this.managerService = managerService;
     }
 
-    private boolean isLoggedIn(HttpSession session) {
-        return session.getAttribute("user") != null;
-    }
-
     @GetMapping("/login")
     public String login(HttpSession session) {
         if (session.getAttribute("manager") == null) {
@@ -38,9 +34,9 @@ public class ManagerController {
 
         if (managerService.validateUser(managerUsername, managerPassword)) {
             session.setAttribute("user", managerService.findManagerByUsername(managerUsername));
-            return "redirect:/profile/loginPage";
+            return "redirect:/profile/view";
         } else {
-            return "redirect:/profile/profileOverview";
+            return "loginPage";
         }
     }
 
