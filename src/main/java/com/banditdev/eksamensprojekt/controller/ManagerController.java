@@ -22,6 +22,11 @@ public class ManagerController {
     @GetMapping("view")
     public String viewProfile(HttpSession session, Model model) {
         Manager currentLoggedInManager = (Manager) session.getAttribute("manager");
+
+        if (currentLoggedInManager == null) {
+            return "redirect:/profile/login";
+        }
+
         model.addAttribute("manager", currentLoggedInManager);
         return "profileOverview";
     }
@@ -29,6 +34,11 @@ public class ManagerController {
     @GetMapping("edit")
     public String editProfile(HttpSession session, Model model) {
         Manager currentLoggedInManager = (Manager) session.getAttribute("manager");
+
+        if (currentLoggedInManager == null) {
+            return "redirect:/profile/login";
+        }
+
         model.addAttribute("manager", currentLoggedInManager);
         return "profileEdit";
     }
