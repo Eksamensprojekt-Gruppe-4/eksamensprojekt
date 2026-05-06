@@ -7,13 +7,21 @@ public class SubProject {
     private String subProjectDescription;
     private int subProjectEstimatedTimeMinutes;
     private int subProjectActualTimeMinutes;
+    private int projectId;
 
-    public SubProject(int subProjectId, String subProjectName, String subProjectDescription, int subProjectEstimatedTimeMinutes, int subProjectActualTimeMinutes) {
+    public SubProject() {}
+
+    public SubProject(int subProjectId, String subProjectName,
+                      String subProjectDescription,
+                      int subProjectEstimatedTimeMinutes,
+                      int subProjectActualTimeMinutes,
+                      int projectId) {
         this.subProjectId = subProjectId;
         this.subProjectName = subProjectName;
         this.subProjectDescription = subProjectDescription;
         this.subProjectEstimatedTimeMinutes = subProjectEstimatedTimeMinutes;
         this.subProjectActualTimeMinutes = subProjectActualTimeMinutes;
+        this.projectId = projectId;
     }
 
     public int getSubProjectId() {
@@ -54,6 +62,14 @@ public class SubProject {
 
     public void setSubProjectActualTimeMinutes(int subProjectActualTimeMinutes) {
         this.subProjectActualTimeMinutes = subProjectActualTimeMinutes;
+    }
+
+    public int getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(int projectId) {
+        this.projectId = projectId;
     }
 
     @Override
