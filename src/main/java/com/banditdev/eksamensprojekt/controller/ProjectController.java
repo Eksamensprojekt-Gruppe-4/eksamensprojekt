@@ -19,11 +19,15 @@ public class ProjectController {
     }
 
     @PostMapping("/add")
-    public String addProject(@RequestParam String projectName, HttpSession session) {
+    public String addProject(@RequestParam String projectName,
+                             @RequestParam String projectDescription,
+                             HttpSession session) {
+
         Manager currentManager = (Manager) session.getAttribute("manager");
 
         Project project = new Project();
         project.setProjectName(projectName);
+        project.setProjectDescription(projectDescription);
 
         projectService.addProject(project, currentManager.getManagerId());
 
