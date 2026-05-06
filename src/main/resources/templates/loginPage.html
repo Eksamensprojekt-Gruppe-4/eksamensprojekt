@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Alpha Solutions - Login</title>
     <link rel="stylesheet" th:href="@{/styles.css}"/>
+    <link rel="stylesheet" th:href="@{/login.css}"/>
 </head>
 <body>
 <header>
@@ -19,12 +20,8 @@
             <input type="password" placeholder="Password" required autocomplete="current-password"/>
 
             <div class="login-actions">
-                <button type="submit" class="btn-primary btn-full">
+                <button type="submit" class="btn">
                     Log in
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                         stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M5 12h14M12 5l7 7-7 7"/>
-                    </svg>
                 </button>
             </div>
         </form>
