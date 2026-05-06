@@ -19,15 +19,18 @@ public class ProjectRepository {
 
     public Project addProject(Project project, int managerId) {
         String sql = """
-                INSERT INTO project (project_name, manager_id)
-                VALUES (?, ?)
+                INSERT INTO project (project_name,
+                                     project_description,
+                                     manager_id)
+                VALUES (?, ?, ?)
                 """;
         KeyHolder kh = new GeneratedKeyHolder();
 
         jdbcTemplate.update(connection -> {
             PreparedStatement preparedStatement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, project.getProjectName());
-            preparedStatement.setInt(2, managerId);
+            preparedStatement.setString(2, project.getProjectDescription());
+            preparedStatement.setInt(3, managerId);
             return preparedStatement;
         }, kh);
 
