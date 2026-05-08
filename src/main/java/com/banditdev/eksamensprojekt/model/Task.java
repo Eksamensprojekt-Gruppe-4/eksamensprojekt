@@ -5,15 +5,19 @@ public class Task {
     private int taskId;
     private String taskName;
     private String taskDescription;
-    private int taskEstimatedTimeMinutes;
-    private int taskActualTimeMinutes;
+    private double taskEstimatedHours;
+    private double taskActualHours;
+    private int userId;
+    private int subProjectId;
 
-    public Task(int taskId, String taskName, String taskDescription, int taskEstimatedTimeMinutes, int taskActualTimeMinutes) {
+    public Task(int taskId, String taskName, String taskDescription, double taskEstimatedHours, double taskActualHours, int userId, int subProjectId) {
         this.taskId = taskId;
         this.taskName = taskName;
         this.taskDescription = taskDescription;
-        this.taskEstimatedTimeMinutes = taskEstimatedTimeMinutes;
-        this.taskActualTimeMinutes = taskActualTimeMinutes;
+        this.taskEstimatedHours = taskEstimatedHours;
+        this.taskActualHours = taskActualHours;
+        this.userId = userId;
+        this.subProjectId = subProjectId;
     }
 
     public int getTaskId() {
@@ -40,20 +44,36 @@ public class Task {
         this.taskDescription = taskDescription;
     }
 
-    public int getTaskEstimatedTimeMinutes() {
-        return taskEstimatedTimeMinutes;
+    public double getTaskEstimatedHours() {
+        return taskEstimatedHours;
     }
 
-    public void setTaskEstimatedTimeMinutes(int taskEstimatedTimeMinutes) {
-        this.taskEstimatedTimeMinutes = taskEstimatedTimeMinutes;
+    public void setTaskEstimatedHours(double taskEstimatedHours) {
+        this.taskEstimatedHours = taskEstimatedHours;
     }
 
-    public int getTaskActualTimeMinutes() {
-        return taskActualTimeMinutes;
+    public double getTaskActualHours() {
+        return taskActualHours;
     }
 
-    public void setTaskActualTimeMinutes(int taskActualTimeMinutes) {
-        this.taskActualTimeMinutes = taskActualTimeMinutes;
+    public void setTaskActualHours(double taskActualHours) {
+        this.taskActualHours = taskActualHours;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public int getSubProjectId() {
+        return subProjectId;
+    }
+
+    public void setSubProjectId(int subProjectId) {
+        this.subProjectId = subProjectId;
     }
 
     @Override
@@ -62,9 +82,10 @@ public class Task {
                 "taskId=" + taskId +
                 ", taskName='" + taskName + '\'' +
                 ", taskDescription='" + taskDescription + '\'' +
-                ", taskEstimatedTimeMinutes=" + taskEstimatedTimeMinutes +
-                ", taskActualTimeMinutes=" + taskActualTimeMinutes +
+                ", taskEstimatedHours=" + taskEstimatedHours +
+                ", taskActualHours=" + taskActualHours +
+                ", userId=" + userId +
+                ", subProjectId=" + subProjectId +
                 '}';
     }
-
 }

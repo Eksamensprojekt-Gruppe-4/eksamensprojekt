@@ -6,6 +6,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 
 @Repository
@@ -21,8 +22,12 @@ public class ProjectRepository {
         String sql = """
                 INSERT INTO project (project_name,
                                      project_description,
-                                     project_user_id)
-                VALUES (?, ?, ?)
+                                     project_start_date,
+                                     project_estimated_deadline,
+                                     project_estimated_hours,
+                                     project_actual_hours,
+                                     owner_user_id)
+                VALUES (?, ?, ?, ?, ?, ?, ?)
                 """;
 
         KeyHolder kh = new GeneratedKeyHolder();
@@ -33,7 +38,11 @@ public class ProjectRepository {
 
             preparedStatement.setString(1, project.getProjectName());
             preparedStatement.setString(2, project.getProjectDescription());
-            preparedStatement.setInt(3, userId);
+            preparedStatement.setDate(3, Date.valueOf(project.getProjectStartDate()));
+            preparedStatement.setDate(4, Date.valueOf(project.getProjectEstimatedDeadline()));
+            preparedStatement.setDouble(5, project.getProjectEstimatedHours());
+            preparedStatement.setDouble(6, project.getProjectActualHours());
+            preparedStatement.setInt(7, userId);
 
             return preparedStatement;
         }, kh);
@@ -47,8 +56,11 @@ public class ProjectRepository {
                 key.intValue(),
                 project.getProjectName(),
                 project.getProjectDescription(),
-                project.getProjectEstimatedTimeMinutes(),
-                project.getProjectActualTimeMinutes()
+                project.getProjectStartDate(),
+                project.getProjectEstimatedDeadline(),
+                project.getProjectEstimatedHours(),
+                project.getProjectActualHours(),
+                project.getOwnerUserId()
         );
     }
 }

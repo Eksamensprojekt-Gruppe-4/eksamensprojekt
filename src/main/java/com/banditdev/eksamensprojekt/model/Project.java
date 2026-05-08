@@ -1,22 +1,29 @@
 package com.banditdev.eksamensprojekt.model;
 
+import java.time.LocalDate;
+
 public class Project {
     private int projectId;
     private String projectName;
     private String projectDescription;
-    private int projectEstimatedTimeMinutes;
-    private int projectActualTimeMinutes;
+    private LocalDate projectStartDate;
+    private LocalDate projectEstimatedDeadline;
+    private double projectEstimatedHours;
+    private double projectActualHours;
+    private int ownerUserId;
 
     public Project(){}
 
-    public Project(int projectId, String projectName, String projectDescription, int projectEstimatedTimeMinutes, int projectActualTimeMinutes) {
+    public Project(int projectId, String projectName, String projectDescription, LocalDate projectStartDate, LocalDate projectEstimatedDeadline, double projectEstimatedHours, double projectActualHours, int ownerUserId) {
         this.projectId = projectId;
         this.projectName = projectName;
         this.projectDescription = projectDescription;
-        this.projectEstimatedTimeMinutes = projectEstimatedTimeMinutes;
-        this.projectActualTimeMinutes = projectActualTimeMinutes;
+        this.projectStartDate = projectStartDate;
+        this.projectEstimatedDeadline = projectEstimatedDeadline;
+        this.projectEstimatedHours = projectEstimatedHours;
+        this.projectActualHours = projectActualHours;
+        this.ownerUserId = ownerUserId;
     }
-
 
     public int getProjectId() {
         return projectId;
@@ -42,20 +49,44 @@ public class Project {
         this.projectDescription = projectDescription;
     }
 
-    public int getProjectEstimatedTimeMinutes() {
-        return projectEstimatedTimeMinutes;
+    public LocalDate getProjectStartDate() {
+        return projectStartDate;
     }
 
-    public void setProjectEstimatedTimeMinutes(int projectEstimatedTimeMinutes) {
-        this.projectEstimatedTimeMinutes = projectEstimatedTimeMinutes;
+    public void setProjectStartDate(LocalDate projectStartDate) {
+        this.projectStartDate = projectStartDate;
     }
 
-    public int getProjectActualTimeMinutes() {
-        return projectActualTimeMinutes;
+    public LocalDate getProjectEstimatedDeadline() {
+        return projectEstimatedDeadline;
     }
 
-    public void setProjectActualTimeMinutes(int projectActualTimeMinutes) {
-        this.projectActualTimeMinutes = projectActualTimeMinutes;
+    public void setProjectEstimatedDeadline(LocalDate projectEstimatedDeadline) {
+        this.projectEstimatedDeadline = projectEstimatedDeadline;
+    }
+
+    public double getProjectEstimatedHours() {
+        return projectEstimatedHours;
+    }
+
+    public void setProjectEstimatedHours(double projectEstimatedHours) {
+        this.projectEstimatedHours = projectEstimatedHours;
+    }
+
+    public double getProjectActualHours() {
+        return projectActualHours;
+    }
+
+    public void setProjectActualHours(double projectActualHours) {
+        this.projectActualHours = projectActualHours;
+    }
+
+    public int getOwnerUserId() {
+        return ownerUserId;
+    }
+
+    public void setOwnerUserId(int ownerUserId) {
+        this.ownerUserId = ownerUserId;
     }
 
     @Override
@@ -64,8 +95,11 @@ public class Project {
                 "projectId=" + projectId +
                 ", projectName='" + projectName + '\'' +
                 ", projectDescription='" + projectDescription + '\'' +
-                ", projectEstimatedTimeMinutes=" + projectEstimatedTimeMinutes +
-                ", projectActualTimeMinutes=" + projectActualTimeMinutes +
+                ", projectStartDate=" + projectStartDate +
+                ", projectEstimatedDeadline=" + projectEstimatedDeadline +
+                ", projectEstimatedHours=" + projectEstimatedHours +
+                ", projectActualHours=" + projectActualHours +
+                ", ownerUserId=" + ownerUserId +
                 '}';
     }
 }

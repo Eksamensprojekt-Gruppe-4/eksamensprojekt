@@ -5,22 +5,18 @@ public class SubProject {
     private int subProjectId;
     private String subProjectName;
     private String subProjectDescription;
-    private int subProjectEstimatedTimeMinutes;
-    private int subProjectActualTimeMinutes;
+    private double subProjectEstimatedHours;
+    private double subProjectActualHours;
     private int projectId;
 
     public SubProject() {}
 
-    public SubProject(int subProjectId, String subProjectName,
-                      String subProjectDescription,
-                      int subProjectEstimatedTimeMinutes,
-                      int subProjectActualTimeMinutes,
-                      int projectId) {
+    public SubProject(int subProjectId, String subProjectName, String subProjectDescription, double subProjectEstimatedHours, double subProjectActualHours, int projectId) {
         this.subProjectId = subProjectId;
         this.subProjectName = subProjectName;
         this.subProjectDescription = subProjectDescription;
-        this.subProjectEstimatedTimeMinutes = subProjectEstimatedTimeMinutes;
-        this.subProjectActualTimeMinutes = subProjectActualTimeMinutes;
+        this.subProjectEstimatedHours = subProjectEstimatedHours;
+        this.subProjectActualHours = subProjectActualHours;
         this.projectId = projectId;
     }
 
@@ -48,20 +44,20 @@ public class SubProject {
         this.subProjectDescription = subProjectDescription;
     }
 
-    public int getSubProjectEstimatedTimeMinutes() {
-        return subProjectEstimatedTimeMinutes;
+    public double getSubProjectEstimatedHours() {
+        return subProjectEstimatedHours;
     }
 
-    public void setSubProjectEstimatedTimeMinutes(int subProjectEstimatedTimeMinutes) {
-        this.subProjectEstimatedTimeMinutes = subProjectEstimatedTimeMinutes;
+    public void setSubProjectEstimatedHours(double subProjectEstimatedHours) {
+        this.subProjectEstimatedHours = subProjectEstimatedHours;
     }
 
-    public int getSubProjectActualTimeMinutes() {
-        return subProjectActualTimeMinutes;
+    public double getSubProjectActualHours() {
+        return subProjectActualHours;
     }
 
-    public void setSubProjectActualTimeMinutes(int subProjectActualTimeMinutes) {
-        this.subProjectActualTimeMinutes = subProjectActualTimeMinutes;
+    public void setSubProjectActualHours(double subProjectActualHours) {
+        this.subProjectActualHours = subProjectActualHours;
     }
 
     public int getProjectId() {
@@ -78,8 +74,9 @@ public class SubProject {
                 "subProjectId=" + subProjectId +
                 ", subProjectName='" + subProjectName + '\'' +
                 ", subProjectDescription='" + subProjectDescription + '\'' +
-                ", subProjectEstimatedTimeMinutes=" + subProjectEstimatedTimeMinutes +
-                ", subProjectActualTimeMinutes=" + subProjectActualTimeMinutes +
+                ", subProjectEstimatedHours=" + subProjectEstimatedHours +
+                ", subProjectActualHours=" + subProjectActualHours +
+                ", projectId=" + projectId +
                 '}';
     }
 }

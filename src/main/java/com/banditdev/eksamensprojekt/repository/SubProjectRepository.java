@@ -26,8 +26,8 @@ public class SubProjectRepository {
         jdbcTemplate.update(sql,
                 sp.getSubProjectName(),
                 sp.getSubProjectDescription(),
-                sp.getSubProjectEstimatedTimeMinutes(),
-                sp.getSubProjectActualTimeMinutes(),
+                sp.getSubProjectEstimatedHours(),
+                sp.getSubProjectActualHours(),
                 sp.getProjectId()
                 );
     }
