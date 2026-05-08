@@ -17,27 +17,32 @@ public class ProjectRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public Project addProject(Project project, int managerId) {
+    public Project addProject(Project project, int userId) {
         String sql = """
                 INSERT INTO project (project_name,
                                      project_description,
-                                     project_manager_id)
+                                     project_user_id)
                 VALUES (?, ?, ?)
                 """;
+
         KeyHolder kh = new GeneratedKeyHolder();
 
         jdbcTemplate.update(connection -> {
-            PreparedStatement preparedStatement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+            PreparedStatement preparedStatement =
+                    connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+
             preparedStatement.setString(1, project.getProjectName());
             preparedStatement.setString(2, project.getProjectDescription());
-            preparedStatement.setInt(3, managerId);
+            preparedStatement.setInt(3, userId);
+
             return preparedStatement;
         }, kh);
 
         Number key = kh.getKey();
         if (key == null) {
-            throw new IllegalStateException("Failed to get KeyHolder id.");
+            throw new IllegalStateException("Failed to get generated project id.");
         }
+
         return new Project(
                 key.intValue(),
                 project.getProjectName(),

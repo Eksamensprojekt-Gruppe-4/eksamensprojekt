@@ -10,22 +10,25 @@
 <header>
     <div class="logo">Alpha Solutions</div>
 </header>
+
 <main>
     <div class="login-card">
         <form th:action="@{/profile/authenticateLogin}" method="post" class="login-form">
 
             <span class="field-label">Your details</span>
 
-            <input type="text" name="managerUsername" placeholder="Username" required autocomplete="on"/>
-            <input type="password" name="managerPassword" placeholder="Password" required autocomplete="current-password"/>
+            <input type="text" name="userUsername" placeholder="Username" required autocomplete="on"/>
+            <input type="password" name="userPassword" placeholder="Password" required autocomplete="current-password"/>
 
             <div class="login-actions">
                 <button type="submit" class="btn">
                     Log in
                 </button>
             </div>
+
         </form>
     </div>
 </main>
+
 </body>
 </html>

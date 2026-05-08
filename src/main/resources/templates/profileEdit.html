@@ -14,7 +14,7 @@
     <nav>
         <ul>
             <li><a th:href="@{/projects}">My Projects</a></li>
-            <li><a th:href="@{/manager/logout}">Log out</a></li>
+            <li><a th:href="@{/user/logout}">Log out</a></li>
         </ul>
     </nav>
 </header>
@@ -31,13 +31,13 @@
                 <p>
                     <label for="managerName"><strong>Name</strong></label>
                     <input type="text" id="managerName" name="managerName"
-                           th:value="${manager.managerName}" required/>
+                           th:value="${user.managerName}" required/>
                 </p>
 
                 <p>
                     <label for="managerUsername"><strong>Username</strong></label>
                     <input type="text" id="managerUsername" name="managerUsername"
-                           th:value="${manager.managerUsername}" required/>
+                           th:value="${user.managerUsername}" required/>
                 </p>
 
                 <p>
@@ -48,7 +48,7 @@
 
                 <div class="btn-row">
                     <button type="submit" class="btn">Save changes</button>
-                    <a th:href="@{/manager/profile}" class="btn btn-outline">Cancel</a>
+                    <a th:href="@{/user/profile}" class="btn btn-outline">Cancel</a>
                 </div>
             </form>
 

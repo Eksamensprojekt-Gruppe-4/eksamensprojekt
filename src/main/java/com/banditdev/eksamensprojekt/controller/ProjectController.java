@@ -1,13 +1,12 @@
 package com.banditdev.eksamensprojekt.controller;
 
-import com.banditdev.eksamensprojekt.model.Manager;
 import com.banditdev.eksamensprojekt.model.Project;
+import com.banditdev.eksamensprojekt.model.User;
 import com.banditdev.eksamensprojekt.service.ProjectService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.http.HttpRequest;
 @Controller
 @RequestMapping("project")
 public class ProjectController {
@@ -23,13 +22,13 @@ public class ProjectController {
                              @RequestParam String projectDescription,
                              HttpSession session) {
 
-        Manager currentManager = (Manager) session.getAttribute("manager");
+        User currentUser = (User) session.getAttribute("user");
 
         Project project = new Project();
         project.setProjectName(projectName);
         project.setProjectDescription(projectDescription);
 
-        projectService.addProject(project, currentManager.getManagerId());
+        projectService.addProject(project, currentUser.getUserId());
 
         return"redirect:/project";
     }

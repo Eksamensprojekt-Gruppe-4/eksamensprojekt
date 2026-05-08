@@ -9,9 +9,11 @@ public class ProjectService {
 
     private final ProjectRepository projectRepository;
 
-    public ProjectService(ProjectRepository projectRepository) { this.projectRepository = projectRepository; }
+    public ProjectService(ProjectRepository projectRepository) {
+        this.projectRepository = projectRepository;
+    }
 
-    public Project addProject(Project project, int managerId){
-return projectRepository.addProject(project, managerId);
+    public Project addProject(Project project, int userId) {
+        return projectRepository.addProject(project, userId);
     }
 }
