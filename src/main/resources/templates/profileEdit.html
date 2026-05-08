@@ -14,7 +14,7 @@
     <nav>
         <ul>
             <li><a th:href="@{/projects}">My Projects</a></li>
-            <li><a th:href="@{/manager/logout}">Log out</a></li>
+            <li><a th:href="@{/profile/logout}">Log out</a></li>
         </ul>
     </nav>
 </header>
@@ -27,6 +27,8 @@
         <div class="card profile-card">
 
             <form th:action="@{/profile/update}" method="post">
+
+                <input type="hidden" name="managerId" th:value="${manager.managerId}"/>
 
                 <p>
                     <label for="managerName"><strong>Name</strong></label>
@@ -48,7 +50,7 @@
 
                 <div class="btn-row">
                     <button type="submit" class="btn">Save changes</button>
-                    <a th:href="@{/manager/profile}" class="btn btn-outline">Cancel</a>
+                    <a th:href="@{/profile/view}" class="btn btn-outline">Cancel</a>
                 </div>
             </form>
 

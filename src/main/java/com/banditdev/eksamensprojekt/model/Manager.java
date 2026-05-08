@@ -7,6 +7,8 @@ public class Manager {
     private String managerUsername;
     private String managerPassword;
 
+    public Manager() {}
+
     public Manager(int managerId, String managerName, String managerUsername, String managerPassword) {
         this.managerId = managerId;
         this.managerName = managerName;
