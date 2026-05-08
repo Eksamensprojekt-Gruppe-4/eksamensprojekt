@@ -9,12 +9,12 @@ public class User {
     private UserExperience userExperience;
     private UserRole userRole;
 
-    public User(int userId, String userName, String userUsername, String userPassword, UserRole userRole) {
+    public User(int userId, String userName, String userUsername, String userPassword, UserExperience userExperience, UserRole userRole) {
         this.userId = userId;
         this.userName = userName;
         this.userUsername = userUsername;
         this.userPassword = userPassword;
-        this.userExperience = UserExperience.UNASSIGNED;;
+        this.userExperience = userExperience;
         this.userRole = userRole;
     }
 
@@ -48,6 +48,22 @@ public class User {
 
     public void setUserPassword(String userPassword) {
         this.userPassword = userPassword;
+    }
+
+    public UserExperience getUserExperience() {
+        return userExperience;
+    }
+
+    public void setUserExperience(UserExperience userExperience) {
+        this.userExperience = userExperience;
+    }
+
+    public UserRole getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(UserRole userRole) {
+        this.userRole = userRole;
     }
 
     @Override

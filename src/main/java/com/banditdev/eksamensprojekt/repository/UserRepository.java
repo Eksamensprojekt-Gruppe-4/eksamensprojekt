@@ -1,6 +1,8 @@
 package com.banditdev.eksamensprojekt.repository;
 
 import com.banditdev.eksamensprojekt.model.User;
+import com.banditdev.eksamensprojekt.model.UserExperience;
+import com.banditdev.eksamensprojekt.model.UserRole;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -13,7 +15,7 @@ public class UserRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public void updateUser(User user) {
+    public void editOwnUser(User user) {
         String sql = """
                         UPDATE user
                         SET user_name = ?, user_username = ?, user_password = ?
@@ -35,7 +37,9 @@ public class UserRepository {
                     user_id,
                     user_name,
                     user_username,
-                    user_password
+                    user_password,
+                    user_experience,
+                    user_role
                 FROM user
                 WHERE LOWER(user_username) = LOWER(?)
                 """;
@@ -48,7 +52,9 @@ public class UserRepository {
                                     rs.getInt("user_id"),
                                     rs.getString("user_name"),
                                     rs.getString("user_username"),
-                                    rs.getString("user_password")
+                                    rs.getString("user_password"),
+                                    UserExperience.valueOf(rs.getString("user_experience")),
+                                    UserRole.valueOf(rs.getString("user_role"))
                             ),
                     username
             );

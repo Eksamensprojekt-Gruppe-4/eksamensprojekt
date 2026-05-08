@@ -13,7 +13,7 @@ public class UserService {
     }
 
     public void updateUser(User user) {
-        userRepository.updateUser(user);
+        userRepository.editOwnUser(user);
     }
 
     public User findUserByUserUsername(String userUsername) {
