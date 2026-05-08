@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create sub project</title>
+    <link rel="stylesheet" th.href="@{styles.css}"/>
+</head>
+<body>
+<main>
+    <h2>Create sub-project</h2>
+
+    <form th:action="@{/projects/{id}/subprojects(id=${projectId})}" th:object="${subProject}" method="post">
+
+        <Label>Name:
+            <input type="text" th:field="*{subProjectName}" required>
+        </Label>
+        <br>
+        <Label>Description:
+            <textarea th:field="*{subProjectDescription}"></textarea>
+        </Label>
+        <br>
+        <label>Estimated time (minutes):
+            <!-- KAN GODT ÆNDRES TIL ANDET INPUT HVIS VI VIL -->
+            <input type="number" th:field="*{subProjectEstimatedTimeMinutes}">
+        </label>
+        <br>
+        <button type="submit">Create</button>
+    </form>
+</main>
+</body>
+</html>
