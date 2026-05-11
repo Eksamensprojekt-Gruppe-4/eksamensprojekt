@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Create sub project</title>
-    <link rel="stylesheet" th.href="@{styles.css}"/>
+    <link rel="stylesheet" th:href="@{styles.css}"/>
 </head>
 <body>
 <main>
@@ -19,10 +19,6 @@
             <textarea th:field="*{subProjectDescription}"></textarea>
         </Label>
         <br>
-        <label>Estimated time (minutes):
-            <!-- KAN GODT ÆNDRES TIL ANDET INPUT HVIS VI VIL -->
-            <input type="number" th:field="*{subProjectEstimatedHours}">
-        </label>
         <br>
         <button type="submit">Create</button>
     </form>
