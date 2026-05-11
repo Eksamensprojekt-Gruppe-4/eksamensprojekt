@@ -95,4 +95,12 @@ public class ProjectRepository {
                 project.getOwnerUserId()
         );
     }
+
+    public void deleteProjectById(int projectId) {
+        String sql = """
+                DELETE FROM project
+                WHERE project_id = ?
+                """;
+        jdbcTemplate.update(sql, projectId);
+    }
 }

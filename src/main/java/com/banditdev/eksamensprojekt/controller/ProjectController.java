@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.http.HttpRequest;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -61,5 +62,18 @@ public class ProjectController {
         projectService.addProject(project, currentUser.getUserId());
 
         return "redirect:/projects/myProjects";
+    }
+
+    @PostMapping("/delete/{projectId}")
+    public String deleteProject(@PathVariable int projectId, HttpSession session) {
+
+        User user =(User) session.getAttribute("user");
+        if (user == null)return "redirect:user/login";
+
+        if(!projectService.validateProjectOwner(user, projectId)) {
+            return"redirect:/projects";
+        }
+        projectService.deleteProjectById(projectId);
+        return "redirect:/projects";
     }
 }
