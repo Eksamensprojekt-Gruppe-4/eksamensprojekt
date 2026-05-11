@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
+import java.util.List;
 
 @Repository
 public class ProjectRepository {
@@ -16,6 +17,35 @@ public class ProjectRepository {
 
     public ProjectRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
+    }
+
+    public List<Project> findProjectsByUserId(int userId) {
+        String sql = """
+            SELECT
+                project_id,
+                project_name,
+                project_description,
+                project_start_date,
+                project_estimated_deadline,
+                project_estimated_hours,
+                project_actual_hours,
+                owner_user_id
+            FROM project
+            WHERE owner_user_id = ?
+            """;
+
+        return jdbcTemplate.query(sql, (rs, rowNum) -> new Project(
+                rs.getInt("project_id"),
+                rs.getString("project_name"),
+                rs.getString("project_description"),
+                rs.getDate("project_start_date").toLocalDate(),
+                rs.getDate("project_estimated_deadline") != null
+                        ? rs.getDate("project_estimated_deadline").toLocalDate()
+                        : null,
+                rs.getDouble("project_estimated_hours"),
+                rs.getDouble("project_actual_hours"),
+                rs.getInt("owner_user_id")
+        ), userId);
     }
 
     public Project addProject(Project project, int userId) {
@@ -39,7 +69,9 @@ public class ProjectRepository {
             preparedStatement.setString(1, project.getProjectName());
             preparedStatement.setString(2, project.getProjectDescription());
             preparedStatement.setDate(3, Date.valueOf(project.getProjectStartDate()));
-            preparedStatement.setDate(4, Date.valueOf(project.getProjectEstimatedDeadline()));
+            preparedStatement.setDate(4, project.getProjectEstimatedDeadline() != null
+                    ? Date.valueOf(project.getProjectEstimatedDeadline())
+                    : null);
             preparedStatement.setDouble(5, project.getProjectEstimatedHours());
             preparedStatement.setDouble(6, project.getProjectActualHours());
             preparedStatement.setInt(7, userId);
