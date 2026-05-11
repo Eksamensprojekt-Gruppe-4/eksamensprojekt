@@ -6,18 +6,35 @@ import com.banditdev.eksamensprojekt.service.ProjectService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Controller
-@RequestMapping("project")
+@RequestMapping("projects")
 public class ProjectController {
 
     private final ProjectService projectService;
 
     public ProjectController(ProjectService projectService) {
         this.projectService = projectService;
+    }
+
+    @GetMapping("myProjects")
+    public String showOwnProjects(HttpSession session, Model model) {
+        User currentLoggedInUser = (User) session.getAttribute("user");
+
+        if (currentLoggedInUser == null) {
+            return "redirect:/profile/login";
+        }
+
+        List<Project> projects = projectService.findProjectsByUserId(currentLoggedInUser.getUserId());
+
+        model.addAttribute("projects", projects);
+
+        return "projectsOwnedOverview";
     }
 
     @GetMapping("/add")
@@ -43,6 +60,6 @@ public class ProjectController {
 
         projectService.addProject(project, currentUser.getUserId());
 
-        return"redirect:/project";
+        return "redirect:/projects/myProjects";
     }
 }

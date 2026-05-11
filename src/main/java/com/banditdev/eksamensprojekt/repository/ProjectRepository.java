@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
+import java.util.List;
 
 @Repository
 public class ProjectRepository {
@@ -16,6 +17,35 @@ public class ProjectRepository {
 
     public ProjectRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
+    }
+
+    public List<Project> findProjectsByUserId(int userId) {
+        String sql = """
+            SELECT
+                project_id,
+                project_name,
+                project_description,
+                project_start_date,
+                project_estimated_deadline,
+                project_estimated_hours,
+                project_actual_hours,
+                owner_user_id
+            FROM project
+            WHERE owner_user_id = ?
+            """;
+
+        return jdbcTemplate.query(sql, (rs, rowNum) -> new Project(
+                rs.getInt("project_id"),
+                rs.getString("project_name"),
+                rs.getString("project_description"),
+                rs.getDate("project_start_date").toLocalDate(),
+                rs.getDate("project_estimated_deadline") != null
+                        ? rs.getDate("project_estimated_deadline").toLocalDate()
+                        : null,
+                rs.getDouble("project_estimated_hours"),
+                rs.getDouble("project_actual_hours"),
+                rs.getInt("owner_user_id")
+        ), userId);
     }
 
     public Project addProject(Project project, int userId) {
