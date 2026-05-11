@@ -28,27 +28,29 @@
 
             <form th:action="@{/profile/update}" method="post">
 
+                <input type="hidden" name="userId" th:value="${user.userId}">
+
                 <p>
-                    <label for="managerName"><strong>Name</strong></label>
-                    <input type="text" id="managerName" name="managerName"
-                           th:value="${user.managerName}" required/>
+                    <label for="userName"><strong>Name</strong></label>
+                    <input type="text" id="userName" name="userName"
+                           th:value="${user.userName}" required/>
                 </p>
 
                 <p>
-                    <label for="managerUsername"><strong>Username</strong></label>
-                    <input type="text" id="managerUsername" name="managerUsername"
-                           th:value="${user.managerUsername}" required/>
+                    <label for="userUsername"><strong>Username</strong></label>
+                    <input type="text" id="userUsername" name="userUsername"
+                           th:value="${user.userUsername}" required/>
                 </p>
 
                 <p>
-                    <label for="managerPassword"><strong>New password</strong></label>
-                    <input type="password" id="managerPassword" name="managerPassword"
+                    <label for="userPassword"><strong>New password</strong></label>
+                    <input type="password" id="userPassword" name="userPassword"
                            placeholder="Leave blank to keep current"/>
                 </p>
 
                 <div class="btn-row">
                     <button type="submit" class="btn">Save changes</button>
-                    <a th:href="@{/user/profile}" class="btn btn-outline">Cancel</a>
+                    <a th:href="@{/profile/view}" class="btn btn-outline">Cancel</a>
                 </div>
             </form>
 
