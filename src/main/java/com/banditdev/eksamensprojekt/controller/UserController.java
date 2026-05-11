@@ -25,7 +25,7 @@ public class UserController {
         if (session.getAttribute("user") == null) {
             return "loginPage";
         }
-        return "redirect:/profile/view"; // TODO: change to project board
+        return "redirect:/projects/myProjects";
     }
 
     @PostMapping("/authenticateLogin")
@@ -33,7 +33,7 @@ public class UserController {
 
         if (userService.validateUser(userUsername, userPassword)) {
             session.setAttribute("user", userService.findUserByUserUsername(userUsername));
-            return "redirect:/profile/view"; // TODO: change to project board
+            return "redirect:/projects/myProjects";
         } else {
             return "loginPage";
         }
