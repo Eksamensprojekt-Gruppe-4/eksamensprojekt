@@ -71,8 +71,17 @@ public class UserController {
 
     @PostMapping("update")
     public String updateProfile(@ModelAttribute User user, HttpSession session) {
+
+        User currentLoggedInUser = (User) session.getAttribute("user");
+
+        // Preserves an existing password if a new one is unset
+        if (user.getUserPassword() == null || user.getUserPassword().trim().isEmpty()) {
+            user.setUserPassword(currentLoggedInUser.getUserPassword());
+        }
+
         userService.updateUser(user);
         session.setAttribute("user", user);
+
         return "redirect:/profile/view";
     }
 }

@@ -14,7 +14,7 @@
     <nav>
         <ul>
             <li><a th:href="@{/projects}">My Projects</a></li>
-            <li><a th:href="@{/user/logout}">Log out</a></li>
+            <li><a th:href="@{/profile/logout}">Log out</a></li>
         </ul>
     </nav>
 </header>
@@ -28,12 +28,12 @@
 
             <p>
                 <strong>Name</strong><br/>
-                <span th:text="${user.managerName}">Anders Nielsen</span>
+                <span th:text="${user.userName}">Anders Nielsen</span>
             </p>
 
             <p>
                 <strong>Username</strong><br/>
-                <span th:text="${user.managerUsername}">anders123</span>
+                <span th:text="${user.userUsername}">anders123</span>
             </p>
 
             <p>
@@ -41,7 +41,7 @@
                 ••••••••
             </p>
 
-            <a th:href="@{/user/profile/edit}" class="btn">Edit profile</a>
+            <a th:href="@{/profile/edit}" class="btn">Edit profile</a>
 
         </div>
 
