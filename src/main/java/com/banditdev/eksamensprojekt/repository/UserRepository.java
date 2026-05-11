@@ -7,6 +7,8 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public class UserRepository {
     private final JdbcTemplate jdbcTemplate;
@@ -62,4 +64,29 @@ public class UserRepository {
             return null;
         }
     }
+
+    public List<User> findAllUsers() {
+        String sql = """
+                SELECT
+                    user_id,
+                    user_name,
+                    user_username,
+                    user_password,
+                    user_experience,
+                    user_role
+                FROM user
+                """;
+
+            return jdbcTemplate.query(sql, (rs, rowNum) ->
+                    new User(
+                            rs.getInt("user_id"),
+                            rs.getString("user_name"),
+                            rs.getString("user_username"),
+                            rs.getString("user_password"),
+                            UserExperience.valueOf(rs.getString("user_experience")),
+                            UserRole.valueOf(rs.getString("user_role"))
+                    )
+            );
+    }
+
 }
