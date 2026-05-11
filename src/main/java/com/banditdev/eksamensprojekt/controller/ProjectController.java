@@ -20,6 +20,11 @@ public class ProjectController {
         this.projectService = projectService;
     }
 
+    @GetMapping("/add")
+    public String showAddProjectForm() {
+        return "projectCreate";
+    }
+
     @PostMapping("/add")
     public String addProject(@RequestParam String projectName,
                              @RequestParam String projectDescription,
