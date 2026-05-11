@@ -4,6 +4,8 @@ import com.banditdev.eksamensprojekt.model.User;
 import com.banditdev.eksamensprojekt.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserService {
     private final UserRepository userRepository;
@@ -23,5 +25,9 @@ public class UserService {
     public boolean validateUser(String userUsername, String userPassword) {
         User user = userRepository.findUserByUserUsername(userUsername);
         return user != null && user.getUserPassword().equals(userPassword);
+    }
+
+    public List<User> findAllUsers() {
+        return userRepository.findAllUsers();
     }
 }
