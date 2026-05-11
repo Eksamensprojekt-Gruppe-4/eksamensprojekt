@@ -37,6 +37,9 @@ public class ProjectController {
         project.setProjectName(projectName);
         project.setProjectDescription(projectDescription);
         project.setProjectStartDate(projectStartDate);
+        project.setProjectEstimatedDeadline(null);
+        project.setProjectEstimatedHours(0);
+        project.setProjectActualHours(0);
 
         projectService.addProject(project, currentUser.getUserId());
 
