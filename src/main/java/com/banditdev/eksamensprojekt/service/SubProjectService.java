@@ -15,4 +15,6 @@ public class SubProjectService {
     public void createSubProject(SubProject subProject) {
         subProjectRepository.saveSubProject(subProject);
     }
+
+    //TODO SubProject findSubProjectBySubProjectId() {}
 }
