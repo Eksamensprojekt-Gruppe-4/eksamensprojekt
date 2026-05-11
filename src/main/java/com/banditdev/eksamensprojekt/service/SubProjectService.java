@@ -15,4 +15,8 @@ public class SubProjectService {
     public void createSubProject(SubProject subProject) {
         subProjectRepository.saveSubProject(subProject);
     }
+
+    public SubProject findSubProjectBySubProjectId(int subProjectId) {
+        return subProjectRepository.findSubProjectBySubProjectId(subProjectId);
+    }
 }
