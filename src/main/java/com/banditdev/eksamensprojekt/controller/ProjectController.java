@@ -70,10 +70,7 @@ public class ProjectController {
         User user =(User) session.getAttribute("user");
         if (user == null)return "redirect:user/login";
 
-        if(!projectService.validateProjectOwner(user, projectId)) {
-            return"redirect:/projects";
-        }
         projectService.deleteProjectById(projectId);
-        return "redirect:/projects";
+        return "redirect:/projects/myProject";
     }
 }

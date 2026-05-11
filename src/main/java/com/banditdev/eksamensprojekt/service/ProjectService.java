@@ -28,8 +28,4 @@ public class ProjectService {
         return projectRepository.findProjectsByUserId(userId);
     }
 
-    public boolean validateProjectOwner(User user, int projectId) {
-        return projectRepository.findProjectsByUserId(user.getUserId()).stream()
-                .anyMatch(projectList -> projectList.getProjectId() == projectId);
-    }
 }
