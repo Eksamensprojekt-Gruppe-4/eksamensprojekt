@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Add Task — Alpha Solutions</title>
+    <link rel="stylesheet" th:href="@{/styles.css}"/>
+</head>
+<body>
+
+<header>
+    <div class="logo">Alpha Solutions</div>
+    <nav>
+        <ul>
+            <li><a href="#">My projects</a></li>
+            <li><a href="#">All projects</a></li>
+        </ul>
+        <button class="btn">Log out</button>
+    </nav>
+</header>
+
+<main>
+    <section class="container">
+
+        <h2>Add new task to <span th:text="${subProject.subProjectName}">Sub-project name</span></h2>
+
+        <div class="card">
+
+            <form th:action="@{/projects/{projectId}/subprojects/{subProjectId}/task/add(projectId=${projectId},subProjectId=${subProject.subProjectId})}"
+                  method="post">
+
+                <input type="hidden" name="subProjectId" th:value="${subProject.subProjectId}"/>
+                <input type="hidden" name="userId" th:value="${session.user.userId}"/>
+
+                <p>
+                    <label for="taskName">Task name</label>
+                    <br/>
+                    <input type="text" id="taskName" name="taskName" placeholder="Enter task name" required/>
+                </p>
+
+                <p>
+                    <label for="taskDescription">Description</label>
+                    <br/>
+                    <textarea id="taskDescription" name="taskDescription" placeholder="Enter task description" rows="4"></textarea>
+                </p>
+
+                <p>
+                    <label for="taskEstimatedHours">Estimated hours</label>
+                    <br/>
+                    <input type="number" id="taskEstimatedHours" name="taskEstimatedHours" placeholder="0.0" min="0" step="0.5"/>
+                </p>
+
+                <p>
+                    <button type="submit" class="btn">Create task</button>
+                    <a th:href="@{/projects/{projectId}/subprojects/{subProjectId}/(projectId=${projectId},subProjectId=${subProject.subProjectId})}"
+                       class="btn btn-outline">Cancel</a>
+                </p>
+            </form>
+        </div>
+    </section>
+</main>
+
+</body>
+</html>

@@ -19,7 +19,7 @@ public class TaskController {
 
         //TODO lav HttpSession logik!
 
-        model.addAttribute("subProject", taskService.findSubProjectBySubProjectId(subProjectId));
+        //model.addAttribute("subProject", taskService.findSubProjectBySubProjectId(subProjectId));
         return "addTask";
     }
 
@@ -27,8 +27,9 @@ public class TaskController {
     public String saveNewTask(@ModelAttribute Task task, @PathVariable int projectId, @PathVariable int subProjectId, HttpSession session) {
 
         taskService.addTask(task, task.getUserId(), subProjectId);
+        //måske lav et return til "viewTask" i stedet for ? Måske er det dårligt userflow.
         return "redirect:/projects/" + projectId + "/subprojects/" + subProjectId + "/";
     }
 
-    //TODO  @GetMapping("/{taskId}/viewTask")
+    //TODO  @GetMapping("/{taskId}/viewTask") - giver det mening at lave denne metode???
 }
