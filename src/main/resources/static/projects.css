@@ -99,36 +99,23 @@ main {
     color: var(--color-text);
 }
 
+.project-description {
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+    max-width: 300px;
+    display: block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
 .project-date {
     color: var(--color-text-muted);
     font-size: 0.9rem;
 }
 
 .deadline-badge {
-    display: inline-block;
-    padding: 0.25rem 0.6rem;
-    border-radius: 4px;
-    font-size: 0.8rem;
-    font-weight: 500;
-}
-
-.deadline-badge.upcoming {
-    background-color: #FEF3C7;
-    color: #92400E;
-}
-
-.deadline-badge.ok {
-    background-color: #D1FAE5;
-    color: #065F46;
-}
-
-.deadline-badge.overdue {
-    background-color: #FEE2E2;
-    color: #991B1B;
-}
-
-.deadline-badge.none {
-    background-color: var(--color-bg-alt);
+    font-size: 0.9rem;
     color: var(--color-text-muted);
 }
 
