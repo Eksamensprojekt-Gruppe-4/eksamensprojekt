@@ -4,8 +4,11 @@ import com.banditdev.eksamensprojekt.model.Project;
 import com.banditdev.eksamensprojekt.model.User;
 import com.banditdev.eksamensprojekt.service.ProjectService;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 
 @Controller
 @RequestMapping("project")
@@ -17,9 +20,15 @@ public class ProjectController {
         this.projectService = projectService;
     }
 
+    @GetMapping("/add")
+    public String showAddProjectForm() {
+        return "projectCreate";
+    }
+
     @PostMapping("/add")
     public String addProject(@RequestParam String projectName,
                              @RequestParam String projectDescription,
+                             @RequestParam LocalDate projectStartDate,
                              HttpSession session) {
 
         User currentUser = (User) session.getAttribute("user");
@@ -27,6 +36,10 @@ public class ProjectController {
         Project project = new Project();
         project.setProjectName(projectName);
         project.setProjectDescription(projectDescription);
+        project.setProjectStartDate(projectStartDate);
+        project.setProjectEstimatedDeadline(null);
+        project.setProjectEstimatedHours(0);
+        project.setProjectActualHours(0);
 
         projectService.addProject(project, currentUser.getUserId());
 

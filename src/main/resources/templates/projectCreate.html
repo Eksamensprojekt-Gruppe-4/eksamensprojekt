@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Project</title>
+    <link rel="stylesheet" th:href="@{styles.css}"/>
+</head>
+<body>
+<main>
+    <h2>Create project</h2>
+
+    <form th:action="@{/project/add}" method="post">
+
+        <label>Name:
+            <input type="text" name="projectName" required>
+        </label>
+        <br>
+        <label>Description:
+            <textarea name="projectDescription"></textarea>
+        </label>
+        <br>
+        <label>Start date:
+            <input type="date" name="projectStartDate" required>
+        </label>
+        <br>
+        <button type="submit" class="btn">Create</button>
+    </form>
+</main>
+</body>
+</html>

@@ -39,7 +39,9 @@ public class ProjectRepository {
             preparedStatement.setString(1, project.getProjectName());
             preparedStatement.setString(2, project.getProjectDescription());
             preparedStatement.setDate(3, Date.valueOf(project.getProjectStartDate()));
-            preparedStatement.setDate(4, Date.valueOf(project.getProjectEstimatedDeadline()));
+            preparedStatement.setDate(4, project.getProjectEstimatedDeadline() != null
+                    ? Date.valueOf(project.getProjectEstimatedDeadline())
+                    : null);
             preparedStatement.setDouble(5, project.getProjectEstimatedHours());
             preparedStatement.setDouble(6, project.getProjectActualHours());
             preparedStatement.setInt(7, userId);
