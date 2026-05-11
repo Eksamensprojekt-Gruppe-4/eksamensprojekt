@@ -1,6 +1,7 @@
 package com.banditdev.eksamensprojekt.controller;
 
 import com.banditdev.eksamensprojekt.model.Task;
+import com.banditdev.eksamensprojekt.service.SubProjectService;
 import com.banditdev.eksamensprojekt.service.TaskService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.ui.Model;
@@ -9,9 +10,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/projects/{projectId}/subprojects/{subProjectId}/task")
 public class TaskController {
     private final TaskService taskService;
+    private final SubProjectService subProjectService;
 
-    public TaskController(TaskService taskService) {
+    public TaskController(TaskService taskService, SubProjectService subProjectService) {
         this.taskService = taskService;
+        this.subProjectService = subProjectService;
     }
 
     @GetMapping("/add")
@@ -19,7 +22,7 @@ public class TaskController {
 
         //TODO lav HttpSession logik!
 
-        //model.addAttribute("subProject", subProjectService.findSubProjectBySubProjectId(subProjectId));
+        model.addAttribute("subProject", subProjectService.findSubProjectBySubProjectId(subProjectId));
         return "addTask";
     }
 

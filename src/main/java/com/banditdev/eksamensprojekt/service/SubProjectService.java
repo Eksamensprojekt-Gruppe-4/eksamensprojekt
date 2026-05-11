@@ -16,5 +16,7 @@ public class SubProjectService {
         subProjectRepository.saveSubProject(subProject);
     }
 
-    //TODO SubProject findSubProjectBySubProjectId() {}
+    public SubProject findSubProjectBySubProjectId(int subProjectId) {
+        return subProjectRepository.findSubProjectBySubProjectId(subProjectId);
+    }
 }
