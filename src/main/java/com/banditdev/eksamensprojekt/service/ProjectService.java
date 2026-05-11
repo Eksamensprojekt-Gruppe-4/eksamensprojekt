@@ -4,16 +4,16 @@ import com.banditdev.eksamensprojekt.model.Project;
 import com.banditdev.eksamensprojekt.repository.ProjectRepository;
 import org.springframework.stereotype.Service;
 
-@Service
-public class ProjectService {
+    @Service
+    public class ProjectService {
 
-    private final ProjectRepository projectRepository;
+        private final ProjectRepository projectRepository;
 
-    public ProjectService(ProjectRepository projectRepository) {
-        this.projectRepository = projectRepository;
+        public ProjectService(ProjectRepository projectRepository) {
+            this.projectRepository = projectRepository;
+        }
+
+        public Project addProject(Project project, int userId) {
+            return projectRepository.addProject(project, userId);
+        }
     }
-
-    public Project addProject(Project project, int userId) {
-        return projectRepository.addProject(project, userId);
-    }
-}
