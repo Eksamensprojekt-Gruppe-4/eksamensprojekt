@@ -10,10 +10,11 @@
     <div class="logo">Alpha Solutions</div>
     <nav>
         <ul>
-            <li><a href="#">My projects</a></li>
-            <li><a href="#">All projects</a></li>
+            <li><a th:href="@{/projects/myProjects}">My Projects</a></li>
+            <li><a th:href="@{/projects/allProjects}">All Projects</a></li>
+            <li><a th:href="@{/profile/view}">Profile</a></li>
+            <li><a th:href="@{/profile/logout}">Log out</a></li>
         </ul>
-        <button class="btn">Log out</button>
     </nav>
 </header>
 <main>
