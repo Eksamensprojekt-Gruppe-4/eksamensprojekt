@@ -19,7 +19,7 @@ public class TaskController {
 
         //TODO lav HttpSession logik!
 
-        //model.addAttribute("subProject", taskService.findSubProjectBySubProjectId(subProjectId));
+        //model.addAttribute("subProject", subProjectService.findSubProjectBySubProjectId(subProjectId));
         return "addTask";
     }
 
