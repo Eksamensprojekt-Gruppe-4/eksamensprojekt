@@ -13,10 +13,9 @@
     <div class="logo">Alpha Solutions</div>
     <nav>
         <ul>
-            <li><a th:href="@{/project/myProjects}" class="active">My projects</a></li>
-            <li><a th:href="@{/projects}">All projects</a></li>
+            <li><a th:href="@{/projects/myProjects}">My Projects</a></li>
+            <li><a th:href="@{/profile/logout}">Log out</a></li>
         </ul>
-        <a th:href="@{/profile/logout}" class="btn">Log out</a>
     </nav>
 </header>
 
@@ -24,13 +23,8 @@
     <section class="container">
 
         <div class="page-header">
-            <h2>My projects:</h2>
-            <button class="sort-btn">
-                Sort by
-                <svg viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-            </button>
+            <h2>My projects</h2>
+            <button class="sort-btn">Sort by</button>
         </div>
 
         <div th:if="${projects != null and !projects.isEmpty()}">
@@ -39,6 +33,7 @@
                 <tr>
                     <th>ID</th>
                     <th>Project name</th>
+                    <th>Description</th>
                     <th>Created date</th>
                     <th>Deadline</th>
                     <th></th>
@@ -48,20 +43,20 @@
                 <tbody>
                 <tr th:each="project : ${projects}">
                     <td>
-                        <span class="project-id-badge" th:text="${project.projectId}">1</span>
+                        <span class="project-id-badge" th:text="${project.projectId}"></span>
                     </td>
                     <td>
-                        <span class="project-name" th:text="${project.projectName}">Project name</span>
+                        <span class="project-name" th:text="${project.projectName}"></span>
                     </td>
                     <td>
-                        <span class="project-date" th:text="${project.projectStartDate}">2025-01-01</span>
+                        <span class="project-description" th:text="${project.projectDescription}"></span>
                     </td>
                     <td>
-                            <span class="deadline-badge none"
-                                  th:if="${project.projectEstimatedDeadline == null}">No deadline</span>
-                        <span class="deadline-badge ok"
-                              th:if="${project.projectEstimatedDeadline != null}"
-                              th:text="${project.projectEstimatedDeadline}">2025-06-30</span>
+                        <span class="project-date" th:text="${project.projectStartDate}"></span>
+                    </td>
+                    <td>
+                        <span class="deadline-badge"
+                              th:text="${project.projectEstimatedDeadline != null ? project.projectEstimatedDeadline : 'No deadline'}"></span>
                     </td>
                     <td>
                         <a href="#" class="btn-sm btn-view">View</a>
