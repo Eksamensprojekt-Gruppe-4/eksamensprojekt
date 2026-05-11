@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 
 @Controller
-@RequestMapping("project")
+@RequestMapping("projects")
 public class ProjectController {
 
     private final ProjectService projectService;

@@ -16,7 +16,7 @@ public class SubProjectController {
     }
 
     @GetMapping("/new")
-    public String showSPForm(@PathVariable int projectId, Model model) {
+    public String showSubProjectForm(@PathVariable int projectId, Model model) {
         model.addAttribute("projectId", projectId);
         model.addAttribute("subProject", new SubProject());
 
@@ -24,7 +24,7 @@ public class SubProjectController {
     }
 
     @PostMapping
-    public String createSP(@PathVariable int projectId,
+    public String createSubProject(@PathVariable int projectId,
                            @ModelAttribute SubProject subProject) {
         subProject.setProjectId(projectId);
         service.createSubProject(subProject);
