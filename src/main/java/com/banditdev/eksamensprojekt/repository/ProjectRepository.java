@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -21,18 +22,18 @@ public class ProjectRepository {
 
     public List<Project> findProjectsByUserId(int userId) {
         String sql = """
-            SELECT
-                project_id,
-                project_name,
-                project_description,
-                project_start_date,
-                project_estimated_deadline,
-                project_estimated_hours,
-                project_actual_hours,
-                owner_user_id
-            FROM project
-            WHERE owner_user_id = ?
-            """;
+                SELECT
+                    project_id,
+                    project_name,
+                    project_description,
+                    project_start_date,
+                    project_estimated_deadline,
+                    project_estimated_hours,
+                    project_actual_hours,
+                    owner_user_id
+                FROM project
+                WHERE owner_user_id = ?
+                """;
 
         return jdbcTemplate.query(sql, (rs, rowNum) -> new Project(
                 rs.getInt("project_id"),
@@ -102,5 +103,34 @@ public class ProjectRepository {
                 WHERE project_id = ?
                 """;
         jdbcTemplate.update(sql, projectId);
+    }
+
+    public void updateProject(int projectId, String name, String description, LocalDate startDate) {
+        String sql = """
+                UPDATE project
+                SET project_name = ?, project_description = ?, project_start_date = ?
+                WHERE project_id = ?
+                """;
+        jdbcTemplate.update(sql, name, description, Date.valueOf(startDate), projectId);
+    }
+
+    public Project findProjectById(int projectId) {
+        String sql = """
+                SELECT project_id, project_name, project_description, 
+                project_start_date, project_estimated_deadline, 
+                project_estimated_hours, project_actual_hours, owner_user_id
+                FROM project_db.project
+                WHERE project_id = ?""";
+        return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> new Project(
+                rs.getInt("project_id"),
+                rs.getString("project_name"),
+                rs.getString("project_description"),
+                rs.getDate("project_start_date").toLocalDate(),
+                rs.getDate("project_estimated_deadline") != null
+                ? rs.getDate("project_estimated_deadline").toLocalDate() : null,
+                rs.getDouble("project_estimated_hours"),
+                rs.getDouble("project_actual_hours"),
+                rs.getInt("owner_user_id")
+                ), projectId);
     }
 }
