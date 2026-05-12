@@ -4,10 +4,12 @@ import com.banditdev.eksamensprojekt.model.Task;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 
+@Repository
 public class TaskRepository {
 
     private final JdbcTemplate jdbcTemplate;

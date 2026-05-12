@@ -2,7 +2,9 @@ package com.banditdev.eksamensprojekt.service;
 
 import com.banditdev.eksamensprojekt.model.Task;
 import com.banditdev.eksamensprojekt.repository.TaskRepository;
+import org.springframework.stereotype.Service;
 
+@Service
 public class TaskService {
     private final TaskRepository taskRepository;
 
