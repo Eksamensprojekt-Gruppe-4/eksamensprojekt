@@ -50,5 +50,29 @@ public class TaskRepository {
         return new Task(key.intValue(), task.getTaskName(), task.getTaskDescription(), task.getTaskEstimatedHours(), task.getTaskActualHours(), userId, subProjectId);
     }
 
+    public Task findTaskById(int taskIdToFind) {
+            String sql = """
+                SELECT
+                    task_id,
+                    task_name,
+                    task_description,
+                    task_estimated_hours,
+                    task_actual_hours,
+                    user_id,
+                    sub_project_id
+                FROM task
+                WHERE task_id = ?
+                """;
+
+            return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> new Task(
+                    rs.getInt("task_id"),
+                    rs.getString("task_name"),
+                    rs.getString("task_description"),
+                    rs.getDouble("task_estimated_hours"),
+                    rs.getDouble("task_actual_hours"),
+                    rs.getInt("user_id"),
+                    rs.getInt("sub_project_id")
+            ), taskIdToFind);
+    }
 
 }
