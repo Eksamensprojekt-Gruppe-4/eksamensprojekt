@@ -89,4 +89,64 @@ public class UserRepository {
             );
     }
 
+    public User findUserAssignedToTaskByTaskId(int taskId) {
+        String sql = """
+                SELECT
+                    u.user_id,
+                    u.user_name,
+                    u.user_username,
+                    u.user_password,
+                    u.user_experience,
+                    u.user_role
+                FROM task t
+                JOIN user u ON t.user_id = u.user_id
+                WHERE t.task_id = ?
+                """;
+
+        try {
+            return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> new User(
+                    rs.getInt("user_id"),
+                    rs.getString("user_name"),
+                    rs.getString("user_username"),
+                    rs.getString("user_password"),
+                    UserExperience.valueOf(rs.getString("user_experience")),
+                    UserRole.valueOf(rs.getString("user_role"))
+            ), taskId);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
+    public User findUserByUserId(int userId) {
+        String sql = """
+                SELECT
+                    user_id,
+                    user_name,
+                    user_username,
+                    user_password,
+                    user_experience,
+                    user_role
+                FROM user
+                WHERE user_id = ?
+                """;
+
+        try {
+            return jdbcTemplate.queryForObject(
+                    sql,
+                    (rs, rowNum) ->
+                            new User(
+                                    rs.getInt("user_id"),
+                                    rs.getString("user_name"),
+                                    rs.getString("user_username"),
+                                    rs.getString("user_password"),
+                                    UserExperience.valueOf(rs.getString("user_experience")),
+                                    UserRole.valueOf(rs.getString("user_role"))
+                            ),
+                    userId
+            );
+
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
 }
