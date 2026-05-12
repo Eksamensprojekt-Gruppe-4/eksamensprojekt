@@ -1,6 +1,7 @@
 package com.banditdev.eksamensprojekt.controller;
 
 import com.banditdev.eksamensprojekt.model.Task;
+import com.banditdev.eksamensprojekt.model.User;
 import com.banditdev.eksamensprojekt.service.SubProjectService;
 import com.banditdev.eksamensprojekt.service.TaskService;
 import com.banditdev.eksamensprojekt.service.UserService;
@@ -22,6 +23,7 @@ public class TaskController {
         this.userService = userService;
     }
 
+
     @GetMapping("/add")
     public String showAddNewTaskForm(@PathVariable int projectId, @PathVariable int subProjectId, HttpSession session, Model model) {
 
@@ -42,5 +44,14 @@ public class TaskController {
         return "redirect:/projects/" + projectId + "/subprojects/" + subProjectId + "/";
     }
 
-    //TODO  @GetMapping("/{taskId}/viewTask") - giver det mening at lave denne metode???
+    @GetMapping("/{taskId}/view")
+    public String viewTask(@PathVariable int taskId, @PathVariable int projectId, @PathVariable int subProjectId, HttpSession session, Model model) {
+
+            model.addAttribute("task", taskService.findTaskById(taskId));
+            model.addAttribute("subProject", subProjectService.findSubProjectBySubProjectId(subProjectId));
+            model.addAttribute("assignedUser", userService.findUserAssignedToTaskByTaskId(taskId));
+            model.addAttribute("projectId", projectId);
+
+            return "viewTask";
+    }
 }

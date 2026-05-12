@@ -30,4 +30,12 @@ public class UserService {
     public List<User> findAllUsers() {
         return userRepository.findAllUsers();
     }
+
+    public User findUserAssignedToTaskByTaskId(int taskId) {
+        return userRepository.findUserAssignedToTaskByTaskId(taskId);
+    }
+
+    public User findUserByUserId(int userIdToFind) {
+        return userRepository.findUserByUserId(userIdToFind);
+    }
 }

@@ -12,11 +12,11 @@ public class TaskService {
         this.taskRepository = taskRepository;
     }
 
-
-
     public Task addTask(Task task, int userId, int subProjectId) {
         return taskRepository.addNewTask(task, userId, subProjectId);
     }
 
-
+    public Task findTaskById(int taskId) {
+        return taskRepository.findTaskById(taskId);
+    }
 }

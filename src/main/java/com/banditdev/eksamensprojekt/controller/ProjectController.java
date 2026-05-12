@@ -38,6 +38,35 @@ public class ProjectController {
         return "projectsOwnedOverview";
     }
 
+    @GetMapping("/{projectId}")
+    public String showProject(@PathVariable int projectId, HttpSession session, Model model) {
+
+        User currentLoggedInUser = (User) session.getAttribute("user");
+
+        /* User authentication check possible?
+        if (currentLoggedInUser == null) {
+            return "redirect:/profile/login";
+        } */
+
+        Project project = projectService.findOneProjectByUserId(projectId);
+
+
+        /* Possible user security check? Check if currentLoggedInUser is either asigned or owner of the project
+        he is trying to access.
+
+        if (!projectService.validateProjectOwnerOrAsignees(currentLoggedInUser, projectId)) {
+           return "redirect:/projects/myProjects";
+        } */
+
+        if (project == null) {
+            return "redirect:/projects/myProjects";
+        }
+
+        model.addAttribute("project", project);
+        return "projectView";
+    }
+
+
     @GetMapping("/add")
     public String showAddProjectForm() {
         return "projectCreate";

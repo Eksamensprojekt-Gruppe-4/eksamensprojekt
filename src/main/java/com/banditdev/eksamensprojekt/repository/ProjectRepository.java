@@ -49,6 +49,35 @@ public class ProjectRepository {
         ), userId);
     }
 
+    public Project findOneProjectByUserId(int projectId) {
+        String sql = """
+            SELECT
+                project_id,
+                project_name,
+                project_description,
+                project_start_date,
+                project_estimated_deadline,
+                project_estimated_hours,
+                project_actual_hours,
+                owner_user_id
+            FROM project
+            WHERE project_id = ?
+            """;
+
+        return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> new Project(
+                rs.getInt("project_id"),
+                rs.getString("project_name"),
+                rs.getString("project_description"),
+                rs.getDate("project_start_date").toLocalDate(),
+                rs.getDate("project_estimated_deadline") != null
+                        ? rs.getDate("project_estimated_deadline").toLocalDate()
+                        : null,
+                rs.getDouble("project_estimated_hours"),
+                rs.getDouble("project_actual_hours"),
+                rs.getInt("owner_user_id")
+        ), projectId);
+    }
+
     public Project addProject(Project project, int userId) {
         String sql = """
                 INSERT INTO project (project_name,
