@@ -48,7 +48,7 @@ public class ProjectController {
             return "redirect:/profile/login";
         } */
 
-        Project project = projectService.findOneProjectByUserId(projectId);
+        Project project = projectService.findProjectById(projectId);
 
 
         /* Possible user security check? Check if currentLoggedInUser is either asigned or owner of the project
@@ -97,7 +97,9 @@ public class ProjectController {
     public String deleteProject(@PathVariable int projectId, HttpSession session) {
 
         User user = (User) session.getAttribute("user");
-        if (user == null) return "redirect:user/login";
+        if (user == null) {
+            return "redirect:user/login";
+        }
 
         projectService.deleteProjectById(projectId);
         return "redirect:/projects/myProjects";

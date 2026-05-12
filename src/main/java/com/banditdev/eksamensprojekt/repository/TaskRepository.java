@@ -19,7 +19,7 @@ public class TaskRepository {
     }
 
 
-    public Task addNewTask(Task task, int userId, int subProjectId) {
+    public void addNewTask(Task task, int userId, int subProjectId) {
 
         String sql = """
                 INSERT INTO project_db.task (task_name, task_description, task_estimated_hours, task_actual_hours, user_id, sub_project_id)
@@ -47,7 +47,7 @@ public class TaskRepository {
         }
 
 
-        return new Task(key.intValue(), task.getTaskName(), task.getTaskDescription(), task.getTaskEstimatedHours(), task.getTaskActualHours(), userId, subProjectId);
+        key.intValue();
     }
 
     public Task findTaskById(int taskIdToFind) {

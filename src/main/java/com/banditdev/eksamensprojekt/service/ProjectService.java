@@ -17,12 +17,8 @@ public class ProjectService {
         this.projectRepository = projectRepository;
     }
 
-    public Project findOneProjectByUserId(int projectId) {
-        return projectRepository.findOneProjectByUserId(projectId);
-    }
-
-    public Project addProject(Project project, int userId) {
-        return projectRepository.addProject(project, userId);
+    public void addProject(Project project, int userId) {
+        projectRepository.addProject(project, userId);
     }
 
     public void deleteProjectById(int projectId) {
