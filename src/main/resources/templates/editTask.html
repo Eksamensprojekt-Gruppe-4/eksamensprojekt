@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Edit Task — Alpha Solutions</title>
+    <link rel="stylesheet" th:href="@{/styles.css}"/>
+    <link rel="stylesheet" th:href="@{/forms.css}"/>
+</head>
+<body>
+
+<header>
+    <div class="logo">Alpha Solutions</div>
+    <nav>
+        <ul>
+            <li><a th:href="@{/projects/myProjects}">My Projects</a></li>
+            <li><a th:href="@{/projects/allProjects}">All Projects</a></li>
+            <li><a th:href="@{/profile/view}">Profile</a></li>
+            <li><a th:href="@{/profile/logout}">Log out</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main>
+    <div class="form-card">
+
+        <h2>Edit task</h2>
+        <p class="form-subtitle"
+           th:text="'Part of: ' + ${subProject.subProjectName}">Part of: Sub-project name</p>
+
+        <form th:action="@{/projects/{projectId}/subprojects/{subProjectId}/task/{taskId}/edit(projectId=${projectId},subProjectId=${subProject.subProjectId},taskId=${task.taskId})}" method="post">
+
+            <input type="hidden" name="taskId" th:value="${task.taskId}"/>
+            <input type="hidden" name="subProjectId" th:value="${subProject.subProjectId}"/>
+
+            <div class="field">
+                <label for="taskName">Task name</label>
+                <input type="text" id="taskName" name="taskName"
+                       th:value="${task.taskName}" required/>
+            </div>
+
+            <div class="field">
+                <label for="taskDescription">Description</label>
+                <textarea id="taskDescription" name="taskDescription" th:text="${task.taskDescription}"></textarea>
+            </div>
+
+            <div class="field">
+                <label for="taskEstimatedHours">Estimated hours</label>
+                <input type="number" id="taskEstimatedHours" name="taskEstimatedHours" th:value="${task.taskEstimatedHours}" min="0" step="0.5"/>
+            </div>
+
+            <div class="field">
+                <label for="taskActualHours">Actual hours</label>
+                <input type="number" id="taskActualHours" name="taskActualHours" th:value="${task.taskActualHours}" min="0" step="0.5"/>
+            </div>
+
+            <hr class="form-divider"/>
+
+            <div class="field">
+                <label for="userId">Assigned to</label>
+                <select id="userId" name="userId" required>
+                    <option value="">— Select a user —</option>
+                    <option th:each="user : ${users}"
+                            th:value="${user.userId}"
+                            th:selected="${user.userId == task.userId}"
+                            th:text="${user.userName} + ' (' + ${user.userUsername} + ')'">
+                    </option>
+                </select>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn">Save changes</button>
+                <a th:href="@{/projects/{projectId}/subprojects/{subProjectId}/task/{taskId}/view(projectId=${projectId},subProjectId=${subProject.subProjectId},taskId=${task.taskId})}"
+                   class="btn btn-outline">Cancel</a>
+            </div>
+
+        </form>
+    </div>
+</main>
+
+</body>
+</html>

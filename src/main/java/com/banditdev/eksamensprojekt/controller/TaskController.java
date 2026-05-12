@@ -54,4 +54,24 @@ public class TaskController {
 
             return "viewTask";
     }
+
+    @GetMapping("/{taskId}/edit")
+    public String editTask(@PathVariable int projectId, @PathVariable int subProjectId, @PathVariable int taskId, HttpSession session, Model model) {
+
+        model.addAttribute("task", taskService.findTaskById(taskId));
+        model.addAttribute("subProject", subProjectService.findSubProjectBySubProjectId(subProjectId));
+        model.addAttribute("users", userService.findAllUsers());
+        model.addAttribute("projectId", projectId);
+
+        return "editTask";
+    }
+
+    @PostMapping("/{taskId}/edit")
+        public String updateTask(@ModelAttribute Task task, @PathVariable int projectId, @PathVariable int subProjectId, @PathVariable int taskId, HttpSession session) {
+
+            task.setTaskId(taskId);
+            task.setSubProjectId(subProjectId);
+            taskService.updateTask(task);
+            return "redirect:/projects/" + projectId + "/subprojects/" + subProjectId + "/task/" + taskId + "/view";
+    }
 }

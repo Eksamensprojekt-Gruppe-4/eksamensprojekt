@@ -75,4 +75,26 @@ public class TaskRepository {
             ), taskIdToFind);
     }
 
+    public void updateTask(Task task) {
+        String sql = """
+                UPDATE task
+                SET task_name             = ?,
+                    task_description      = ?,
+                    task_estimated_hours  = ?,
+                    task_actual_hours     = ?,
+                    user_id               = ?
+                WHERE task_id = ?
+                """;
+
+        jdbcTemplate.update(sql,
+                task.getTaskName(),
+                task.getTaskDescription(),
+                task.getTaskEstimatedHours(),
+                task.getTaskActualHours(),
+                task.getUserId(),
+                task.getTaskId()
+        );
+    }
+
+
 }
