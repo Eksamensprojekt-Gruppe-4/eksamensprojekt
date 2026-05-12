@@ -10,6 +10,8 @@ public class Task {
     private int userId;
     private int subProjectId;
 
+    public Task() {
+    }
     public Task(int taskId, String taskName, String taskDescription, double taskEstimatedHours, double taskActualHours, int userId, int subProjectId) {
         this.taskId = taskId;
         this.taskName = taskName;

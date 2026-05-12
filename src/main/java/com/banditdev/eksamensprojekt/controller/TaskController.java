@@ -27,6 +27,7 @@ public class TaskController {
 
         //TODO lav HttpSession logik!
 
+        model.addAttribute("task", new Task());
         model.addAttribute("subProject", subProjectService.findSubProjectBySubProjectId(subProjectId));
         model.addAttribute("users", userService.findAllUsers());
         model.addAttribute("projectId", projectId);
