@@ -74,4 +74,7 @@ public class TaskController {
             taskService.updateTask(task);
             return "redirect:/projects/" + projectId + "/subprojects/" + subProjectId + "/task/" + taskId + "/view";
     }
+
+    @PostMapping("{taskId}/delete")
+    public String deleteTaskByTaskId(@PathVariable int taskId, )
 }
