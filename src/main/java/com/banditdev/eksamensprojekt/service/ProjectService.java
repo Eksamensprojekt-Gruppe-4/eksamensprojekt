@@ -16,6 +16,10 @@ public class ProjectService {
         this.projectRepository = projectRepository;
     }
 
+    public Project findOneProjectByUserId(int projectId) {
+        return projectRepository.findOneProjectByUserId(projectId);
+    }
+
     public Project addProject(Project project, int userId) {
         return projectRepository.addProject(project, userId);
     }

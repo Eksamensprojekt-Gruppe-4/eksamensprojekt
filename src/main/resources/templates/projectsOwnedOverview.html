@@ -62,7 +62,7 @@
                               th:text="${project.projectEstimatedDeadline != null ? project.projectEstimatedDeadline : 'No deadline'}"></span>
                     </td>
                     <td>
-                        <a href="#" class="btn-sm btn-view">View</a>
+                        <a th:href="@{/projects/{id}(id=${project.projectId})}" class="btn-sm btn-view">View</a>
                     </td>
                     <td>
                         <a href="#" class="btn-sm btn-edit">Edit</a>
