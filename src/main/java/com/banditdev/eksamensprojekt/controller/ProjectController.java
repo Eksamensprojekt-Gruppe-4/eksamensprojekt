@@ -71,6 +71,6 @@ public class ProjectController {
         if (user == null)return "redirect:user/login";
 
         projectService.deleteProjectById(projectId);
-        return "redirect:/projects/myProject";
+        return "redirect:/projects/myProjects";
     }
 }
