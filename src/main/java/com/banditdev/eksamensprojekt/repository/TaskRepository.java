@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
+import java.util.List;
 
 @Repository
 public class TaskRepository {
@@ -94,6 +95,24 @@ public class TaskRepository {
                 task.getUserId(),
                 task.getTaskId()
         );
+    }
+
+    public List<Task> findTasksBySubProjectId(int subProjectId) {
+        String sql = """
+            SELECT task_id, task_name, task_description,
+                   task_estimated_hours, task_actual_hours, user_id, sub_project_id
+            FROM task
+            WHERE sub_project_id = ?
+            """;
+        return jdbcTemplate.query(sql, (rs, rowNum) -> new Task(
+                rs.getInt("task_id"),
+                rs.getString("task_name"),
+                rs.getString("task_description"),
+                rs.getDouble("task_estimated_hours"),
+                rs.getDouble("task_actual_hours"),
+                rs.getInt("user_id"),
+                rs.getInt("sub_project_id")
+        ), subProjectId);
     }
 
 
