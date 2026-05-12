@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Project — Alpha Solutions</title>
+    <link rel="stylesheet" th:href="@{/styles.css}"/>
+</head>
+<body>
+
+<header>
+    <div class="logo">Alpha Solutions</div>
+    <nav>
+        <ul>
+            <li><a th:href="@{/projects/myProjects}">My Projects</a></li>
+            <li><a th:href="@{/profile/view}">Profile</a></li>
+            <li><a th:href="@{/profile/logout}">Log out</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main>
+    <section class="container">
+        <h2>Edit Project</h2>
+        <div class="card profile-card">
+            <form th:action="@{/projects/edit/{id}(id=${project.projectId})}" method="post">
+
+                <p>
+                    <label for="projectName"><strong>Name</strong></label>
+                    <input type="text" id="projectName" name="projectName"
+                           th:value="${project.projectName}" required/>
+                </p>
+
+                <p>
+                    <label for="projectDescription"><strong>Description</strong></label>
+                    <textarea id="projectDescription" name="projectDescription"
+                              rows="4" th:text="${project.projectDescription}"></textarea>
+                </p>
+
+                <p>
+                    <label for="projectStartDate"><strong>Start date</strong></label>
+                    <input type="date" id="projectStartDate" name="projectStartDate"
+                           th:value="${project.projectStartDate}" required/>
+                </p>
+
+                <div class="btn-row">
+                    <button type="submit" class="btn">Save changes</button>
+                    <a th:href="@{/projects/myProjects}" class="btn btn-outline">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </section>
+</main>
+
+</body>
+</html>

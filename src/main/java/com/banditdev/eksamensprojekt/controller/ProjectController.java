@@ -96,13 +96,25 @@ public class ProjectController {
     @PostMapping("/delete/{projectId}")
     public String deleteProject(@PathVariable int projectId, HttpSession session) {
 
-        User user =(User) session.getAttribute("user");
-
-        if (user == null) {
-            return "redirect:user/login";
-        }
+        User user = (User) session.getAttribute("user");
+        if (user == null) return "redirect:user/login";
 
         projectService.deleteProjectById(projectId);
+        return "redirect:/projects/myProjects";
+    }
+
+    @GetMapping("/edit/{projectId}")
+    public String showEditProject(@PathVariable int projectId, Model model) {
+        model.addAttribute("project", projectService.findProjectById(projectId));
+        return "projectEdit";
+    }
+
+    @PostMapping("/edit/{projectId}")
+    public String editProject(@PathVariable int projectId,
+                              @RequestParam String projectName,
+                              @RequestParam String projectDescription,
+                              @RequestParam LocalDate projectStartDate) {
+        projectService.updateProject(projectId, projectName, projectDescription, projectStartDate);
         return "redirect:/projects/myProjects";
     }
 }
