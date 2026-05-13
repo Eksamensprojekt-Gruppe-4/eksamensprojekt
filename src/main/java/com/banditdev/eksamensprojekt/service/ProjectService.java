@@ -36,4 +36,12 @@ public class ProjectService {
     public Project findProjectById(int projectId) {
         return projectRepository.findProjectById(projectId);
     }
+
+    public void addUserToProject(int projectId, int userId) {
+        projectRepository.addUserToProject(projectId, userId);
+    }
+
+    public void removeUserFromProject(int projectId, int userId) {
+        projectRepository.removeUserFromProject(projectId, userId);
+    }
 }

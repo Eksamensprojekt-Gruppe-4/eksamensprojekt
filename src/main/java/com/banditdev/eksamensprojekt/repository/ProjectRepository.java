@@ -133,4 +133,24 @@ public class ProjectRepository {
                 rs.getInt("owner_user_id")
                 ), projectId);
     }
+
+    public void addUserToProject(int projectId, int userId) {
+        String sql = """
+        INSERT INTO project_assigned_user(project_id, user_id)
+        VALUES (?, ?)
+        """;
+
+        jdbcTemplate.update(sql, projectId, userId);
+    }
+
+    public void removeUserFromProject(int projectId, int userId) {
+        String sql = """
+        DELETE FROM project_assigned_user
+        WHERE project_id = ?
+        AND user_id = ?
+        """;
+
+        jdbcTemplate.update(sql, projectId, userId);
+    }
+
 }
