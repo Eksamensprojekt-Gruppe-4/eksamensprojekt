@@ -29,4 +29,7 @@ public class SubProjectService {
     public List<SubProject> findSubProjectsByProjectId(int projectId) {
         return subProjectRepository.findSubProjectsByProjectId(projectId);
     }
+    public void updateSubProject(SubProject subProject) {
+        subProjectRepository.updateSubProject(subProject);
+    }
 }

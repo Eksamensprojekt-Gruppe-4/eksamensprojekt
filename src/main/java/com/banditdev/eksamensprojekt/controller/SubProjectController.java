@@ -39,4 +39,22 @@ public class SubProjectController {
         return "redirect:/projects/" + projectId;
     }
 
+    @GetMapping("/{subProjectId}/edit")
+    public String showEditProject(@PathVariable int projectId,
+                                  @PathVariable int subProjectId,
+                                  Model model) {
+        model.addAttribute("subProject", service.findSubProjectBySubProjectId(subProjectId));
+        model.addAttribute("projectId", projectId);
+        return "subProjectEdit";
+    }
+
+    @PostMapping("/{subProjectId}/edit")
+    public String editSubProject(@PathVariable int projectId,
+                                 @PathVariable int subProjectId,
+                                 @ModelAttribute SubProject subProject){
+        subProject.setSubProjectId(subProjectId);
+        subProject.setProjectId(projectId);
+        service.updateSubProject(subProject);
+        return "redirect:/projects/" + projectId;
+    }
 }
