@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Edit Sub-project — Alpha Solutions</title>
+    <link rel="stylesheet" th:href="@{/styles.css}"/>
+    <link rel="stylesheet" th:href="@{/forms.css}"/>
+</head>
+<body>
+
+<header>
+    <div class="logo">Alpha Solutions</div>
+    <nav>
+        <ul>
+            <li><a th:href="@{/projects/myProjects}">My Projects</a></li>
+            <li><a th:href="@{/profile/view}">Profile</a></li>
+            <li><a th:href="@{/profile/logout}">Log out</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main>
+    <div class="form-card">
+
+        <h2>Edit sub-project</h2>
+        <p class="form-subtitle" th:text="'Part of project #' + ${projectId}"></p>
+
+        <form th:action="@{/projects/{projectId}/subprojects/{subProjectId}/edit(projectId=${projectId},subProjectId=${subProject.subProjectId})}" method="post">
+
+            <div class="field">
+                <label for="subProjectName">Name</label>
+                <input type="text" id="subProjectName" name="subProjectName"
+                       th:value="${subProject.subProjectName}" required/>
+            </div>
+
+            <div class="field">
+                <label for="subProjectDescription">Description</label>
+                <textarea id="subProjectDescription" name="subProjectDescription"
+                          th:text="${subProject.subProjectDescription}"></textarea>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn">Save changes</button>
+                <a th:href="@{/projects/{projectId}(projectId=${projectId})}"
+                   class="btn btn-outline">Cancel</a>
+            </div>
+
+        </form>
+    </div>
+</main>
+
+</body>
+</html>
