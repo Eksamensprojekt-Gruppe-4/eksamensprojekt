@@ -44,7 +44,7 @@
 
                 <div class="btn-row">
                     <button type="submit" class="btn">Save changes</button>
-                    <a th:href="@{/projects/myProjects}" class="btn btn-outline">Cancel</a>
+                    <a th:href="@{/projects/{id}(id=${project.projectId})}" class="btn btn-outline">Cancel</a>
                 </div>
             </form>
         </div>

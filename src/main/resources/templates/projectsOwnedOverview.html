@@ -39,8 +39,6 @@
                     <th>Created date</th>
                     <th>Deadline</th>
                     <th></th>
-                    <th></th>
-                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -62,15 +60,7 @@
                               th:text="${project.projectEstimatedDeadline != null ? project.projectEstimatedDeadline : 'No deadline'}"></span>
                     </td>
                     <td>
-                        <a th:href="@{/projects/{id}(id=${project.projectId})}" class="btn-sm btn-view">View</a>
-                    </td>
-                    <td>
-                        <a th:href="@{/projects/edit/{id}(id=${project.projectId})}" class="btn-sm btn-edit">Edit</a>
-                    </td>
-                    <td>
-                        <form th:action="@{/projects/delete/{id}(id=${project.projectId})}" method="post">
-                            <button type="submit" class="btn-sm btn-delete">Delete</button>
-                        </form>
+                        <a th:href="@{/projects/{projectId}(projectId=${project.projectId})}" class="btn-sm btn-view">View</a>
                     </td>
                 </tr>
                 </tbody>
