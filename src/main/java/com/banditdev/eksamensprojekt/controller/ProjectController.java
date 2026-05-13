@@ -148,6 +148,6 @@ public class ProjectController {
                               @RequestParam String projectDescription,
                               @RequestParam LocalDate projectStartDate) {
         projectService.updateProject(projectId, projectName, projectDescription, projectStartDate);
-        return "redirect:/projects/myProjects";
+        return "redirect:/projects/" + projectId;
     }
 }
