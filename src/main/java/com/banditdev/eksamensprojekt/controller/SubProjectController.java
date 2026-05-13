@@ -1,7 +1,9 @@
 package com.banditdev.eksamensprojekt.controller;
 
 import com.banditdev.eksamensprojekt.model.SubProject;
+import com.banditdev.eksamensprojekt.model.User;
 import com.banditdev.eksamensprojekt.service.SubProjectService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +31,17 @@ public class SubProjectController {
         subProject.setProjectId(projectId);
         service.createSubProject(subProject);
 
+        return "redirect:/projects/" + projectId;
+    }
+
+    @PostMapping("/delete/{subProjectId}")
+    public String deleteSubProject(@PathVariable int projectId,
+                                   @PathVariable int subProjectId,
+                                   HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) return "redirect:/profile/login";
+
+        service.deleteSubProjectById(subProjectId);
         return "redirect:/projects/" + projectId;
     }
 }
