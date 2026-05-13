@@ -4,6 +4,8 @@ import com.banditdev.eksamensprojekt.model.Task;
 import com.banditdev.eksamensprojekt.repository.TaskRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class TaskService {
     private final TaskRepository taskRepository;
@@ -26,5 +28,9 @@ public class TaskService {
 
     public void deleteTaskByTaskId(int taskIdToDelete) {
         taskRepository.deleteTaskByTaskId(taskIdToDelete);
+    }
+
+    public List<Task> findTasksBySubProjectId(int subProjectId) {
+        return taskRepository.findTasksBySubProjectId(subProjectId);
     }
 }
