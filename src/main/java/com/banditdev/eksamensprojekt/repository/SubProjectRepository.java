@@ -4,6 +4,8 @@ import com.banditdev.eksamensprojekt.model.SubProject;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public class SubProjectRepository {
     private final JdbcTemplate jdbcTemplate;
@@ -57,6 +59,30 @@ public class SubProjectRepository {
                         ),
                 subProjectId
         );
+    }
+
+    public List<SubProject> findSubProjectsByProjectId(int projectId) {
+        String sql = """
+            SELECT
+                sub_project_id,
+                sub_project_name,
+                sub_project_description,
+                sub_project_estimated_hours,
+                sub_project_actual_hours,
+                project_id
+            FROM Sub_Project
+            WHERE project_id = ?
+            """;
+
+        return jdbcTemplate.query(sql, (rs, rowNum) ->
+                new SubProject(
+                        rs.getInt("sub_project_id"),
+                        rs.getString("sub_project_name"),
+                        rs.getString("sub_project_description"),
+                        rs.getDouble("sub_project_estimated_hours"),
+                        rs.getDouble("sub_project_actual_hours"),
+                        rs.getInt("project_id")
+                ), projectId);
     }
     public void deleteSubProjectById(int subProjectId) {
         String sql = "DELETE FROM Sub_Project WHERE sub_project_id = ?";

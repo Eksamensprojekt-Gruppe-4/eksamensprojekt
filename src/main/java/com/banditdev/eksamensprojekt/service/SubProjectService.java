@@ -4,6 +4,8 @@ import com.banditdev.eksamensprojekt.model.SubProject;
 import com.banditdev.eksamensprojekt.repository.SubProjectRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class SubProjectService {
     private final SubProjectRepository subProjectRepository;
@@ -22,5 +24,9 @@ public class SubProjectService {
 
     public void deleteSubProjectById(int subProjectId){
         subProjectRepository.deleteSubProjectById(subProjectId);
+    }
+
+    public List<SubProject> findSubProjectsByProjectId(int projectId) {
+        return subProjectRepository.findSubProjectsByProjectId(projectId);
     }
 }

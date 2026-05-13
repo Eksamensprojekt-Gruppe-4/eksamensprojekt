@@ -1,8 +1,12 @@
 package com.banditdev.eksamensprojekt.controller;
 
 import com.banditdev.eksamensprojekt.model.Project;
+import com.banditdev.eksamensprojekt.model.SubProject;
+import com.banditdev.eksamensprojekt.model.Task;
 import com.banditdev.eksamensprojekt.model.User;
 import com.banditdev.eksamensprojekt.service.ProjectService;
+import com.banditdev.eksamensprojekt.service.SubProjectService;
+import com.banditdev.eksamensprojekt.service.TaskService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Controller;
@@ -11,16 +15,22 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.http.HttpRequest;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("projects")
 public class ProjectController {
 
     private final ProjectService projectService;
+    private final SubProjectService subProjectService;
+    private final TaskService taskService;
 
-    public ProjectController(ProjectService projectService) {
+    public ProjectController(ProjectService projectService, SubProjectService subProjectService, TaskService taskService) {
         this.projectService = projectService;
+        this.subProjectService = subProjectService;
+        this.taskService = taskService;
     }
 
     @GetMapping("myProjects")
@@ -48,7 +58,13 @@ public class ProjectController {
             return "redirect:/profile/login";
         } */
 
-        Project project = projectService.findOneProjectByUserId(projectId);
+        Project project = projectService.findProjectById(projectId);
+        List<SubProject> subProjects = subProjectService.findSubProjectsByProjectId(projectId);
+
+        Map<Integer, List<Task>> tasksBySubProject = new HashMap<>();
+        for (SubProject sp : subProjects) {
+            tasksBySubProject.put(sp.getSubProjectId(), taskService.findTasksBySubProjectId(sp.getSubProjectId()));
+        }
 
 
         /* Possible user security check? Check if currentLoggedInUser is either asigned or owner of the project
@@ -63,6 +79,21 @@ public class ProjectController {
         }
 
         model.addAttribute("project", project);
+        model.addAttribute("subProjects", subProjects);
+        model.addAttribute("tasksBySubProject", tasksBySubProject);
+
+
+        /* How to show task for specific subproject via. HashMap in the Thymeleaf.
+
+        <div th:each="sp : ${subProjects}">
+                <h3 th:text="${sp.subProjectName}"></h3>
+                <div th:each="task : ${tasksBySubProject[sp.subProjectId]}">
+                <p th:text="${task.taskName}"></p>
+                </div>
+                </div>
+         */
+
+
         return "projectView";
     }
 
@@ -97,7 +128,9 @@ public class ProjectController {
     public String deleteProject(@PathVariable int projectId, HttpSession session) {
 
         User user = (User) session.getAttribute("user");
-        if (user == null) return "redirect:user/login";
+        if (user == null) {
+            return "redirect:user/login";
+        }
 
         projectService.deleteProjectById(projectId);
         return "redirect:/projects/myProjects";

@@ -4,6 +4,8 @@ import com.banditdev.eksamensprojekt.model.Task;
 import com.banditdev.eksamensprojekt.repository.TaskRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class TaskService {
     private final TaskRepository taskRepository;
@@ -12,11 +14,19 @@ public class TaskService {
         this.taskRepository = taskRepository;
     }
 
-    public Task addTask(Task task, int userId, int subProjectId) {
-        return taskRepository.addNewTask(task, userId, subProjectId);
+    public void addTask(Task task, int userId, int subProjectId) {
+        taskRepository.addNewTask(task, userId, subProjectId);
     }
 
     public Task findTaskById(int taskId) {
         return taskRepository.findTaskById(taskId);
+    }
+
+    public void updateTask(Task task) {
+        taskRepository.updateTask(task);
+    }
+
+    public List<Task> findTasksBySubProjectId(int subProjectId) {
+        return taskRepository.findTasksBySubProjectId(subProjectId);
     }
 }

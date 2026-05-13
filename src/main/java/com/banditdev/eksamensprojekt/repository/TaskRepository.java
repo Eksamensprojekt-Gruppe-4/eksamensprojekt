@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
+import java.util.List;
 
 @Repository
 public class TaskRepository {
@@ -19,7 +20,7 @@ public class TaskRepository {
     }
 
 
-    public Task addNewTask(Task task, int userId, int subProjectId) {
+    public void addNewTask(Task task, int userId, int subProjectId) {
 
         String sql = """
                 INSERT INTO project_db.task (task_name, task_description, task_estimated_hours, task_actual_hours, user_id, sub_project_id)
@@ -47,7 +48,7 @@ public class TaskRepository {
         }
 
 
-        return new Task(key.intValue(), task.getTaskName(), task.getTaskDescription(), task.getTaskEstimatedHours(), task.getTaskActualHours(), userId, subProjectId);
+        key.intValue();
     }
 
     public Task findTaskById(int taskIdToFind) {
@@ -74,5 +75,45 @@ public class TaskRepository {
                     rs.getInt("sub_project_id")
             ), taskIdToFind);
     }
+
+    public void updateTask(Task task) {
+        String sql = """
+                UPDATE task
+                SET task_name             = ?,
+                    task_description      = ?,
+                    task_estimated_hours  = ?,
+                    task_actual_hours     = ?,
+                    user_id               = ?
+                WHERE task_id = ?
+                """;
+
+        jdbcTemplate.update(sql,
+                task.getTaskName(),
+                task.getTaskDescription(),
+                task.getTaskEstimatedHours(),
+                task.getTaskActualHours(),
+                task.getUserId(),
+                task.getTaskId()
+        );
+    }
+
+    public List<Task> findTasksBySubProjectId(int subProjectId) {
+        String sql = """
+            SELECT task_id, task_name, task_description,
+                   task_estimated_hours, task_actual_hours, user_id, sub_project_id
+            FROM task
+            WHERE sub_project_id = ?
+            """;
+        return jdbcTemplate.query(sql, (rs, rowNum) -> new Task(
+                rs.getInt("task_id"),
+                rs.getString("task_name"),
+                rs.getString("task_description"),
+                rs.getDouble("task_estimated_hours"),
+                rs.getDouble("task_actual_hours"),
+                rs.getInt("user_id"),
+                rs.getInt("sub_project_id")
+        ), subProjectId);
+    }
+
 
 }
