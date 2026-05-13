@@ -81,7 +81,37 @@ main {
 
 /* ── Actions ── */
 .form-actions {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     gap: 0.75rem;
     margin-top: 1.75rem;
+}
+
+.form-actions-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+    margin-top: 1.75rem;
+}
+
+.form-actions .btn,
+.form-actions-2 .btn {
+    display: block;
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.form-actions form,
+.form-actions-2 form {
+    margin: 0;
+    display: contents;
+}
+
+.form-actions form .btn,
+.form-actions-2 form .btn {
+    display: block;
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
 }

@@ -8,6 +8,8 @@
     --color-footer-bg: #1A1A1A;
     --color-footer-text: #FFFFFF;
     --color-border: #E5E5E5;
+    --color-danger: #C0392B;
+    --color-danger-dark: #922B21;
 }
 
 * {
@@ -97,6 +99,16 @@ nav a:hover {
 
 .btn-outline:hover {
     background-color: var(--color-primary);
+    color: #FFFFFF;
+}
+
+.btn-danger {
+    background-color: var(--color-danger);
+    color: #FFFFFF;
+}
+
+.btn-danger:hover {
+    background-color: var(--color-danger-dark);
     color: #FFFFFF;
 }
 
