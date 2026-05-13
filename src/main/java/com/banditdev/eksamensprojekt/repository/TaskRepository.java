@@ -115,5 +115,14 @@ public class TaskRepository {
         ), subProjectId);
     }
 
+    public void deleteTaskByTaskId(int taskIdToDelete) {
+        String sql = """
+                DELETE FROM task
+                WHERE task_Id = ?
+                """;
+
+        jdbcTemplate.update(sql, taskIdToDelete);
+    }
+
 
 }

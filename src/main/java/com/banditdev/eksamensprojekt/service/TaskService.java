@@ -26,6 +26,10 @@ public class TaskService {
         taskRepository.updateTask(task);
     }
 
+    public void deleteTaskByTaskId(int taskIdToDelete) {
+        taskRepository.deleteTaskByTaskId(taskIdToDelete);
+    }
+
     public List<Task> findTasksBySubProjectId(int subProjectId) {
         return taskRepository.findTasksBySubProjectId(subProjectId);
     }

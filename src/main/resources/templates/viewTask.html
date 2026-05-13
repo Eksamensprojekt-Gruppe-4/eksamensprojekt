@@ -59,6 +59,10 @@
                class="btn">Edit task</a>
             <a th:href="@{/projects/{projectId}/subprojects/{subProjectId}/(projectId=${projectId},subProjectId=${subProject.subProjectId})}"
                class="btn btn-outline">Back</a>
+            <form th:action="@{/projects/{projectId}/subprojects/{subProjectId}/task/{taskId}/delete(projectId=${projectId},subProjectId=${subProject.subProjectId},taskId=${task.taskId})}"
+                  method="post" style="margin: 0;">
+                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this task?')">Delete</button>
+            </form>
         </div>
 
     </div>
