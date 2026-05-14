@@ -49,7 +49,7 @@ public class ProjectRepository {
         ), userId);
     }
 
-    public void addProject(Project project, int userId) {
+    public Project addProject(Project project, int userId) {
         String sql = """
                 INSERT INTO project (project_name,
                                      project_description,
@@ -85,7 +85,7 @@ public class ProjectRepository {
             throw new IllegalStateException("Failed to get generated project id.");
         }
 
-        new Project(
+       return new Project(
                 key.intValue(),
                 project.getProjectName(),
                 project.getProjectDescription(),
@@ -136,7 +136,7 @@ public class ProjectRepository {
 
     public void addUserToProject(int projectId, int userId) {
         String sql = """
-        INSERT INTO project_assigned_user(project_id, user_id)
+        INSERT INTO project_assigned_user(project_id, project_assigned_user_id)
         VALUES (?, ?)
         """;
 
@@ -147,10 +147,18 @@ public class ProjectRepository {
         String sql = """
         DELETE FROM project_assigned_user
         WHERE project_id = ?
-        AND user_id = ?
+        AND project_assigned_user_id = ?
         """;
 
         jdbcTemplate.update(sql, projectId, userId);
     }
 
+    public void removeAllUsersFromProject(int projectId) {
+        String sql = """
+        DELETE FROM project_assigned_user
+        WHERE project_id = ?
+        """;
+
+        jdbcTemplate.update(sql, projectId);
+    }
 }

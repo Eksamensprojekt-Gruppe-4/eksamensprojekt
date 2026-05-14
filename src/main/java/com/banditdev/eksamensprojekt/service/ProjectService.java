@@ -17,8 +17,8 @@ public class ProjectService {
         this.projectRepository = projectRepository;
     }
 
-    public void addProject(Project project, int userId) {
-        projectRepository.addProject(project, userId);
+    public Project addProject(Project project, int userId) {
+        return projectRepository.addProject(project, userId);
     }
 
     public void deleteProjectById(int projectId) {
@@ -44,4 +44,18 @@ public class ProjectService {
     public void removeUserFromProject(int projectId, int userId) {
         projectRepository.removeUserFromProject(projectId, userId);
     }
+
+    public void addAssignedUserIdsToDatabase(int projectId, List<Integer> userIdsToAdd) {
+
+        if (userIdsToAdd != null) {
+            for (Integer userId : userIdsToAdd) {
+                projectRepository.addUserToProject(projectId, userId);
+            }
+        }
+    }
+
+    public void removeAllUsersFromProject(int projectId) {
+        projectRepository.removeAllUsersFromProject(projectId);
+    }
+
 }
