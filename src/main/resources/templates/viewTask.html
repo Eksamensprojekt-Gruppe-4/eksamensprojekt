@@ -57,7 +57,7 @@
         <div class="form-actions">
             <a th:href="@{/projects/{projectId}/subprojects/{subProjectId}/task/{taskId}/edit(projectId=${projectId},subProjectId=${subProject.subProjectId},taskId=${task.taskId})}"
                class="btn">Edit task</a>
-            <a th:href="@{/projects/{projectId}/subprojects/{subProjectId}/(projectId=${projectId},subProjectId=${subProject.subProjectId})}"
+            <a th:href="@{/projects/{projectId}/subprojects/{subProjectId}(projectId=${projectId},subProjectId=${subProject.subProjectId})}"
                class="btn btn-outline">Back</a>
             <form th:action="@{/projects/{projectId}/subprojects/{subProjectId}/task/{taskId}/delete(projectId=${projectId},subProjectId=${subProject.subProjectId},taskId=${task.taskId})}"
                   method="post" style="margin: 0;">

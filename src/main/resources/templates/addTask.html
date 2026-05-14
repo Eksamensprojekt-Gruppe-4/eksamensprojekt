@@ -61,7 +61,7 @@
 
             <div class="form-actions">
                 <button type="submit" class="btn">Create task</button>
-                <a th:href="@{/projects/{projectId}/subprojects/{subProjectId}/(projectId=${projectId},subProjectId=${subProject.subProjectId})}"
+                <a th:href="@{/projects/{projectId}/subprojects/{subProjectId}(projectId=${projectId},subProjectId=${subProject.subProjectId})}"
                    class="btn btn-outline">Cancel</a>
             </div>
 
