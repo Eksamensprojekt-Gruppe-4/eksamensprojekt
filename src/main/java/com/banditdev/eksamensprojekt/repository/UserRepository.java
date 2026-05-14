@@ -160,9 +160,9 @@ public class UserRepository {
             u.user_experience,
             u.user_role
         FROM user u
-        JOIN project_assigned_user
-            ON u.user_id = project_assigned_user.user_id
-        WHERE project_assigned_user.project_id = ?
+        JOIN project_assigned_user pau
+            ON u.user_id = pau.project_assigned_user_id
+        WHERE pau.project_id = ?
         """;
 
         return jdbcTemplate.query(sql, (rs, rowNum) -> new User(

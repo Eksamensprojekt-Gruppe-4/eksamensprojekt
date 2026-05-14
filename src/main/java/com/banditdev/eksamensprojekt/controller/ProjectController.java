@@ -54,26 +54,18 @@ public class ProjectController {
 
         User currentLoggedInUser = (User) session.getAttribute("user");
 
-        /* User authentication check possible?
-        if (currentLoggedInUser == null) {
-            return "redirect:/profile/login";
-        } */
 
         Project project = projectService.findProjectById(projectId);
         List<SubProject> subProjects = subProjectService.findSubProjectsByProjectId(projectId);
+        List<User> assignedUsers = userService.findUsersAssignedToProjectByProjectId(projectId);
+
+
 
         Map<Integer, List<Task>> tasksBySubProject = new HashMap<>();
         for (SubProject sp : subProjects) {
             tasksBySubProject.put(sp.getSubProjectId(), taskService.findTasksBySubProjectId(sp.getSubProjectId()));
         }
 
-
-        /* Possible user security check? Check if currentLoggedInUser is either asigned or owner of the project
-        he is trying to access.
-
-        if (!projectService.validateProjectOwnerOrAsignees(currentLoggedInUser, projectId)) {
-           return "redirect:/projects/myProjects";
-        } */
 
         if (project == null) {
             return "redirect:/projects/myProjects";
@@ -82,6 +74,7 @@ public class ProjectController {
         model.addAttribute("project", project);
         model.addAttribute("subProjects", subProjects);
         model.addAttribute("tasksBySubProject", tasksBySubProject);
+        model.addAttribute("assignedUsers", assignedUsers);
 
 
         /* How to show task for specific subproject via. HashMap in the Thymeleaf.
