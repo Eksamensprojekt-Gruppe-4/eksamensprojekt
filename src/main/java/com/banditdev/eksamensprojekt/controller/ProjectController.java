@@ -9,12 +9,10 @@ import com.banditdev.eksamensprojekt.service.SubProjectService;
 import com.banditdev.eksamensprojekt.service.TaskService;
 import com.banditdev.eksamensprojekt.service.UserService;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.http.HttpRequest;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
@@ -102,27 +100,21 @@ public class ProjectController {
 
 
     @GetMapping("/add")
-    public String showAddProjectForm() {
+    public String showAddProjectForm(Model model) {
+
+        model.addAttribute("project", new Project());
+        model.addAttribute("allUsers",userService.findAllUsers());
+
         return "projectCreate";
     }
 
     @PostMapping("/add")
-    public String addProject(@RequestParam String projectName,
-                             @RequestParam String projectDescription,
-                             @RequestParam LocalDate projectStartDate,
-                             HttpSession session) {
+    public String addProject(@ModelAttribute Project project, @RequestParam(required = false) List<Integer> listOfUserIdsFromAssignedUsers, HttpSession session) {
 
         User currentUser = (User) session.getAttribute("user");
 
-        Project project = new Project();
-        project.setProjectName(projectName);
-        project.setProjectDescription(projectDescription);
-        project.setProjectStartDate(projectStartDate);
-        project.setProjectEstimatedDeadline(null);
-        project.setProjectEstimatedHours(0);
-        project.setProjectActualHours(0);
-
-        projectService.addProject(project, currentUser.getUserId());
+        Project createdProject = projectService.addProject(project, currentUser.getUserId());
+        projectService.addAssignedUserIdsToDatabase(createdProject.getProjectId(), listOfUserIdsFromAssignedUsers);
 
         return "redirect:/projects/myProjects";
     }
@@ -131,10 +123,12 @@ public class ProjectController {
     public String deleteProject(@PathVariable int projectId, HttpSession session) {
 
         User user = (User) session.getAttribute("user");
+
         if (user == null) {
             return "redirect:user/login";
         }
 
+        projectService.removeAllUsersFromProject(projectId);
         projectService.deleteProjectById(projectId);
         return "redirect:/projects/myProjects";
     }

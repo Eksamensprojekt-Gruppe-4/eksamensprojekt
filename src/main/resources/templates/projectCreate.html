@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Create Project</title>
-    <link rel="stylesheet" th:href="@{styles.css}"/>
+    <link rel="stylesheet" th:href="@{/styles.css}"/>
 </head>
 <body>
 <main>
@@ -22,7 +22,25 @@
         <label>Start date:
             <input type="date" name="projectStartDate" required>
         </label>
+
         <br>
+
+        <h3>Assign users</h3>
+
+        <div class="user-selection-box">
+
+            <div th:each="user : ${allUsers}" class="user-item">
+
+                <label>
+                    <input type="checkbox" name="listOfUserIdsFromAssignedUsers" th:value="${user.userId}">
+                    <span th:text="${user.userName}"></span>
+                </label>
+
+            </div>
+        </div>
+
+        <br>
+
         <button type="submit" class="btn">Create</button>
     </form>
 </main>

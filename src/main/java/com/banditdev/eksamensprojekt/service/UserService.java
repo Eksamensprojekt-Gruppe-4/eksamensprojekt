@@ -38,4 +38,8 @@ public class UserService {
     public User findUserByUserId(int userIdToFind) {
         return userRepository.findUserByUserId(userIdToFind);
     }
+
+    public List<User> findUsersAssignedToProjectByProjectId(int projectId) {
+        return userRepository.findUsersAssignedToProjectByProjectId(projectId);
+    }
 }

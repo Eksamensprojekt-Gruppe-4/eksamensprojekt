@@ -149,4 +149,29 @@ public class UserRepository {
             return null;
         }
     }
+
+    public List<User> findUsersAssignedToProjectByProjectId(int projectId) {
+        String sql = """
+        SELECT
+            u.user_id,
+            u.user_name,
+            u.user_username,
+            u.user_password,
+            u.user_experience,
+            u.user_role
+        FROM user u
+        JOIN project_assigned_user
+            ON u.user_id = project_assigned_user.user_id
+        WHERE project_assigned_user.project_id = ?
+        """;
+
+        return jdbcTemplate.query(sql, (rs, rowNum) -> new User(
+                rs.getInt("user_id"),
+                rs.getString("user_name"),
+                rs.getString("user_username"),
+                rs.getString("user_password"),
+                UserExperience.valueOf(rs.getString("user_experience")),
+                UserRole.valueOf(rs.getString("user_role"))
+        ), projectId);
+    }
 }
