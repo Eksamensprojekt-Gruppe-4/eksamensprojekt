@@ -62,7 +62,7 @@
         <div class="page-header subprojects-heading">
             <h3>Tasks <span class="project-id-badge" th:text="${#lists.size(tasksBySubProject)}">0</span></h3>
             <a th:href="@{/projects/{projectId}/subprojects/{subProjectId}/task/add(projectId=${project.projectId},subProjectId=${subProjects.subProjectId})}"
-               class="btn-sm btn-view">+ New Task</a>
+               class="btn-sm btn-view"> New Task</a>
         </div>
 
         <div class="empty-state" th:if="${tasksBySubProject == null or tasksBySubProject.isEmpty()}">
