@@ -155,11 +155,14 @@ public class ProjectRepository {
 
     public void removeAllUsersFromProject(int projectId) {
         String sql = """
-        DELETE FROM project_assigned_user
+        
+                DELETE FROM project_assigned_user
         WHERE project_id = ?
         """;
 
         jdbcTemplate.update(sql, projectId);
+        }
+
     public List<Project> findAllProjects() {
         String sql = """
                 SELECT
