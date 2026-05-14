@@ -14,6 +14,10 @@ public class SubProjectService {
         this.subProjectRepository = subProjectRepository;
     }
 
+    public SubProject findSubProjectById(int subProjectId) {
+        return subProjectRepository.findSubProjectBySubProjectId(subProjectId);
+    }
+
     public void createSubProject(SubProject subProject) {
         subProjectRepository.saveSubProject(subProject);
     }
@@ -28,5 +32,9 @@ public class SubProjectService {
 
     public void deleteSubProjectById(int subProjectId) {
         subProjectRepository.deleteSubProjectById(subProjectId);
+    }
+
+    public void updateSubProject(SubProject subProject) {
+        subProjectRepository.updateSubProject(subProject);
     }
 }

@@ -34,7 +34,7 @@ public class SubProjectController {
         return "redirect:/projects/" + projectId;
     }
 
-    @PostMapping("/delete/{subProjectId}")
+    @PostMapping("/{subProjectId}/delete")
     public String deleteSubProject(@PathVariable int projectId,
                                    @PathVariable int subProjectId,
                                    HttpSession session) {
@@ -42,6 +42,25 @@ public class SubProjectController {
         if (user == null) return "redirect:/profile/login";
 
         service.deleteSubProjectById(subProjectId);
+        return "redirect:/projects/" + projectId;
+    }
+
+    @GetMapping("/{subProjectId}/edit")
+    public String showEditSubProjectForm(@PathVariable int projectId,
+                                         @PathVariable int subProjectId,
+                                         Model model) {
+        model.addAttribute("subProject", service.findSubProjectBySubProjectId(subProjectId));
+        model.addAttribute("projectId", projectId);
+        return "subProjectEdit";
+    }
+
+    @PostMapping("/{subProjectId}/edit")
+    public String editSubProject(@ModelAttribute SubProject subProject,
+                              @PathVariable int projectId,
+                              @PathVariable int subProjectId) {
+        subProject.setSubProjectId(subProjectId);
+        subProject.setProjectId(projectId);
+        service.updateSubProject(subProject);
         return "redirect:/projects/" + projectId;
     }
 }

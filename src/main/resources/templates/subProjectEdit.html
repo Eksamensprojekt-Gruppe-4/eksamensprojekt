@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Sub Project - Alpha Solutions</title>
+</head>
+<body>
+<header>
+  <div class="logo">Alpha Solutions</div>
+  <nav>
+    <ul>
+      <li><a th:href="@{/projects/myProjects}">My Projects</a></li>
+      <li><a th:href="@{/profile/view}">Profile</a></li>
+      <li><a th:href="@{/profile/logout}">Log out</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <section class="container">
+    <h2>Edit Sub Project</h2>
+    <div class="card profile-card">
+      <form th:action="@{/projects/{projectId}/subprojects/{subProjectId}/edit(projectId=${subProject.projectId},subProjectId=${subProject.subProjectId})}" th:object="${subProject}" method="post">
+        <p>
+          <label>Name:
+          <input type="text" th:field="*{subProjectName}" required/>
+          </label>
+        </p>
+
+        <p>
+          <label>Description:
+          <textarea th:field="*{subProjectDescription}"></textarea>
+          </label>
+        </p>
+
+        <div class="btn-row">
+          <button type="submit" class="btn">Save changes</button>
+          <a th:href="@{/projects/{id}(id=${subProject.projectId})}">Cancel</a>
+        </div>
+      </form>
+    </div>
+  </section>
+</main>
+</body>
+</html>
