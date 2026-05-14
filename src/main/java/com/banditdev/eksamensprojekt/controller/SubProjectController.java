@@ -1,18 +1,32 @@
 package com.banditdev.eksamensprojekt.controller;
 
+import com.banditdev.eksamensprojekt.model.Project;
 import com.banditdev.eksamensprojekt.model.SubProject;
+import com.banditdev.eksamensprojekt.model.Task;
+import com.banditdev.eksamensprojekt.model.User;
+import com.banditdev.eksamensprojekt.service.ProjectService;
 import com.banditdev.eksamensprojekt.service.SubProjectService;
+import com.banditdev.eksamensprojekt.service.TaskService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/projects/{projectId}/subprojects")
 public class SubProjectController {
     private final SubProjectService service;
+    private final TaskService taskService;
+    private final ProjectService projectService;
 
-    public SubProjectController(SubProjectService service) {
+    public SubProjectController(SubProjectService service, TaskService taskService, ProjectService projectService) {
         this.service = service;
+        this.taskService = taskService;
+        this.projectService = projectService;
     }
 
     @GetMapping("/new")
@@ -45,7 +59,7 @@ public class SubProjectController {
                                   Model model) {
         model.addAttribute("subProject", service.findSubProjectBySubProjectId(subProjectId));
         model.addAttribute("projectId", projectId);
-        return "subProjectEdit";
+        return "editSubProject";
     }
 
     @PostMapping("/{subProjectId}/edit")
@@ -56,5 +70,33 @@ public class SubProjectController {
         subProject.setProjectId(projectId);
         service.updateSubProject(subProject);
         return "redirect:/projects/" + projectId;
+    }
+
+    @GetMapping("/{subProjectId}")
+    public String showSubProject(@PathVariable int projectId, HttpSession session, @PathVariable int subProjectId, Model model) {
+
+        User currentLoggedInUser = (User) session.getAttribute("user");
+
+        /* User authentication check possible?
+        if (currentLoggedInUser == null) {
+            return "redirect:/profile/login";
+        } */
+
+        Project project = projectService.findProjectById(projectId);
+        SubProject subProject = service.findSubProjectBySubProjectId(subProjectId);
+        List<Task> tasks = taskService.findTasksBySubProjectId(subProjectId);
+
+        /* Possible user security check? Check if currentLoggedInUser is either asigned or owner of the project
+        he is trying to access.
+
+        if (!projectService.validateProjectOwnerOrAsignees(currentLoggedInUser, projectId)) {
+           return "redirect:/projects/myProjects";
+        } */
+
+        model.addAttribute("project", project);
+        model.addAttribute("subProjects", subProject);
+        model.addAttribute("tasksBySubProject", tasks);
+
+        return "subProjectView";
     }
 }

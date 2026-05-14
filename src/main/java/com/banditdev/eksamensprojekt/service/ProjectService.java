@@ -58,4 +58,7 @@ public class ProjectService {
         projectRepository.removeAllUsersFromProject(projectId);
     }
 
+    public List<Project> findAllProjects() {
+        return projectRepository.findAllProjects();
+    }
 }

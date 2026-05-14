@@ -147,4 +147,24 @@ public class ProjectController {
         projectService.updateProject(projectId, projectName, projectDescription, projectStartDate);
         return "redirect:/projects/" + projectId;
     }
+
+    @GetMapping("allProjects")
+    public String showAllProjects(HttpSession session, Model model) {
+        User currentUser = (User) session.getAttribute("user");
+
+        if (currentUser == null) {
+            return "redirect:/profile/login";
+        }
+
+        List<Project> projects = projectService.findAllProjects();
+
+        Map<Integer, User> ownersByProject = new HashMap<>();
+        for(Project project: projects){
+            ownersByProject.put(project.getProjectId(), userService.findUserByUserId(project.getOwnerUserId()));
+        }
+        model.addAttribute("projects", projects);
+        model.addAttribute("ownersByProject", ownersByProject);
+
+        return "projectsAllOverview";
+    }
 }
