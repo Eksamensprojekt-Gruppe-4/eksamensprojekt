@@ -126,6 +126,12 @@ main {
     color: #FFFFFF;
 }
 
+.subproject-description {
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+    display: block;
+}
+
 .btn-delete {
     background-color: transparent;
     color: #CC3333;
@@ -207,4 +213,31 @@ main {
     text-align: center;
     color: var(--color-text-muted);
     font-style: italic;
+}
+
+.subproject-hours {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.2rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-text-muted);
+}
+
+.subproject-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.subproject-hours {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.2rem;
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
 }

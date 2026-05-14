@@ -93,7 +93,7 @@ public class SubProjectRepository {
     public void updateSubProject(SubProject subProject) {
         String sql = """
                 UPDATE Sub_Project
-                SET sub_project_name = ?
+                SET sub_project_name = ?,
                     sub_project_description = ?
                 WHERE sub_project_id = ?
                 """;
