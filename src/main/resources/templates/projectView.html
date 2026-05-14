@@ -56,6 +56,35 @@
             </tbody>
         </table>
 
+        <div>
+            <table class="projects-table">
+
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Username</th>
+                    <th>Role</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+                <tr th:each="user, iterStat : ${assignedUsers}">
+                    <td th:text="${iterStat.count}">1</td>
+                    <td th:text="${user.userName}">Username</td>
+                    <td th:text="${user.userRole}">Role</td>
+                </tr>
+
+                <tr th:if="${assignedUsers == null or #lists.isEmpty(assignedUsers)}">
+                    <td colspan="3">No users assigned to this project.</td>
+                </tr>
+
+                </tbody>
+
+            </table>
+        </div>
+
+        <br><br>
         <div class="page-header subprojects-heading">
             <h3>Sub Projects <span class="project-id-badge" th:text="${#lists.size(subProjects)}">0</span></h3>
             <a th:href="@{/projects/{projectId}/subprojects/new(projectId=${project.projectId})}" class="btn-sm btn-view">New Sub Project</a>
