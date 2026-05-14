@@ -58,7 +58,7 @@
 
         <div class="page-header subprojects-heading">
             <h3>Sub Projects <span class="project-id-badge" th:text="${#lists.size(subProjects)}">0</span></h3>
-            <a th:href="@{/projects/{projectId}/subprojects/new(projectId=${project.projectId})}" class="btn">+ New Sub Project</a>
+            <a th:href="@{/projects/{projectId}/subprojects/new(projectId=${project.projectId})}" class="btn-sm btn-view">New Sub Project</a>
         </div>
 
         <div class="empty-state" th:if="${subProjects == null or subProjects.isEmpty()}">
@@ -68,18 +68,17 @@
         <div th:each="sp : ${subProjects}" class="subproject-block">
 
             <div class="subproject-block-header">
-                <div>
+                <div class="subproject-info">
                     <span class="project-name" th:text="${sp.subProjectName}">Sub Project Name</span>
-                    <span class="project-description subproject-inline-desc" th:text="${sp.subProjectDescription}"></span>
+                    <span class="project-description" th:text="${sp.subProjectDescription}"></span>
                 </div>
                 <div class="project-detail-actions">
-                    <span class="project-date">
-                        Est. <span th:text="${sp.subProjectEstimatedHours + 'h'}">0h</span>
-                        &nbsp;/&nbsp;
-                        Act. <span th:text="${sp.subProjectActualHours + 'h'}">0h</span>
+                    <span class="subproject-hours">
+                        <span>Est. <span th:text="${sp.subProjectEstimatedHours + 'h'}">0h</span></span>
+                        <span>Act. <span th:text="${sp.subProjectActualHours + 'h'}">0h</span></span>
                     </span>
                     <a href="#" class="btn-sm btn-view">View</a>
-                    <a href="#" class="btn-sm btn-edit">Edit</a>
+                    <a th:href="@{/projects/{projectId}/subprojects/{subProjectId}/edit(projectId=${project.projectId},subProjectId=${sp.subProjectId})}" class="btn-sm btn-edit">Edit</a>
                     <form th:action="@{/projects/{projectId}/subprojects/{subProjectId}/delete(projectId=${project.projectId},subProjectId=${sp.subProjectId})}" method="post">
                         <button type="submit" class="btn-sm btn-delete" onclick="return confirm('Delete this sub-project?')">Delete</button>
                     </form>
@@ -98,7 +97,7 @@
                 <tbody>
                 <tr th:each="task : ${tasksBySubProject[sp.subProjectId]}">
                     <td><span class="project-name" th:text="${task.taskName}">Task</span></td>
-                    <td><span class="project-description" th:text="${task.taskDescription}"></span></td>
+                    <td><span class="subproject-description" th:text="${sp.subProjectDescription}"></span></td>
                     <td class="project-date">
                         <span th:text="${task.taskEstimatedHours}">0</span>
                         /

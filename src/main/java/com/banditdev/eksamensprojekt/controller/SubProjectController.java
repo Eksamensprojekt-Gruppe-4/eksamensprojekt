@@ -45,7 +45,7 @@ public class SubProjectController {
                                   Model model) {
         model.addAttribute("subProject", service.findSubProjectBySubProjectId(subProjectId));
         model.addAttribute("projectId", projectId);
-        return "subProjectEdit";
+        return "editSubProject";
     }
 
     @PostMapping("/{subProjectId}/edit")
