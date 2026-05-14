@@ -1,5 +1,6 @@
 package com.banditdev.eksamensprojekt.repository;
 
+import com.banditdev.eksamensprojekt.model.Project;
 import com.banditdev.eksamensprojekt.model.SubProject;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -31,22 +32,22 @@ public class SubProjectRepository {
                 subProject.getSubProjectEstimatedHours(),
                 subProject.getSubProjectActualHours(),
                 subProject.getProjectId()
-                );
+        );
     }
 
     public SubProject findSubProjectBySubProjectId(int subProjectId) {
 
         String sql = """
-            SELECT
-                sub_project_id,
-                sub_project_name,
-                sub_project_description,
-                sub_project_estimated_hours,
-                sub_project_actual_hours,
-                project_id
-            FROM Sub_Project
-            WHERE sub_project_id = ?;
-            """;
+                SELECT
+                    sub_project_id,
+                    sub_project_name,
+                    sub_project_description,
+                    sub_project_estimated_hours,
+                    sub_project_actual_hours,
+                    project_id
+                FROM Sub_Project
+                WHERE sub_project_id = ?;
+                """;
 
         return jdbcTemplate.queryForObject(sql, (rs, rowNum) ->
                         new SubProject(
@@ -63,16 +64,16 @@ public class SubProjectRepository {
 
     public List<SubProject> findSubProjectsByProjectId(int projectId) {
         String sql = """
-            SELECT
-                sub_project_id,
-                sub_project_name,
-                sub_project_description,
-                sub_project_estimated_hours,
-                sub_project_actual_hours,
-                project_id
-            FROM Sub_Project
-            WHERE project_id = ?
-            """;
+                SELECT
+                    sub_project_id,
+                    sub_project_name,
+                    sub_project_description,
+                    sub_project_estimated_hours,
+                    sub_project_actual_hours,
+                    project_id
+                FROM Sub_Project
+                WHERE project_id = ?
+                """;
 
         return jdbcTemplate.query(sql, (rs, rowNum) ->
                 new SubProject(

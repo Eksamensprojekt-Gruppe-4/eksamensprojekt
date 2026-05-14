@@ -36,4 +36,8 @@ public class ProjectService {
     public Project findProjectById(int projectId) {
         return projectRepository.findProjectById(projectId);
     }
+
+    public List<Project> findAllProjects() {
+        return projectRepository.findAllProjects();
+    }
 }

@@ -7,6 +7,7 @@ import com.banditdev.eksamensprojekt.model.User;
 import com.banditdev.eksamensprojekt.service.ProjectService;
 import com.banditdev.eksamensprojekt.service.SubProjectService;
 import com.banditdev.eksamensprojekt.service.TaskService;
+import com.banditdev.eksamensprojekt.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Controller;
@@ -26,11 +27,13 @@ public class ProjectController {
     private final ProjectService projectService;
     private final SubProjectService subProjectService;
     private final TaskService taskService;
+    private final UserService userService;
 
-    public ProjectController(ProjectService projectService, SubProjectService subProjectService, TaskService taskService) {
+    public ProjectController(ProjectService projectService, SubProjectService subProjectService, TaskService taskService, UserService userService) {
         this.projectService = projectService;
         this.subProjectService = subProjectService;
         this.taskService = taskService;
+        this.userService = userService;
     }
 
     @GetMapping("myProjects")
@@ -149,5 +152,25 @@ public class ProjectController {
                               @RequestParam LocalDate projectStartDate) {
         projectService.updateProject(projectId, projectName, projectDescription, projectStartDate);
         return "redirect:/projects/" + projectId;
+    }
+
+    @GetMapping("allProjects")
+    public String showAllProjects(HttpSession session, Model model) {
+        User currentUser = (User) session.getAttribute("user");
+
+        if (currentUser == null) {
+            return "redirect:/profile/login";
+        }
+
+        List<Project> projects = projectService.findAllProjects();
+
+        Map<Integer, User> ownersByProject = new HashMap<>();
+        for(Project project: projects){
+            ownersByProject.put(project.getProjectId(), userService.findUserByUserId(project.getOwnerUserId()));
+        }
+        model.addAttribute("projects", projects);
+        model.addAttribute("ownersByProject", ownersByProject);
+
+        return "projectsAllOverview";
     }
 }
