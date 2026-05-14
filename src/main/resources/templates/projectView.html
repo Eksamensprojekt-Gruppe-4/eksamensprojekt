@@ -73,11 +73,7 @@
                     <span class="project-description" th:text="${sp.subProjectDescription}"></span>
                 </div>
                 <div class="project-detail-actions">
-                    <span class="subproject-hours">
-                        <span>Est. <span th:text="${sp.subProjectEstimatedHours + 'h'}">0h</span></span>
-                        <span>Act. <span th:text="${sp.subProjectActualHours + 'h'}">0h</span></span>
-                    </span>
-                    <a href="#" class="btn-sm btn-view">View</a>
+                    <a th:href="@{/projects/{projectId}/subprojects/{subProjectId}(projectId=${project.projectId},subProjectId=${sp.subProjectId})}" class="btn-sm btn-view">View</a>
                     <a th:href="@{/projects/{projectId}/subprojects/{subProjectId}/edit(projectId=${project.projectId},subProjectId=${sp.subProjectId})}" class="btn-sm btn-edit">Edit</a>
                     <form th:action="@{/projects/{projectId}/subprojects/{subProjectId}/delete(projectId=${project.projectId},subProjectId=${sp.subProjectId})}" method="post">
                         <button type="submit" class="btn-sm btn-delete" onclick="return confirm('Delete this sub-project?')">Delete</button>

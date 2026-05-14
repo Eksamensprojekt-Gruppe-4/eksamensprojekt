@@ -1,10 +1,111 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title th:text="${subProjects.subProjectName} + ' — Alpha Solutions'">Sub Project — Alpha Solutions</title>
+    <link rel="stylesheet" th:href="@{/styles.css}"/>
+    <link rel="stylesheet" th:href="@{/projects.css}"/>
 </head>
 <body>
+
+<header>
+    <div class="logo">Alpha Solutions</div>
+    <nav>
+        <ul>
+            <li><a th:href="@{/projects/myProjects}">My Projects</a></li>
+            <li><a th:href="@{/projects/allProjects}">All Projects</a></li>
+            <li><a th:href="@{/profile/view}">Profile</a></li>
+            <li><a th:href="@{/profile/logout}">Log out</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main>
+    <section class="container">
+
+        <div class="page-header">
+            <div>
+                <p class="subproject-breadcrumb">
+                    <a th:href="@{/projects/{projectId}(projectId=${project.projectId})}" th:text="${project.projectName}">Project</a>
+                    &rsaquo; Sub Project
+                </p>
+                <h2 th:text="${subProjects.subProjectName}">Sub Project Name</h2>
+                <p class="project-description" th:text="${subProjects.subProjectDescription}"></p>
+            </div>
+            <div class="project-detail-actions">
+                <a th:href="@{/projects/{projectId}/subprojects/{subProjectId}/edit(projectId=${project.projectId},subProjectId=${subProjects.subProjectId})}"
+                   class="btn-sm btn-edit">Edit</a>
+                <form th:action="@{/projects/{projectId}/subprojects/{subProjectId}/delete(projectId=${project.projectId},subProjectId=${subProjects.subProjectId})}"
+                      method="post">
+                    <button type="submit" class="btn-sm btn-delete"
+                            onclick="return confirm('Delete this sub-project?')">Delete</button>
+                </form>
+            </div>
+        </div>
+
+        <table class="projects-table project-meta-table">
+            <thead>
+            <tr>
+                <th>Hours — Estimated</th>
+                <th>Hours — Actual</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td th:text="${subProjects.subProjectEstimatedHours + 'h'}"></td>
+                <td th:text="${subProjects.subProjectActualHours + 'h'}"></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="page-header subprojects-heading">
+            <h3>Tasks <span class="project-id-badge" th:text="${#lists.size(tasksBySubProject)}">0</span></h3>
+            <a th:href="@{/projects/{projectId}/subprojects/{subProjectId}/task/add(projectId=${project.projectId},subProjectId=${subProjects.subProjectId})}"
+               class="btn-sm btn-view">+ New Task</a>
+        </div>
+
+        <div class="empty-state" th:if="${tasksBySubProject == null or tasksBySubProject.isEmpty()}">
+            <p>No tasks yet.</p>
+        </div>
+
+        <table class="projects-table" th:if="${tasksBySubProject != null and !tasksBySubProject.isEmpty()}">
+            <thead>
+            <tr>
+                <th>Task name</th>
+                <th>Description</th>
+                <th>Hours Est / Act</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="task : ${tasksBySubProject}">
+                <td><span class="project-name" th:text="${task.taskName}">Task</span></td>
+                <td><span class="project-description" th:text="${task.taskDescription}"></span></td>
+                <td class="project-date">
+                    <span th:text="${task.taskEstimatedHours}">0</span>h
+                    /
+                    <span th:text="${task.taskActualHours > 0 ? task.taskActualHours + 'h' : '—'}">—</span>
+                </td>
+                <td>
+                    <div class="project-detail-actions">
+                        <a th:href="@{/projects/{projectId}/subprojects/{subProjectId}/task/{taskId}/view(projectId=${project.projectId},subProjectId=${subProjects.subProjectId},taskId=${task.taskId})}"
+                           class="btn-sm btn-view">View</a>
+                        <a th:href="@{/projects/{projectId}/subprojects/{subProjectId}/task/{taskId}/edit(projectId=${project.projectId},subProjectId=${subProjects.subProjectId},taskId=${task.taskId})}"
+                           class="btn-sm btn-edit">Edit</a>
+                        <form th:action="@{/projects/{projectId}/subprojects/{subProjectId}/task/{taskId}/delete(projectId=${project.projectId},subProjectId=${subProjects.subProjectId},taskId=${task.taskId})}"
+                              method="post">
+                            <button type="submit" class="btn-sm btn-delete"
+                                    onclick="return confirm('Delete this task?')">Delete</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+    </section>
+</main>
 
 </body>
 </html>
