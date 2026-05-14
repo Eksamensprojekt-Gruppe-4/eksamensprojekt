@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>All Projects — Alpha Solutions</title>
+    <link rel="stylesheet" th:href="@{/styles.css}"/>
+    <link rel="stylesheet" th:href="@{/projects.css}"/>
+</head>
+<body>
+
+<header>
+    <div class="logo">Alpha Solutions</div>
+    <nav>
+        <ul>
+            <li><a th:href="@{/projects/myProjects}">My Projects</a></li>
+            <li><a th:href="@{/projects/allProjects}">All Projects</a></li>
+            <li><a th:href="@{/profile/view}">Profile</a></li>
+            <li><a th:href="@{/profile/logout}">Log out</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main>
+    <section class="container">
+
+        <div class="page-header">
+            <h2>All projects</h2>
+        </div>
+
+        <div th:if="${projects != null and !projects.isEmpty()}">
+            <table class="projects-table">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Project name</th>
+                    <th>Description</th>
+                    <th>Start date</th>
+                    <th>Deadline</th>
+                    <th>Owner</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="project : ${projects}">
+                    <td>
+                        <span class="project-id-badge" th:text="${project.projectId}"></span>
+                    </td>
+                    <td>
+                        <span class="project-name" th:text="${project.projectName}"></span>
+                    </td>
+                    <td>
+                        <span class="project-description" th:text="${project.projectDescription}"></span>
+                    </td>
+                    <td>
+                        <span class="project-date" th:text="${project.projectStartDate}"></span>
+                    </td>
+                    <td>
+                        <span class="deadline-badge"
+                              th:text="${project.projectEstimatedDeadline != null ? project.projectEstimatedDeadline : 'No deadline'}"></span>
+                    </td>
+                    <td>
+                        <span th:text="${ownersByProject[project.projectId] != null
+                            ? ownersByProject[project.projectId].userName
+                            : '—'}"></span>
+                    </td>
+                    <td>
+                        <a th:href="@{/projects/{projectId}(projectId=${project.projectId})}" class="btn-sm btn-view">View</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="empty-state" th:if="${projects == null or projects.isEmpty()}">
+            <p>No projects exist yet.</p>
+        </div>
+
+    </section>
+</main>
+
+</body>
+</html>
+
