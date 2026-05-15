@@ -69,7 +69,7 @@ public class SubProjectController {
         subProject.setSubProjectId(subProjectId);
         subProject.setProjectId(projectId);
         service.updateSubProject(subProject);
-        return "redirect:/projects/" + projectId;
+        return "redirect:/projects/" + projectId + "/subprojects/" + subProjectId;
     }
 
     @GetMapping("/{subProjectId}")
