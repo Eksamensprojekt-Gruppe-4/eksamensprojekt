@@ -42,4 +42,8 @@ public class UserService {
     public List<User> findUsersAssignedToProjectByProjectId(int projectId) {
         return userRepository.findUsersAssignedToProjectByProjectId(projectId);
     }
+
+    public List<Integer> findUserIdsAssignedToProjectByProjectId(int projectId) {
+        return userRepository.findUserIdsAssignedToProjectByProjectId(projectId);
+    }
 }

@@ -174,4 +174,16 @@ public class UserRepository {
                 UserRole.valueOf(rs.getString("user_role"))
         ), projectId);
     }
+
+    public List<Integer> findUserIdsAssignedToProjectByProjectId(int projectId) {
+        String sql = """
+        SELECT pau.project_assigned_user_id
+        FROM project_assigned_user pau
+        WHERE pau.project_id = ?
+        """;
+
+        return jdbcTemplate.query(sql, (rs, rowNum) -> rs.getInt("project_assigned_user_id"),
+                projectId
+        );
+    }
 }
