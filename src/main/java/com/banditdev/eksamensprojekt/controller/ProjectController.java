@@ -94,7 +94,7 @@ public class ProjectController {
         Project createdProject = projectService.addProject(project, currentUser.getUserId());
         projectService.addAssignedUserIdsToDatabase(createdProject.getProjectId(), listOfUserIdsFromAssignedUsers);
 
-        return "redirect:/projects/myProjects";
+        return "redirect:/projects/" + createdProject.getProjectId();
     }
 
     @PostMapping("/delete/{projectId}")
