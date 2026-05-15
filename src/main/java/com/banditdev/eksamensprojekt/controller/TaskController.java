@@ -31,7 +31,7 @@ public class TaskController {
 
         model.addAttribute("task", new Task());
         model.addAttribute("subProject", subProjectService.findSubProjectBySubProjectId(subProjectId));
-        model.addAttribute("users", userService.findAllUsers());
+        model.addAttribute("users", userService.findUsersAssignedToProjectByProjectId((projectId)));
         model.addAttribute("projectId", projectId);
         return "addTask";
     }
@@ -60,7 +60,7 @@ public class TaskController {
 
         model.addAttribute("task", taskService.findTaskById(taskId));
         model.addAttribute("subProject", subProjectService.findSubProjectBySubProjectId(subProjectId));
-        model.addAttribute("users", userService.findAllUsers());
+        model.addAttribute("users", userService.findUsersAssignedToProjectByProjectId(projectId));
         model.addAttribute("projectId", projectId);
 
         return "editTask";
