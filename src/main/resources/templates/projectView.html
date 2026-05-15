@@ -124,9 +124,9 @@
                     <td><span class="project-name" th:text="${task.taskName}">Task</span></td>
                     <td><span class="subproject-description" th:text="${sp.subProjectDescription}"></span></td>
                     <td class="project-date">
-                        <span th:text="${task.taskEstimatedHours}">0</span>
+                        <span th:text="${task.taskEstimatedHours} + 'h'">0</span>
                         /
-                        <span th:text="${task.taskActualHours > 0 ? task.taskActualHours : '—'}">—</span>
+                        <span th:text="${task.taskActualHours > 0 ? task.taskActualHours  + 'h' : '—'}">—</span>
                     </td>
                     <td>
                         <span th:if="${task.userId != 0 and usersById[task.userId] != null}"
