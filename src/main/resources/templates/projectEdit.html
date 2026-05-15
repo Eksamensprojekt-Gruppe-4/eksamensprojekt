@@ -24,8 +24,8 @@
 <main>
     <div class="form-card">
 
-        <h2>Edit project</h2>
-        <p class="form-subtitle" th:text="'Project #' + ${project.projectId}">Project #1</p>
+        <h2>Edit Project</h2>
+        <p class="form-subtitle" th:text="'Editing: ' + ${project.projectName}"></p>
 
         <form th:action="@{/projects/edit/{id}(id=${project.projectId})}" method="post">
 
@@ -47,17 +47,22 @@
                        th:value="${project.projectStartDate}" required/>
             </div>
 
-                <div class="assigned-users-section">
-                    <label><strong>Assigned Users</strong></label>
-                    <div th:each="user : ${allUsers}">
+            <hr class="form-divider"/>
+
+            <div class="field">
+                <label>Assign users</label>
+                <div class="user-selection-box">
+                    <div th:each="user : ${allUsers}" class="user-item">
                         <label>
                             <input type="checkbox"
-                                   name="listOfUserIdsFromAssignedUsers" th:value="${user.userId}" th:checked="${assignedUsersIds.contains(user.userId)}">
+                                   name="listOfUserIdsFromAssignedUsers"
+                                   th:value="${user.userId}"
+                                   th:checked="${assignedUsersIds.contains(user.userId)}">
                             <span th:text="${user.userName}"></span>
                         </label>
                     </div>
                 </div>
-
+            </div>
 
             <div class="form-actions-2">
                 <button type="submit" class="btn">Save changes</button>
