@@ -115,7 +115,7 @@ public class ProjectController {
     public String showEditProject(@PathVariable int projectId, Model model) {
         model.addAttribute("project", projectService.findProjectById(projectId));
         model.addAttribute("allUsers", userService.findAllUsers());
-        model.addAttribute("assignedUsers", userService.findUsersAssignedToProjectByProjectId(projectId));
+        model.addAttribute("assignedUsersIds", userService.findUserIdsAssignedToProjectByProjectId(projectId));
 
         return "projectEdit";
     }
@@ -124,8 +124,11 @@ public class ProjectController {
     public String editProject(@PathVariable int projectId,
                               @RequestParam String projectName,
                               @RequestParam String projectDescription,
-                              @RequestParam LocalDate projectStartDate) {
+                              @RequestParam LocalDate projectStartDate, @RequestParam(required = false) List<Integer> listOfUserIdsFromAssignedUsers) {
         projectService.updateProject(projectId, projectName, projectDescription, projectStartDate);
+
+        projectService.removeAllUsersFromProject(projectId);
+        projectService.addAssignedUserIdsToDatabase(projectId, listOfUserIdsFromAssignedUsers);
 
         return "redirect:/projects/" + projectId;
     }

@@ -47,6 +47,18 @@
                        th:value="${project.projectStartDate}" required/>
             </div>
 
+                <div class="assigned-users-section">
+                    <label><strong>Assigned Users</strong></label>
+                    <div th:each="user : ${allUsers}">
+                        <label>
+                            <input type="checkbox"
+                                   name="listOfUserIdsFromAssignedUsers" th:value="${user.userId}" th:checked="${assignedUsersIds.contains(user.userId)}">
+                            <span th:text="${user.userName}"></span>
+                        </label>
+                    </div>
+                </div>
+
+
             <div class="form-actions-2">
                 <button type="submit" class="btn">Save changes</button>
                 <a th:href="@{/projects/{id}(id=${project.projectId})}" class="btn btn-outline">Cancel</a>
