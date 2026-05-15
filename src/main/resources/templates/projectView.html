@@ -63,7 +63,7 @@
                 <tr>
                     <th>#</th>
                     <th>Username</th>
-                    <th>Role</th>
+                    <th>Experience</th>
                 </tr>
                 </thead>
 
@@ -71,8 +71,8 @@
 
                 <tr th:each="user, iterStat : ${assignedUsers}">
                     <td th:text="${iterStat.count}">1</td>
-                    <td th:text="${user.userName}">Username</td>
-                    <td th:text="${user.userRole}">Role</td>
+                    <td th:text="${user.userName}">Name</td>
+                    <td th:text="${user.userExperience}">Experience</td>
                 </tr>
 
                 <tr th:if="${assignedUsers == null or #lists.isEmpty(assignedUsers)}">
