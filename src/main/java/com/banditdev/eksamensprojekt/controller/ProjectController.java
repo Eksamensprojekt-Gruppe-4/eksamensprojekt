@@ -58,10 +58,14 @@ public class ProjectController {
         List<SubProject> subProjects = subProjectService.findSubProjectsByProjectId(projectId);
         List<User> assignedUsers = userService.findUsersAssignedToProjectByProjectId(projectId);
 
-
         Map<Integer, List<Task>> tasksBySubProject = new HashMap<>();
         for (SubProject sp : subProjects) {
             tasksBySubProject.put(sp.getSubProjectId(), taskService.findTasksBySubProjectId(sp.getSubProjectId()));
+        }
+
+        Map<Integer, User> usersById = new HashMap<>();
+        for (User user : userService.findAllUsers()) {
+            usersById.put(user.getUserId(), user);
         }
 
         if (project == null) {
@@ -72,6 +76,7 @@ public class ProjectController {
         model.addAttribute("subProjects", subProjects);
         model.addAttribute("tasksBySubProject", tasksBySubProject);
         model.addAttribute("assignedUsers", assignedUsers);
+        model.addAttribute("usersById", usersById);
 
         return "projectView";
     }
