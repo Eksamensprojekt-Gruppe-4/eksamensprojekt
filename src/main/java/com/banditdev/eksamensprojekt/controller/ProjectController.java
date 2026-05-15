@@ -54,18 +54,15 @@ public class ProjectController {
 
         User currentLoggedInUser = (User) session.getAttribute("user");
 
-
         Project project = projectService.findProjectById(projectId);
         List<SubProject> subProjects = subProjectService.findSubProjectsByProjectId(projectId);
         List<User> assignedUsers = userService.findUsersAssignedToProjectByProjectId(projectId);
-
 
 
         Map<Integer, List<Task>> tasksBySubProject = new HashMap<>();
         for (SubProject sp : subProjects) {
             tasksBySubProject.put(sp.getSubProjectId(), taskService.findTasksBySubProjectId(sp.getSubProjectId()));
         }
-
 
         if (project == null) {
             return "redirect:/projects/myProjects";
@@ -75,18 +72,6 @@ public class ProjectController {
         model.addAttribute("subProjects", subProjects);
         model.addAttribute("tasksBySubProject", tasksBySubProject);
         model.addAttribute("assignedUsers", assignedUsers);
-
-
-        /* How to show task for specific subproject via. HashMap in the Thymeleaf.
-
-        <div th:each="sp : ${subProjects}">
-                <h3 th:text="${sp.subProjectName}"></h3>
-                <div th:each="task : ${tasksBySubProject[sp.subProjectId]}">
-                <p th:text="${task.taskName}"></p>
-                </div>
-                </div>
-         */
-
 
         return "projectView";
     }
@@ -129,6 +114,9 @@ public class ProjectController {
     @GetMapping("/edit/{projectId}")
     public String showEditProject(@PathVariable int projectId, Model model) {
         model.addAttribute("project", projectService.findProjectById(projectId));
+        model.addAttribute("allUsers", userService.findAllUsers());
+        model.addAttribute("assignedUsers", userService.findUsersAssignedToProjectByProjectId(projectId));
+
         return "projectEdit";
     }
 
@@ -138,6 +126,7 @@ public class ProjectController {
                               @RequestParam String projectDescription,
                               @RequestParam LocalDate projectStartDate) {
         projectService.updateProject(projectId, projectName, projectDescription, projectStartDate);
+
         return "redirect:/projects/" + projectId;
     }
 
