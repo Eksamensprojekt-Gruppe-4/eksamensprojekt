@@ -99,8 +99,6 @@
                     <div class="project-detail-actions">
                         <a th:href="@{/projects/{projectId}/subprojects/{subProjectId}/task/{taskId}/view(projectId=${project.projectId},subProjectId=${subProjects.subProjectId},taskId=${task.taskId})}"
                            class="btn-sm btn-view">View</a>
-                        <a th:href="@{/projects/{projectId}/subprojects/{subProjectId}/task/{taskId}/edit(projectId=${project.projectId},subProjectId=${subProjects.subProjectId},taskId=${task.taskId})}"
-                           class="btn-sm btn-edit">Edit</a>
                         <form th:action="@{/projects/{projectId}/subprojects/{subProjectId}/task/{taskId}/delete(projectId=${project.projectId},subProjectId=${subProjects.subProjectId},taskId=${task.taskId})}"
                               method="post">
                             <button type="submit" class="btn-sm btn-delete"
