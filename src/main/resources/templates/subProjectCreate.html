@@ -2,26 +2,51 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Create sub project</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Create Sub-project — Alpha Solutions</title>
     <link rel="stylesheet" th:href="@{/styles.css}"/>
+    <link rel="stylesheet" th:href="@{/forms.css}"/>
 </head>
 <body>
+
+<header>
+    <div class="logo">Alpha Solutions</div>
+    <nav>
+        <ul>
+            <li><a th:href="@{/projects/myProjects}">My Projects</a></li>
+            <li><a th:href="@{/projects/allProjects}">All Projects</a></li>
+            <li><a th:href="@{/profile/view}">Profile</a></li>
+            <li><a th:href="@{/profile/logout}">Log out</a></li>
+        </ul>
+    </nav>
+</header>
+
 <main>
-    <h2>Create sub-project</h2>
+    <div class="form-card">
 
-    <form th:action="@{/projects/{id}/subprojects(id=${projectId})}" th:object="${subProject}" method="post">
+        <h2>Create sub-project</h2>
+        <p class="form-subtitle" th:text="'Part of project #' + ${projectId}">Part of project #1</p>
 
-        <Label>Name:
-            <input type="text" th:field="*{subProjectName}" required>
-        </Label>
-        <br>
-        <Label>Description:
-            <textarea th:field="*{subProjectDescription}"></textarea>
-        </Label>
-        <br>
-        <br>
-        <button type="submit">Create</button>
-    </form>
+        <form th:action="@{/projects/{id}/subprojects(id=${projectId})}" th:object="${subProject}" method="post">
+
+            <div class="field">
+                <label for="subProjectName">Name</label>
+                <input type="text" id="subProjectName" th:field="*{subProjectName}" placeholder="Enter sub-project name" required/>
+            </div>
+
+            <div class="field">
+                <label for="subProjectDescription">Description</label>
+                <textarea id="subProjectDescription" th:field="*{subProjectDescription}" placeholder="What does this sub-project cover?"></textarea>
+            </div>
+
+            <div class="form-actions-2">
+                <button type="submit" class="btn">Create sub-project</button>
+                <a th:href="@{/projects/{id}(id=${projectId})}" class="btn btn-outline">Cancel</a>
+            </div>
+
+        </form>
+    </div>
 </main>
+
 </body>
 </html>

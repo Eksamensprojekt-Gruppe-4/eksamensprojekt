@@ -2,47 +2,70 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Create Project</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Create Project — Alpha Solutions</title>
     <link rel="stylesheet" th:href="@{/styles.css}"/>
+    <link rel="stylesheet" th:href="@{/forms.css}"/>
 </head>
 <body>
+
+<header>
+    <div class="logo">Alpha Solutions</div>
+    <nav>
+        <ul>
+            <li><a th:href="@{/projects/myProjects}">My Projects</a></li>
+            <li><a th:href="@{/projects/allProjects}">All Projects</a></li>
+            <li><a th:href="@{/profile/view}">Profile</a></li>
+            <li><a th:href="@{/profile/logout}">Log out</a></li>
+        </ul>
+    </nav>
+</header>
+
 <main>
-    <h2>Create a project</h2>
+    <div class="form-card">
 
-    <form th:action="@{/projects/add}" method="post">
+        <h2>Create project</h2>
+        <p class="form-subtitle">Fill in the details to get started</p>
 
-        <label>Name:
-            <input type="text" name="projectName" required>
-        </label>
-        <br>
-        <label>Description:
-            <textarea name="projectDescription"></textarea>
-        </label>
-        <br>
-        <label>Start date:
-            <input type="date" name="projectStartDate" required>
-        </label>
+        <form th:action="@{/projects/add}" method="post">
 
-        <br>
-
-        <h3>Assign users</h3>
-
-        <div class="user-selection-box">
-
-            <div th:each="user : ${allUsers}" class="user-item">
-
-                <label>
-                    <input type="checkbox" name="listOfUserIdsFromAssignedUsers" th:value="${user.userId}">
-                    <span th:text="${user.userName}"></span>
-                </label>
-
+            <div class="field">
+                <label for="projectName">Project name</label>
+                <input type="text" id="projectName" name="projectName" placeholder="Enter project name" required/>
             </div>
-        </div>
 
-        <br>
+            <div class="field">
+                <label for="projectDescription">Description</label>
+                <textarea id="projectDescription" name="projectDescription" placeholder="What is this project about?"></textarea>
+            </div>
 
-        <button type="submit" class="btn">Create</button>
-    </form>
+            <div class="field">
+                <label for="projectStartDate">Start date</label>
+                <input type="date" id="projectStartDate" name="projectStartDate" required/>
+            </div>
+
+            <hr class="form-divider"/>
+
+            <div class="field">
+                <label>Assign users</label>
+                <div class="user-selection-box">
+                    <div th:each="user : ${allUsers}" class="user-item">
+                        <label>
+                            <input type="checkbox" name="listOfUserIdsFromAssignedUsers" th:value="${user.userId}"/>
+                            <span th:text="${user.userName}"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-actions-2">
+                <button type="submit" class="btn">Create project</button>
+                <a th:href="@{/projects/myProjects}" class="btn btn-outline">Cancel</a>
+            </div>
+
+        </form>
+    </div>
 </main>
+
 </body>
 </html>

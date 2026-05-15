@@ -2,8 +2,10 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Edit Project — Alpha Solutions</title>
     <link rel="stylesheet" th:href="@{/styles.css}"/>
+    <link rel="stylesheet" th:href="@{/forms.css}"/>
 </head>
 <body>
 
@@ -12,6 +14,7 @@
     <nav>
         <ul>
             <li><a th:href="@{/projects/myProjects}">My Projects</a></li>
+            <li><a th:href="@{/projects/allProjects}">All Projects</a></li>
             <li><a th:href="@{/profile/view}">Profile</a></li>
             <li><a th:href="@{/profile/logout}">Log out</a></li>
         </ul>
@@ -19,48 +22,55 @@
 </header>
 
 <main>
-    <section class="container">
+    <div class="form-card">
+
         <h2>Edit Project</h2>
-        <div class="card profile-card">
-            <form th:action="@{/projects/edit/{id}(id=${project.projectId})}" method="post">
+        <p class="form-subtitle" th:text="'Editing: ' + ${project.projectName}"></p>
 
-                <p>
-                    <label for="projectName"><strong>Name</strong></label>
-                    <input type="text" id="projectName" name="projectName"
-                           th:value="${project.projectName}" required/>
-                </p>
+        <form th:action="@{/projects/edit/{id}(id=${project.projectId})}" method="post">
 
-                <p>
-                    <label for="projectDescription"><strong>Description</strong></label>
-                    <textarea id="projectDescription" name="projectDescription"
-                              rows="4" th:text="${project.projectDescription}"></textarea>
-                </p>
+            <div class="field">
+                <label for="projectName">Project name</label>
+                <input type="text" id="projectName" name="projectName"
+                       th:value="${project.projectName}" required/>
+            </div>
 
-                <p>
-                    <label for="projectStartDate"><strong>Start date</strong></label>
-                    <input type="date" id="projectStartDate" name="projectStartDate"
-                           th:value="${project.projectStartDate}" required/>
-                </p>
+            <div class="field">
+                <label for="projectDescription">Description</label>
+                <textarea id="projectDescription" name="projectDescription"
+                          th:text="${project.projectDescription}"></textarea>
+            </div>
 
-                <div class="assigned-users-section">
-                    <label><strong>Assigned Users</strong></label>
-                    <div th:each="user : ${allUsers}">
+            <div class="field">
+                <label for="projectStartDate">Start date</label>
+                <input type="date" id="projectStartDate" name="projectStartDate"
+                       th:value="${project.projectStartDate}" required/>
+            </div>
+
+            <hr class="form-divider"/>
+
+            <div class="field">
+                <label>Assign users</label>
+                <div class="user-selection-box">
+                    <div th:each="user : ${allUsers}" class="user-item">
                         <label>
                             <input type="checkbox"
-                                   name="listOfUserIdsFromAssignedUsers" th:value="${user.userId}" th:checked="${assignedUsersIds.contains(user.userId)}">
+                                   name="listOfUserIdsFromAssignedUsers"
+                                   th:value="${user.userId}"
+                                   th:checked="${assignedUsersIds.contains(user.userId)}">
                             <span th:text="${user.userName}"></span>
                         </label>
                     </div>
                 </div>
+            </div>
 
+            <div class="form-actions-2">
+                <button type="submit" class="btn">Save changes</button>
+                <a th:href="@{/projects/{id}(id=${project.projectId})}" class="btn btn-outline">Cancel</a>
+            </div>
 
-                <div class="btn-row">
-                    <button type="submit" class="btn">Save changes</button>
-                    <a th:href="@{/projects/{id}(id=${project.projectId})}" class="btn btn-outline">Cancel</a>
-                </div>
-            </form>
-        </div>
-    </section>
+        </form>
+    </div>
 </main>
 
 </body>
