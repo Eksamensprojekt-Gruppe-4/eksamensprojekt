@@ -1,8 +1,9 @@
 package com.banditdev.eksamensprojekt.repository;
 
-import com.banditdev.eksamensprojekt.model.Project;
 import com.banditdev.eksamensprojekt.model.SubProject;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -10,6 +11,14 @@ import java.util.List;
 @Repository
 public class SubProjectRepository {
     private final JdbcTemplate jdbcTemplate;
+    private final RowMapper<SubProject> subProjectRowMapper = (rs, rowNum) -> new SubProject(
+            rs.getInt("sub_project_id"),
+            rs.getString("sub_project_name"),
+            rs.getString("sub_project_description"),
+            rs.getDouble("sub_project_estimated_hours"),
+            rs.getDouble("sub_project_actual_hours"),
+            rs.getInt("project_id")
+    );
 
     public SubProjectRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -49,17 +58,12 @@ public class SubProjectRepository {
                 WHERE sub_project_id = ?;
                 """;
 
-        return jdbcTemplate.queryForObject(sql, (rs, rowNum) ->
-                        new SubProject(
-                                rs.getInt("sub_project_id"),
-                                rs.getString("sub_project_name"),
-                                rs.getString("sub_project_description"),
-                                rs.getDouble("sub_project_estimated_hours"),
-                                rs.getDouble("sub_project_actual_hours"),
-                                rs.getInt("project_id")
-                        ),
-                subProjectId
-        );
+        try {
+            return jdbcTemplate.queryForObject(sql, subProjectRowMapper, subProjectId);
+
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     public List<SubProject> findSubProjectsByProjectId(int projectId) {
@@ -75,15 +79,7 @@ public class SubProjectRepository {
                 WHERE project_id = ?
                 """;
 
-        return jdbcTemplate.query(sql, (rs, rowNum) ->
-                new SubProject(
-                        rs.getInt("sub_project_id"),
-                        rs.getString("sub_project_name"),
-                        rs.getString("sub_project_description"),
-                        rs.getDouble("sub_project_estimated_hours"),
-                        rs.getDouble("sub_project_actual_hours"),
-                        rs.getInt("project_id")
-                ), projectId);
+        return jdbcTemplate.query(sql, subProjectRowMapper, projectId);
     }
 
     public void deleteSubProjectById(int subProjectId) {

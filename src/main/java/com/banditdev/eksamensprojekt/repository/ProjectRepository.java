@@ -1,7 +1,9 @@
 package com.banditdev.eksamensprojekt.repository;
 
 import com.banditdev.eksamensprojekt.model.Project;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
@@ -15,6 +17,17 @@ import java.util.List;
 public class ProjectRepository {
 
     private final JdbcTemplate jdbcTemplate;
+    private final RowMapper<Project> projectRowMapper = (rs, rowNum) -> new Project(
+            rs.getInt("project_id"),
+            rs.getString("project_name"),
+            rs.getString("project_description"),
+            rs.getDate("project_start_date").toLocalDate(),
+            rs.getDate("project_estimated_deadline") != null
+                    ? rs.getDate("project_estimated_deadline").toLocalDate() : null,
+            rs.getDouble("project_estimated_hours"),
+            rs.getDouble("project_actual_hours"),
+            rs.getInt("owner_user_id")
+    );
 
     public ProjectRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -35,18 +48,7 @@ public class ProjectRepository {
                 WHERE owner_user_id = ?
                 """;
 
-        return jdbcTemplate.query(sql, (rs, rowNum) -> new Project(
-                rs.getInt("project_id"),
-                rs.getString("project_name"),
-                rs.getString("project_description"),
-                rs.getDate("project_start_date").toLocalDate(),
-                rs.getDate("project_estimated_deadline") != null
-                        ? rs.getDate("project_estimated_deadline").toLocalDate()
-                        : null,
-                rs.getDouble("project_estimated_hours"),
-                rs.getDouble("project_actual_hours"),
-                rs.getInt("owner_user_id")
-        ), userId);
+        return jdbcTemplate.query(sql, projectRowMapper, userId);
     }
 
     public Project addProject(Project project, int userId) {
@@ -121,17 +123,13 @@ public class ProjectRepository {
                 project_estimated_hours, project_actual_hours, owner_user_id
                 FROM project
                 WHERE project_id = ?""";
-        return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> new Project(
-                rs.getInt("project_id"),
-                rs.getString("project_name"),
-                rs.getString("project_description"),
-                rs.getDate("project_start_date").toLocalDate(),
-                rs.getDate("project_estimated_deadline") != null
-                ? rs.getDate("project_estimated_deadline").toLocalDate() : null,
-                rs.getDouble("project_estimated_hours"),
-                rs.getDouble("project_actual_hours"),
-                rs.getInt("owner_user_id")
-                ), projectId);
+
+        try {
+            return jdbcTemplate.queryForObject(sql, projectRowMapper, projectId);
+        }
+        catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     public void addUserToProject(int projectId, int userId) {
@@ -155,8 +153,7 @@ public class ProjectRepository {
 
     public void removeAllUsersFromProject(int projectId) {
         String sql = """
-        
-                DELETE FROM project_assigned_user
+        DELETE FROM project_assigned_user
         WHERE project_id = ?
         """;
 
@@ -176,17 +173,6 @@ public class ProjectRepository {
                   owner_user_id
                 FROM project
                 """;
-        return jdbcTemplate.query(sql, (rs, rowNum) -> new Project(
-                rs.getInt("project_id"),
-                rs.getString("project_name"),
-                rs.getString("project_description"),
-                rs.getDate("project_start_date").toLocalDate(),
-                rs.getDate("project_estimated_deadline") != null
-                        ? rs.getDate("project_estimated_deadline").toLocalDate()
-                        : null,
-                rs.getDouble("project_estimated_hours"),
-                rs.getDouble("project_actual_hours"),
-                rs.getInt("owner_user_id")
-        ));
+        return jdbcTemplate.query(sql, projectRowMapper);
     }
 }
