@@ -1,5 +1,6 @@
 package com.banditdev.eksamensprojekt.service;
 
+import com.banditdev.eksamensprojekt.exception.ProjectNotFoundException;
 import com.banditdev.eksamensprojekt.model.Project;
 import com.banditdev.eksamensprojekt.model.User;
 import com.banditdev.eksamensprojekt.repository.ProjectRepository;
@@ -39,7 +40,11 @@ public class ProjectService {
     }
 
     public Project findProjectById(int projectId) {
-        return projectRepository.findProjectById(projectId);
+        Project project = projectRepository.findProjectById(projectId);
+        if (project == null) {
+            throw new ProjectNotFoundException(projectId);
+        }
+        return project;
     }
 
     public void addUserToProject(int projectId, int userId) {
