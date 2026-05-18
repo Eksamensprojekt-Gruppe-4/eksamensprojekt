@@ -28,7 +28,7 @@
         <p class="form-subtitle" th:text="'Editing: ' + ${project.projectName}"></p>
 
         <form th:action="@{/projects/edit/{id}(id=${project.projectId})}" method="post">
-
+            <p class="error" th:if="${error}" th:text="${error}"></p>
             <div class="field">
                 <label for="projectName">Project name</label>
                 <input type="text" id="projectName" name="projectName"
@@ -44,7 +44,7 @@
             <div class="field">
                 <label for="projectStartDate">Start date</label>
                 <input type="date" id="projectStartDate" name="projectStartDate"
-                       th:value="${project.projectStartDate}" required/>
+                       th:value="${project.projectStartDate}" th:min="${today}" required/>
             </div>
 
             <hr class="form-divider"/>
