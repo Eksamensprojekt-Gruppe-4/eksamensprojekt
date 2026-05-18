@@ -58,6 +58,7 @@ public class ProjectController {
         }
 
         Project project = projectService.findProjectById(projectId);
+
         if (project == null) {
             return "redirect:/projects/myProjects";
         }
@@ -73,7 +74,6 @@ public class ProjectController {
 
         return "projectView";
     }
-
 
     @GetMapping("/add")
     public String showAddProjectForm(Model model, HttpSession session) {
@@ -101,8 +101,9 @@ public class ProjectController {
             return "redirect:/profile/login";
         }
 
+        Project createdProject;
         try {
-            createdProject = projectService.addProject(project, currentUser.getUserId());
+            createdProject = projectService.addProject(project, currentLoggedInUser.getUserId());
             projectService.addAssignedUserIdsToDatabase(createdProject.getProjectId(), listOfUserIdsFromAssignedUsers);
         } catch (IllegalArgumentException e) {
             model.addAttribute("error", e.getMessage());
@@ -110,7 +111,7 @@ public class ProjectController {
             model.addAttribute("today", LocalDate.now());
             return "projectCreate";
         }
-        Project createdProject = projectService.addProject(project, currentLoggedInUser.getUserId());
+        createdProject = projectService.addProject(project, currentLoggedInUser.getUserId());
         projectService.addAssignedUserIdsToDatabase(createdProject.getProjectId(), listOfUserIdsFromAssignedUsers);
 
         return "redirect:/projects/" + createdProject.getProjectId();
@@ -149,17 +150,13 @@ public class ProjectController {
     public String editProject(@PathVariable int projectId,
                               @RequestParam String projectName,
                               @RequestParam String projectDescription,
-                              @RequestParam LocalDate projectStartDate, @RequestParam(required = false) List<Integer> listOfUserIdsFromAssignedUsers, HttpSession session) {
+                              @RequestParam LocalDate projectStartDate, @RequestParam(required = false) List<Integer> listOfUserIdsFromAssignedUsers, HttpSession session, Model model) {
 
         User currentLoggedInUser = (User) session.getAttribute("user");
         if (!userService.isUserLoggedIn(currentLoggedInUser)) {
             return "redirect:/profile/login";
         }
 
-        projectService.updateProject(projectId, projectName, projectDescription, projectStartDate);
-                              @RequestParam LocalDate projectStartDate,
-                              @RequestParam(required = false) List<Integer> listOfUserIdsFromAssignedUsers,
-                              Model model) {
         try {
             projectService.updateProject(projectId, projectName, projectDescription, projectStartDate);
         } catch (IllegalArgumentException e) {
