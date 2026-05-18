@@ -20,6 +20,7 @@ public class ProjectService {
     }
 
     public Project addProject(Project project, int userId) {
+        validateStartDate(project.getProjectStartDate(), null);
         return projectRepository.addProject(project, userId);
     }
 
@@ -31,7 +32,9 @@ public class ProjectService {
         return projectRepository.findProjectsByUserId(userId);
     }
 
-    public void updateProject(int projectId, String name, String description, LocalDate startDate){
+    public void updateProject(int projectId, String name, String description, LocalDate startDate) {
+        Project existing = projectRepository.findProjectById(projectId);
+        validateStartDate(startDate, existing.getProjectStartDate());
         projectRepository.updateProject(projectId, name, description, startDate);
     }
 
@@ -62,5 +65,12 @@ public class ProjectService {
 
     public List<Project> findAllProjects() {
         return projectRepository.findAllProjects();
+    }
+
+    private void validateStartDate(LocalDate newDate, LocalDate storedDate) {
+        boolean changed = !newDate.equals(storedDate);
+        if (changed && newDate.isBefore(LocalDate.now())) {
+            throw new IllegalArgumentException("Start date cannot be in the past");
+        }
     }
 }
