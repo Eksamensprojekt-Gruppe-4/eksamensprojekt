@@ -1,6 +1,11 @@
 package com.banditdev.eksamensprojekt.service;
 
 import com.banditdev.eksamensprojekt.model.*;
+import com.banditdev.eksamensprojekt.exception.UserNotFoundException;
+import com.banditdev.eksamensprojekt.model.Project;
+import com.banditdev.eksamensprojekt.model.SubProject;
+import com.banditdev.eksamensprojekt.model.Task;
+import com.banditdev.eksamensprojekt.model.User;
 import com.banditdev.eksamensprojekt.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +26,11 @@ public class UserService {
     }
 
     public User findUserByUserUsername(String userUsername) {
-        return userRepository.findUserByUserUsername(userUsername);
+        User user = userRepository.findUserByUserUsername(userUsername);
+        if(user == null){
+            throw new UserNotFoundException(userUsername);
+        }
+        return user;
     }
 
     public boolean validateUser(String userUsername, String userPassword) {
@@ -38,7 +47,11 @@ public class UserService {
     }
 
     public User findUserByUserId(int userIdToFind) {
-        return userRepository.findUserByUserId(userIdToFind);
+        User user = userRepository.findUserByUserId(userIdToFind);
+        if (user == null){
+            throw new UserNotFoundException (userIdToFind);
+        }
+        return user;
     }
 
     public List<User> findUsersAssignedToProjectByProjectId(int projectId) {
