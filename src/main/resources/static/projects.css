@@ -93,25 +93,31 @@ main {
     color: var(--color-text-muted);
 }
 
+/* ── Small buttons — single definition, no duplicates ── */
 .btn-sm {
     display: inline-block;
     padding: 0.4rem 0.9rem;
     font-size: 0.85rem;
+    font-family: inherit;
     font-weight: 600;
+    line-height: 1.4;
     border-radius: 4px;
     cursor: pointer;
-    transition: background-color 0.2s;
+    transition: background-color 0.2s, color 0.2s;
     text-decoration: none;
-    border: none;
+    white-space: nowrap;
+    box-sizing: border-box;
+    /* NO border: none here — each variant sets its own border */
 }
 
 .btn-view {
-    background-color: var(--color-primary);
-    color: #FFFFFF;
+    background-color: transparent;
+    color: var(--color-primary);
+    border: 2px solid var(--color-primary);
 }
 
 .btn-view:hover {
-    background-color: var(--color-primary-dark);
+    background-color: var(--color-primary);
     color: #FFFFFF;
 }
 
@@ -126,22 +132,35 @@ main {
     color: #FFFFFF;
 }
 
-.subproject-description {
-    color: var(--color-text-muted);
-    font-size: 0.9rem;
-    display: block;
-}
-
 .btn-delete {
     background-color: transparent;
     color: #CC3333;
     border: 2px solid #CC3333;
-    font-family: inherit;
 }
 
 .btn-delete:hover {
     background-color: #CC3333;
     color: #FFFFFF;
+}
+
+/* ── Action groups ── */
+.project-detail-actions {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.project-detail-actions form {
+    margin: 0;
+    display: flex;
+    align-items: center;
+}
+
+/* ── Misc ── */
+.subproject-description {
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+    display: block;
 }
 
 .empty-state {
@@ -155,16 +174,6 @@ main {
 .empty-state p {
     color: var(--color-text-muted);
     margin-bottom: 1.5rem;
-}
-
-.project-detail-actions {
-    display: flex;
-    gap: 0.5rem;
-    align-items: center;
-}
-
-.project-detail-actions form {
-    margin: 0;
 }
 
 .project-meta-table {
