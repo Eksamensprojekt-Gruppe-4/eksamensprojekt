@@ -1,9 +1,6 @@
 package com.banditdev.eksamensprojekt.service;
 
-import com.banditdev.eksamensprojekt.model.Project;
-import com.banditdev.eksamensprojekt.model.SubProject;
-import com.banditdev.eksamensprojekt.model.Task;
-import com.banditdev.eksamensprojekt.model.User;
+import com.banditdev.eksamensprojekt.model.*;
 import com.banditdev.eksamensprojekt.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -86,5 +83,22 @@ public class UserService {
         userRepository.editOwnUser(currentUserFromDatabase);
 
         return currentUserFromDatabase;
+    }
+
+    public boolean validateUserIsManager(User user) {
+        return user.getUserRole() == UserRole.MANAGER;
+    }
+
+    public boolean validateUserIsAdmin(User user) {
+        return user.getUserRole() == UserRole.ADMIN;
+    }
+
+    public boolean validateUserIsProjectOwner(int userId, int projectId) {
+        User owner = userRepository.returnOwnerOfProjectByProjectId(projectId);
+        return owner != null && (owner.getUserId() == userId);
+    }
+
+    public boolean isUserLoggedIn(User user) {
+        return user != null;
     }
 }
