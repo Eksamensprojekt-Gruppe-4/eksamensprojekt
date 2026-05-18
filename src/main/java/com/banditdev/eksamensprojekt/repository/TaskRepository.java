@@ -1,7 +1,9 @@
 package com.banditdev.eksamensprojekt.repository;
 
 import com.banditdev.eksamensprojekt.model.Task;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
@@ -14,6 +16,15 @@ import java.util.List;
 public class TaskRepository {
 
     private final JdbcTemplate jdbcTemplate;
+    private final RowMapper<Task> taskRowMapper = (rs, rowNum) -> new Task(
+            rs.getInt("task_id"),
+            rs.getString("task_name"),
+            rs.getString("task_description"),
+            rs.getDouble("task_estimated_hours"),
+            rs.getDouble("task_actual_hours"),
+            rs.getInt("user_id"),
+            rs.getInt("sub_project_id")
+    );
 
     public TaskRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -65,15 +76,14 @@ public class TaskRepository {
                 WHERE task_id = ?
                 """;
 
-            return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> new Task(
-                    rs.getInt("task_id"),
-                    rs.getString("task_name"),
-                    rs.getString("task_description"),
-                    rs.getDouble("task_estimated_hours"),
-                    rs.getDouble("task_actual_hours"),
-                    rs.getInt("user_id"),
-                    rs.getInt("sub_project_id")
-            ), taskIdToFind);
+            try {
+                return jdbcTemplate.queryForObject(sql, taskRowMapper, taskIdToFind);
+
+            }
+
+            catch (EmptyResultDataAccessException e) {
+                return null;
+            }
     }
 
     public void updateTask(Task task) {
@@ -104,15 +114,7 @@ public class TaskRepository {
             FROM task
             WHERE sub_project_id = ?
             """;
-        return jdbcTemplate.query(sql, (rs, rowNum) -> new Task(
-                rs.getInt("task_id"),
-                rs.getString("task_name"),
-                rs.getString("task_description"),
-                rs.getDouble("task_estimated_hours"),
-                rs.getDouble("task_actual_hours"),
-                rs.getInt("user_id"),
-                rs.getInt("sub_project_id")
-        ), subProjectId);
+        return jdbcTemplate.query(sql, taskRowMapper, subProjectId);
     }
 
     public void deleteTaskByTaskId(int taskIdToDelete) {

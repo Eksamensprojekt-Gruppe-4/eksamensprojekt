@@ -5,6 +5,7 @@ import com.banditdev.eksamensprojekt.model.UserExperience;
 import com.banditdev.eksamensprojekt.model.UserRole;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -12,6 +13,14 @@ import java.util.List;
 @Repository
 public class UserRepository {
     private final JdbcTemplate jdbcTemplate;
+    private final RowMapper<User> userRowMapper = (rs, rowNum) -> new User(
+            rs.getInt("user_id"),
+            rs.getString("user_name"),
+            rs.getString("user_username"),
+            rs.getString("user_password"),
+            UserExperience.valueOf(rs.getString("user_experience")),
+            UserRole.valueOf(rs.getString("user_role"))
+    );
 
     public UserRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -48,18 +57,7 @@ public class UserRepository {
 
         try {
             return jdbcTemplate.queryForObject(
-                    sql,
-                    (rs, rowNum) ->
-                            new User(
-                                    rs.getInt("user_id"),
-                                    rs.getString("user_name"),
-                                    rs.getString("user_username"),
-                                    rs.getString("user_password"),
-                                    UserExperience.valueOf(rs.getString("user_experience")),
-                                    UserRole.valueOf(rs.getString("user_role"))
-                            ),
-                    username
-            );
+                    sql, userRowMapper, username);
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
@@ -77,16 +75,7 @@ public class UserRepository {
                 FROM user
                 """;
 
-            return jdbcTemplate.query(sql, (rs, rowNum) ->
-                    new User(
-                            rs.getInt("user_id"),
-                            rs.getString("user_name"),
-                            rs.getString("user_username"),
-                            rs.getString("user_password"),
-                            UserExperience.valueOf(rs.getString("user_experience")),
-                            UserRole.valueOf(rs.getString("user_role"))
-                    )
-            );
+            return jdbcTemplate.query(sql, userRowMapper);
     }
 
     public User findUserAssignedToTaskByTaskId(int taskId) {
@@ -104,14 +93,7 @@ public class UserRepository {
                 """;
 
         try {
-            return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> new User(
-                    rs.getInt("user_id"),
-                    rs.getString("user_name"),
-                    rs.getString("user_username"),
-                    rs.getString("user_password"),
-                    UserExperience.valueOf(rs.getString("user_experience")),
-                    UserRole.valueOf(rs.getString("user_role"))
-            ), taskId);
+            return jdbcTemplate.queryForObject(sql, userRowMapper, taskId);
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
@@ -131,19 +113,7 @@ public class UserRepository {
                 """;
 
         try {
-            return jdbcTemplate.queryForObject(
-                    sql,
-                    (rs, rowNum) ->
-                            new User(
-                                    rs.getInt("user_id"),
-                                    rs.getString("user_name"),
-                                    rs.getString("user_username"),
-                                    rs.getString("user_password"),
-                                    UserExperience.valueOf(rs.getString("user_experience")),
-                                    UserRole.valueOf(rs.getString("user_role"))
-                            ),
-                    userId
-            );
+            return jdbcTemplate.queryForObject(sql, userRowMapper, userId);
 
         } catch (EmptyResultDataAccessException e) {
             return null;
@@ -165,14 +135,7 @@ public class UserRepository {
         WHERE pau.project_id = ?
         """;
 
-        return jdbcTemplate.query(sql, (rs, rowNum) -> new User(
-                rs.getInt("user_id"),
-                rs.getString("user_name"),
-                rs.getString("user_username"),
-                rs.getString("user_password"),
-                UserExperience.valueOf(rs.getString("user_experience")),
-                UserRole.valueOf(rs.getString("user_role"))
-        ), projectId);
+        return jdbcTemplate.query(sql, userRowMapper, projectId);
     }
 
     public List<Integer> findUserIdsAssignedToProjectByProjectId(int projectId) {
