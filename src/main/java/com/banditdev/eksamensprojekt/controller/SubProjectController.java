@@ -89,6 +89,7 @@ public class SubProjectController {
         model.addAttribute("tasksBySubProject", tasks);
         model.addAttribute("usersById", userService.getUsersMappedById());
 
+
         return "subProjectView";
     }
 }
