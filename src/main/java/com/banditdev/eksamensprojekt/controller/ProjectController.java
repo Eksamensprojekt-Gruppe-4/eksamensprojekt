@@ -139,12 +139,8 @@ public class ProjectController {
 
         List<Project> projects = projectService.findAllProjects();
 
-        Map<Integer, User> ownersByProject = new HashMap<>();
-        for(Project project: projects){
-            ownersByProject.put(project.getProjectId(), userService.findUserByUserId(project.getOwnerUserId()));
-        }
         model.addAttribute("projects", projects);
-        model.addAttribute("ownersByProject", ownersByProject);
+        model.addAttribute("ownersByProject", userService.getOwnersByProjectIdMap(projects));
 
         return "projectsAllOverview";
     }

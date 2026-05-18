@@ -1,5 +1,6 @@
 package com.banditdev.eksamensprojekt.service;
 
+import com.banditdev.eksamensprojekt.model.Project;
 import com.banditdev.eksamensprojekt.model.SubProject;
 import com.banditdev.eksamensprojekt.model.Task;
 import com.banditdev.eksamensprojekt.model.User;
@@ -59,5 +60,15 @@ public class UserService {
         }
 
         return usersByUserIdMap;
+    }
+
+    public Map<Integer, User> getOwnersByProjectIdMap(List<Project> allProjects) {
+
+        Map<Integer, User> ownersByProject = new HashMap<>();
+        for (Project project : allProjects) {
+            ownersByProject.put(project.getProjectId(), findUserByUserId(project.getOwnerUserId()));
+        }
+
+        return ownersByProject;
     }
 }
