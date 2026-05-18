@@ -82,18 +82,28 @@ public class ProjectController {
 
         model.addAttribute("project", new Project());
         model.addAttribute("allUsers",userService.findAllUsers());
+        model.addAttribute("today", LocalDate.now());
 
         return "projectCreate";
     }
 
     @PostMapping("/add")
-    public String addProject(@ModelAttribute Project project, @RequestParam(required = false) List<Integer> listOfUserIdsFromAssignedUsers, HttpSession session) {
+    public String addProject(@ModelAttribute Project project,
+                             @RequestParam(required = false) List<Integer> listOfUserIdsFromAssignedUsers,
+                             HttpSession session,
+                             Model model) {
 
         User currentUser = (User) session.getAttribute("user");
 
-        Project createdProject = projectService.addProject(project, currentUser.getUserId());
-        projectService.addAssignedUserIdsToDatabase(createdProject.getProjectId(), listOfUserIdsFromAssignedUsers);
-
+        try {
+            Project createdProject = projectService.addProject(project, currentUser.getUserId());
+            projectService.addAssignedUserIdsToDatabase(createdProject.getProjectId(), listOfUserIdsFromAssignedUsers);
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("error", e.getMessage());
+            model.addAttribute("allUsers", userService.findAllUsers());
+            model.addAttribute("today", LocalDate.now());
+            return "projectCreate";
+        }
         return "redirect:/projects/myProjects";
     }
 
@@ -116,6 +126,7 @@ public class ProjectController {
         model.addAttribute("project", projectService.findProjectById(projectId));
         model.addAttribute("allUsers", userService.findAllUsers());
         model.addAttribute("assignedUsersIds", userService.findUserIdsAssignedToProjectByProjectId(projectId));
+        model.addAttribute("today", LocalDate.now());
 
         return "projectEdit";
     }
@@ -124,8 +135,19 @@ public class ProjectController {
     public String editProject(@PathVariable int projectId,
                               @RequestParam String projectName,
                               @RequestParam String projectDescription,
-                              @RequestParam LocalDate projectStartDate, @RequestParam(required = false) List<Integer> listOfUserIdsFromAssignedUsers) {
-        projectService.updateProject(projectId, projectName, projectDescription, projectStartDate);
+                              @RequestParam LocalDate projectStartDate,
+                              @RequestParam(required = false) List<Integer> listOfUserIdsFromAssignedUsers,
+                              Model model) {
+        try {
+            projectService.updateProject(projectId, projectName, projectDescription, projectStartDate);
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("error", e.getMessage());
+            model.addAttribute("project", projectService.findProjectById(projectId));
+            model.addAttribute("allUsers", userService.findAllUsers());
+            model.addAttribute("assignedUsersIds", userService.findUserIdsAssignedToProjectByProjectId(projectId));
+            model.addAttribute("today", LocalDate.now());
+            return "projectEdit";
+        }
 
         projectService.removeAllUsersFromProject(projectId);
         projectService.addAssignedUserIdsToDatabase(projectId, listOfUserIdsFromAssignedUsers);

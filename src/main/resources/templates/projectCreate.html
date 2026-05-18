@@ -28,7 +28,7 @@
         <p class="form-subtitle">Fill in the details to get started</p>
 
         <form th:action="@{/projects/add}" method="post">
-
+            <p class="error" th:if="${error}" th:text="${error}"></p>
             <div class="field">
                 <label for="projectName">Project name</label>
                 <input type="text" id="projectName" name="projectName" placeholder="Enter project name" required/>
@@ -39,9 +39,10 @@
                 <textarea id="projectDescription" name="projectDescription" placeholder="What is this project about?"></textarea>
             </div>
 
+
             <div class="field">
                 <label for="projectStartDate">Start date</label>
-                <input type="date" id="projectStartDate" name="projectStartDate" required/>
+                <input type="date" id="projectStartDate" name="projectStartDate" th:min="${today}" required/>
             </div>
 
             <hr class="form-divider"/>
