@@ -6,6 +6,7 @@
     <title>View Task — Alpha Solutions</title>
     <link rel="stylesheet" th:href="@{/styles.css}"/>
     <link rel="stylesheet" th:href="@{/forms.css}"/>
+    <link rel="stylesheet" th:href="@{/breadcrumb.css}"/>
 </head>
 <body>
 
@@ -23,6 +24,13 @@
 
 <main>
     <div class="form-card">
+
+        <p class="breadcrumb">
+            <a th:href="@{/projects/myProjects}">My Projects</a>
+            &rsaquo; <a th:href="@{/projects/{projectId}(projectId=${project.projectId})}" th:text="${project.projectName}">Project</a>
+            &rsaquo; <a th:href="@{/projects/{projectId}/subprojects/{subProjectId}(projectId=${project.projectId},subProjectId=${subProject.subProjectId})}" th:text="${subProject.subProjectName}">Subproject</a>
+            &rsaquo; <span th:text="${task.taskName}">Task</span>
+        </p>
 
         <h2 th:text="${task.taskName}">Task name</h2>
         <p class="form-subtitle"
