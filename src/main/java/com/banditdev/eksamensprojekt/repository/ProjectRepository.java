@@ -119,7 +119,7 @@ public class ProjectRepository {
                 SELECT project_id, project_name, project_description, 
                 project_start_date, project_estimated_deadline, 
                 project_estimated_hours, project_actual_hours, owner_user_id
-                FROM project_db.project
+                FROM project
                 WHERE project_id = ?""";
         return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> new Project(
                 rs.getInt("project_id"),
