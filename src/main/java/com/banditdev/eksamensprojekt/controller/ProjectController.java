@@ -55,23 +55,19 @@ public class ProjectController {
         User currentLoggedInUser = (User) session.getAttribute("user");
 
         Project project = projectService.findProjectById(projectId);
-        List<SubProject> subProjects = subProjectService.findSubProjectsByProjectId(projectId);
-        List<User> assignedUsers = userService.findUsersAssignedToProjectByProjectId(projectId);
-
-
-        Map<Integer, List<Task>> tasksBySubProject = new HashMap<>();
-        for (SubProject sp : subProjects) {
-            tasksBySubProject.put(sp.getSubProjectId(), taskService.findTasksBySubProjectId(sp.getSubProjectId()));
-        }
 
         if (project == null) {
             return "redirect:/projects/myProjects";
         }
 
+        List<SubProject> subProjects = subProjectService.findSubProjectsByProjectId(projectId);
+        List<User> assignedUsers = userService.findUsersAssignedToProjectByProjectId(projectId);
+
         model.addAttribute("project", project);
         model.addAttribute("subProjects", subProjects);
-        model.addAttribute("tasksBySubProject", tasksBySubProject);
+        model.addAttribute("tasksBySubProject", taskService.tasksBySubProject(subProjects));
         model.addAttribute("assignedUsers", assignedUsers);
+        model.addAttribute("usersById", userService.getUsersMappedById());
 
         return "projectView";
     }
@@ -94,9 +90,10 @@ public class ProjectController {
                              Model model) {
 
         User currentUser = (User) session.getAttribute("user");
+        Project createdProject;
 
         try {
-            Project createdProject = projectService.addProject(project, currentUser.getUserId());
+            createdProject = projectService.addProject(project, currentUser.getUserId());
             projectService.addAssignedUserIdsToDatabase(createdProject.getProjectId(), listOfUserIdsFromAssignedUsers);
         } catch (IllegalArgumentException e) {
             model.addAttribute("error", e.getMessage());
@@ -104,7 +101,7 @@ public class ProjectController {
             model.addAttribute("today", LocalDate.now());
             return "projectCreate";
         }
-        return "redirect:/projects/myProjects";
+        return "redirect:/projects/" + createdProject.getProjectId();
     }
 
     @PostMapping("/delete/{projectId}")
@@ -165,12 +162,8 @@ public class ProjectController {
 
         List<Project> projects = projectService.findAllProjects();
 
-        Map<Integer, User> ownersByProject = new HashMap<>();
-        for(Project project: projects){
-            ownersByProject.put(project.getProjectId(), userService.findUserByUserId(project.getOwnerUserId()));
-        }
         model.addAttribute("projects", projects);
-        model.addAttribute("ownersByProject", ownersByProject);
+        model.addAttribute("ownersByProject", userService.getOwnersByProjectIdMap(projects));
 
         return "projectsAllOverview";
     }

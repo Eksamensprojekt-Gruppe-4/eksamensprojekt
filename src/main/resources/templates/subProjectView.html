@@ -6,6 +6,7 @@
     <title th:text="${subProjects.subProjectName} + ' — Alpha Solutions'">Sub Project — Alpha Solutions</title>
     <link rel="stylesheet" th:href="@{/styles.css}"/>
     <link rel="stylesheet" th:href="@{/projects.css}"/>
+    <link rel="stylesheet" th:href="@{/breadcrumb.css}"/>
 </head>
 <body>
 
@@ -26,9 +27,10 @@
 
         <div class="page-header">
             <div>
-                <p class="subproject-breadcrumb">
-                    <a th:href="@{/projects/{projectId}(projectId=${project.projectId})}" th:text="${project.projectName}">Project</a>
-                    &rsaquo; Sub Project
+                <p class="breadcrumb">
+                    <a th:href="@{/projects/myProjects}">My Projects</a>
+                    &rsaquo; <a th:href="@{/projects/{projectId}(projectId=${project.projectId})}" th:text="${project.projectName}">Project</a>
+                    &rsaquo; <span th:text="${subProjects.subProjectName}"></span>
                 </p>
                 <h2 th:text="${subProjects.subProjectName}">Sub Project Name</h2>
                 <p class="project-description" th:text="${subProjects.subProjectDescription}"></p>
@@ -75,6 +77,7 @@
                 <th>Task name</th>
                 <th>Description</th>
                 <th>Hours Est / Act</th>
+                <th>Assignee</th>
                 <th></th>
             </tr>
             </thead>
@@ -88,11 +91,16 @@
                     <span th:text="${task.taskActualHours > 0 ? task.taskActualHours + 'h' : '—'}">—</span>
                 </td>
                 <td>
+                    <span th:if="${task.userId != 0 and usersById[task.userId] != null}"
+                          th:text="${usersById[task.userId].userName}">
+                    </span>
+                    <span class="project-id-badge"
+                          th:if="${task.userId == 0 or usersById[task.userId] == null}">—</span>
+                </td>
+                <td>
                     <div class="project-detail-actions">
                         <a th:href="@{/projects/{projectId}/subprojects/{subProjectId}/task/{taskId}/view(projectId=${project.projectId},subProjectId=${subProjects.subProjectId},taskId=${task.taskId})}"
                            class="btn-sm btn-view">View</a>
-                        <a th:href="@{/projects/{projectId}/subprojects/{subProjectId}/task/{taskId}/edit(projectId=${project.projectId},subProjectId=${subProjects.subProjectId},taskId=${task.taskId})}"
-                           class="btn-sm btn-edit">Edit</a>
                         <form th:action="@{/projects/{projectId}/subprojects/{subProjectId}/task/{taskId}/delete(projectId=${project.projectId},subProjectId=${subProjects.subProjectId},taskId=${task.taskId})}"
                               method="post">
                             <button type="submit" class="btn-sm btn-delete"

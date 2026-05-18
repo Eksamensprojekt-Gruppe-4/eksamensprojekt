@@ -7,6 +7,7 @@ import com.banditdev.eksamensprojekt.model.User;
 import com.banditdev.eksamensprojekt.service.ProjectService;
 import com.banditdev.eksamensprojekt.service.SubProjectService;
 import com.banditdev.eksamensprojekt.service.TaskService;
+import com.banditdev.eksamensprojekt.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,11 +23,13 @@ public class SubProjectController {
     private final SubProjectService service;
     private final TaskService taskService;
     private final ProjectService projectService;
+    private final UserService userService;
 
-    public SubProjectController(SubProjectService service, TaskService taskService, ProjectService projectService) {
+    public SubProjectController(SubProjectService service, TaskService taskService, ProjectService projectService, UserService userService) {
         this.service = service;
         this.taskService = taskService;
         this.projectService = projectService;
+        this.userService = userService;
     }
 
     @GetMapping("/new")
@@ -77,25 +80,15 @@ public class SubProjectController {
 
         User currentLoggedInUser = (User) session.getAttribute("user");
 
-        /* User authentication check possible?
-        if (currentLoggedInUser == null) {
-            return "redirect:/profile/login";
-        } */
-
         Project project = projectService.findProjectById(projectId);
         SubProject subProject = service.findSubProjectBySubProjectId(subProjectId);
         List<Task> tasks = taskService.findTasksBySubProjectId(subProjectId);
 
-        /* Possible user security check? Check if currentLoggedInUser is either asigned or owner of the project
-        he is trying to access.
-
-        if (!projectService.validateProjectOwnerOrAsignees(currentLoggedInUser, projectId)) {
-           return "redirect:/projects/myProjects";
-        } */
-
         model.addAttribute("project", project);
         model.addAttribute("subProjects", subProject);
         model.addAttribute("tasksBySubProject", tasks);
+        model.addAttribute("usersById", userService.getUsersMappedById());
+
 
         return "subProjectView";
     }

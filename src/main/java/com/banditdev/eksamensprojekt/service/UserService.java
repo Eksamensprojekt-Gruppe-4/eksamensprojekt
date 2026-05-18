@@ -1,10 +1,15 @@
 package com.banditdev.eksamensprojekt.service;
 
+import com.banditdev.eksamensprojekt.model.Project;
+import com.banditdev.eksamensprojekt.model.SubProject;
+import com.banditdev.eksamensprojekt.model.Task;
 import com.banditdev.eksamensprojekt.model.User;
 import com.banditdev.eksamensprojekt.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class UserService {
@@ -45,5 +50,41 @@ public class UserService {
 
     public List<Integer> findUserIdsAssignedToProjectByProjectId(int projectId) {
         return userRepository.findUserIdsAssignedToProjectByProjectId(projectId);
+    }
+
+    public Map<Integer, User> getUsersMappedById() {
+        Map<Integer, User> usersByUserIdMap = new HashMap<>();
+
+        for (User user : findAllUsers()) {
+            usersByUserIdMap.put(user.getUserId(), user);
+        }
+
+        return usersByUserIdMap;
+    }
+
+    public Map<Integer, User> getOwnersByProjectIdMap(List<Project> allProjects) {
+
+        Map<Integer, User> ownersByProject = new HashMap<>();
+        for (Project project : allProjects) {
+            ownersByProject.put(project.getProjectId(), findUserByUserId(project.getOwnerUserId()));
+        }
+
+        return ownersByProject;
+    }
+
+    public User updateUserProfile(int userId, User formUser) {
+
+        User currentUserFromDatabase = userRepository.findUserByUserId(userId);
+
+        currentUserFromDatabase.setUserUsername(formUser.getUserUsername());
+
+        if (formUser.getUserPassword() != null &&
+                !formUser.getUserPassword().trim().isEmpty()) {
+            currentUserFromDatabase.setUserPassword(formUser.getUserPassword());
+        }
+
+        userRepository.editOwnUser(currentUserFromDatabase);
+
+        return currentUserFromDatabase;
     }
 }

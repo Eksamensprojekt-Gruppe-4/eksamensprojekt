@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Edit Profile — Alpha Solutions</title>
     <link rel="stylesheet" th:href="@{/styles.css}"/>
-    <link rel="stylesheet" th:href="@{/profile.css}"/>
+    <link rel="stylesheet" th:href="@{/forms.css}"/>
 </head>
 <body>
 
@@ -22,43 +22,43 @@
 </header>
 
 <main>
-    <section class="container">
+    <div class="form-card">
 
         <h2>Edit Profile</h2>
+        <p class="form-subtitle">Update your name, username, or password</p>
 
-        <div class="card profile-card">
+        <form th:action="@{/profile/update}" method="post">
 
-            <form th:action="@{/profile/update}" method="post">
+            <input type="hidden" name="userId" th:value="${user.userId}"/>
 
-                <input type="hidden" name="userId" th:value="${user.userId}">
+            <div class="field">
+                <label for="userName">Name</label>
+                <input type="text" id="userName" name="userName"
+                       th:value="${user.userName}" required/>
+            </div>
 
-                <p>
-                    <label for="userName"><strong>Name</strong></label>
-                    <input type="text" id="userName" name="userName"
-                           th:value="${user.userName}" required/>
-                </p>
+            <div class="field">
+                <label for="userUsername">Username</label>
+                <input type="text" id="userUsername" name="userUsername"
+                       th:value="${user.userUsername}" required/>
+            </div>
 
-                <p>
-                    <label for="userUsername"><strong>Username</strong></label>
-                    <input type="text" id="userUsername" name="userUsername"
-                           th:value="${user.userUsername}" required/>
-                </p>
+            <hr class="form-divider"/>
 
-                <p>
-                    <label for="userPassword"><strong>New password</strong></label>
-                    <input type="password" id="userPassword" name="userPassword"
-                           placeholder="Leave blank to keep current"/>
-                </p>
+            <div class="field">
+                <label for="userPassword">New password</label>
+                <input type="password" id="userPassword" name="userPassword"
+                       placeholder="Leave blank to keep current"/>
+            </div>
 
-                <div class="btn-row">
-                    <button type="submit" class="btn">Save changes</button>
-                    <a th:href="@{/profile/view}" class="btn btn-outline">Cancel</a>
-                </div>
-            </form>
+            <div class="form-actions-2">
+                <button type="submit" class="btn">Save changes</button>
+                <a th:href="@{/profile/view}" class="btn btn-outline">Cancel</a>
+            </div>
 
-        </div>
+        </form>
 
-    </section>
+    </div>
 </main>
 
 </body>

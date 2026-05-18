@@ -6,6 +6,7 @@
     <title>View Task — Alpha Solutions</title>
     <link rel="stylesheet" th:href="@{/styles.css}"/>
     <link rel="stylesheet" th:href="@{/forms.css}"/>
+    <link rel="stylesheet" th:href="@{/breadcrumb.css}"/>
 </head>
 <body>
 
@@ -23,6 +24,13 @@
 
 <main>
     <div class="form-card">
+
+        <p class="breadcrumb">
+            <a th:href="@{/projects/myProjects}">My Projects</a>
+            &rsaquo; <a th:href="@{/projects/{projectId}(projectId=${project.projectId})}" th:text="${project.projectName}">Project</a>
+            &rsaquo; <a th:href="@{/projects/{projectId}/subprojects/{subProjectId}(projectId=${project.projectId},subProjectId=${subProject.subProjectId})}" th:text="${subProject.subProjectName}">Subproject</a>
+            &rsaquo; <span th:text="${task.taskName}">Task</span>
+        </p>
 
         <h2 th:text="${task.taskName}">Task name</h2>
         <p class="form-subtitle"
@@ -55,14 +63,14 @@
         </div>
 
         <div class="form-actions">
-            <a th:href="@{/projects/{projectId}/subprojects/{subProjectId}/task/{taskId}/edit(projectId=${projectId},subProjectId=${subProject.subProjectId},taskId=${task.taskId})}"
-               class="btn">Edit task</a>
             <a th:href="@{/projects/{projectId}/subprojects/{subProjectId}(projectId=${projectId},subProjectId=${subProject.subProjectId})}"
                class="btn btn-outline">Back</a>
             <form th:action="@{/projects/{projectId}/subprojects/{subProjectId}/task/{taskId}/delete(projectId=${projectId},subProjectId=${subProject.subProjectId},taskId=${task.taskId})}"
                   method="post" style="margin: 0;">
                 <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this task?')">Delete</button>
             </form>
+            <a th:href="@{/projects/{projectId}/subprojects/{subProjectId}/task/{taskId}/edit(projectId=${projectId},subProjectId=${subProject.subProjectId},taskId=${task.taskId})}"
+               class="btn">Edit task</a>
         </div>
 
     </div>

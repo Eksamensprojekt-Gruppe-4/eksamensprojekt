@@ -6,6 +6,7 @@
     <title th:text="${project.projectName} + ' — Alpha Solutions'">Project — Alpha Solutions</title>
     <link rel="stylesheet" th:href="@{/styles.css}"/>
     <link rel="stylesheet" th:href="@{/projects.css}"/>
+    <link rel="stylesheet" th:href="@{/breadcrumb.css}"/>
 </head>
 <body>
 
@@ -26,6 +27,10 @@
 
         <div class="page-header">
             <div>
+                <p class="breadcrumb">
+                    <a th:href="@{/projects/myProjects}">My Projects</a>
+                    &rsaquo; <span th:text="${project.projectName}"></span>
+                </p>
                 <h2 th:text="${project.projectName}">Project Name</h2>
                 <p class="project-description" th:text="${project.projectDescription}"></p>
             </div>
@@ -63,7 +68,7 @@
                 <tr>
                     <th>#</th>
                     <th>Username</th>
-                    <th>Role</th>
+                    <th>Experience</th>
                 </tr>
                 </thead>
 
@@ -71,8 +76,8 @@
 
                 <tr th:each="user, iterStat : ${assignedUsers}">
                     <td th:text="${iterStat.count}">1</td>
-                    <td th:text="${user.userName}">Username</td>
-                    <td th:text="${user.userRole}">Role</td>
+                    <td th:text="${user.userName}">Name</td>
+                    <td th:text="${user.userExperience}">Experience</td>
                 </tr>
 
                 <tr th:if="${assignedUsers == null or #lists.isEmpty(assignedUsers)}">
@@ -103,7 +108,6 @@
                 </div>
                 <div class="project-detail-actions">
                     <a th:href="@{/projects/{projectId}/subprojects/{subProjectId}(projectId=${project.projectId},subProjectId=${sp.subProjectId})}" class="btn-sm btn-view">View</a>
-                    <a th:href="@{/projects/{projectId}/subprojects/{subProjectId}/edit(projectId=${project.projectId},subProjectId=${sp.subProjectId})}" class="btn-sm btn-edit">Edit</a>
                     <form th:action="@{/projects/{projectId}/subprojects/{subProjectId}/delete(projectId=${project.projectId},subProjectId=${sp.subProjectId})}" method="post">
                         <button type="submit" class="btn-sm btn-delete" onclick="return confirm('Delete this sub-project?')">Delete</button>
                     </form>
@@ -124,11 +128,17 @@
                     <td><span class="project-name" th:text="${task.taskName}">Task</span></td>
                     <td><span class="subproject-description" th:text="${sp.subProjectDescription}"></span></td>
                     <td class="project-date">
-                        <span th:text="${task.taskEstimatedHours}">0</span>
+                        <span th:text="${task.taskEstimatedHours} + 'h'">0</span>
                         /
-                        <span th:text="${task.taskActualHours > 0 ? task.taskActualHours : '—'}">—</span>
+                        <span th:text="${task.taskActualHours > 0 ? task.taskActualHours  + 'h' : '—'}">—</span>
                     </td>
-                    <td><span class="project-id-badge">—</span></td>
+                    <td>
+                        <span th:if="${task.userId != 0 and usersById[task.userId] != null}"
+                              th:text="${usersById[task.userId].userName}">
+                        </span>
+                        <span class="project-id-badge"
+                              th:if="${task.userId == 0 or usersById[task.userId] == null}">—</span>
+                    </td>
                 </tr>
                 <tr th:if="${tasksBySubProject[sp.subProjectId] == null or #lists.isEmpty(tasksBySubProject[sp.subProjectId])}">
                     <td colspan="4" class="tasks-empty-row">No tasks yet.</td>
@@ -136,6 +146,12 @@
                 </tbody>
             </table>
 
+        </div>
+
+        <br>
+        <br>
+        <div class="container" style="margin-top: 1rem;">
+            <a th:href="@{/projects/myProjects}" class="btn btn-outline">Back</a>
         </div>
 
     </section>
