@@ -71,4 +71,20 @@ public class UserService {
 
         return ownersByProject;
     }
+
+    public User updateUserProfile(int userId, User formUser) {
+
+        User currentUserFromDatabase = userRepository.findUserByUserId(userId);
+
+        currentUserFromDatabase.setUserUsername(formUser.getUserUsername());
+
+        if (formUser.getUserPassword() != null &&
+                !formUser.getUserPassword().trim().isEmpty()) {
+            currentUserFromDatabase.setUserPassword(formUser.getUserPassword());
+        }
+
+        userRepository.editOwnUser(currentUserFromDatabase);
+
+        return currentUserFromDatabase;
+    }
 }
