@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Error — Alpha Solutions</title>
+    <link rel="stylesheet" th:href="@{/styles.css}"/>
+    <link rel="stylesheet" th:href="@{/error.css}"/>
+</head>
+<body>
+
+<header>
+    <div class="logo">Alpha Solutions</div>
+    <nav>
+        <ul>
+            <li><a th:href="@{/projects/myProjects}">My Projects</a></li>
+            <li><a th:href="@{/projects/allProjects}">All Projects</a></li>
+            <li><a th:href="@{/profile/view}">Profile</a></li>
+            <li><a th:href="@{/profile/logout}">Log out</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main>
+    <div class="error-container">
+
+        <div class="error-code">
+            <span th:text="${status != null ? status : '404'}">404</span>
+        </div>
+
+        <h2 class="error-title"
+            th:text="${error != null ? error : 'Page not found'}">
+            Page not found
+        </h2>
+
+        <p class="error-message"
+           th:text="${message != null ? message : 'The page you are looking for does not exist or has been moved.'}">
+            The page you are looking for does not exist or has been moved.
+        </p>
+
+        <div class="error-actions">
+            <a th:href="@{/projects/myProjects}" class="btn">Go to My Projects</a>
+            <a th:href="javascript:history.back()" class="btn btn-outline">Go back</a>
+        </div>
+
+    </div>
+</main>
+
+</body>
+</html>

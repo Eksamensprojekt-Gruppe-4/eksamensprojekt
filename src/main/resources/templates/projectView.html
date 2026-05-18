@@ -6,6 +6,7 @@
     <title th:text="${project.projectName} + ' — Alpha Solutions'">Project — Alpha Solutions</title>
     <link rel="stylesheet" th:href="@{/styles.css}"/>
     <link rel="stylesheet" th:href="@{/projects.css}"/>
+    <link rel="stylesheet" th:href="@{/breadcrumb.css}"/>
 </head>
 <body>
 
@@ -26,6 +27,10 @@
 
         <div class="page-header">
             <div>
+                <p class="breadcrumb">
+                    <a th:href="@{/projects/myProjects}">My Projects</a>
+                    &rsaquo; <span th:text="${project.projectName}"></span>
+                </p>
                 <h2 th:text="${project.projectName}">Project Name</h2>
                 <p class="project-description" th:text="${project.projectDescription}"></p>
             </div>
@@ -129,7 +134,7 @@
                     </td>
                     <td>
                         <span th:if="${task.userId != 0 and usersById[task.userId] != null}"
-                                        th:text="${usersById[task.userId].userName}">
+                              th:text="${usersById[task.userId].userName}">
                         </span>
                         <span class="project-id-badge"
                               th:if="${task.userId == 0 or usersById[task.userId] == null}">—</span>

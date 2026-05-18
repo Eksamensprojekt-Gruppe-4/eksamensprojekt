@@ -2,6 +2,7 @@ package com.banditdev.eksamensprojekt.controller;
 
 import com.banditdev.eksamensprojekt.model.Task;
 import com.banditdev.eksamensprojekt.model.User;
+import com.banditdev.eksamensprojekt.service.ProjectService;
 import com.banditdev.eksamensprojekt.service.SubProjectService;
 import com.banditdev.eksamensprojekt.service.TaskService;
 import com.banditdev.eksamensprojekt.service.UserService;
@@ -16,11 +17,13 @@ public class TaskController {
     private final TaskService taskService;
     private final SubProjectService subProjectService;
     private final UserService userService;
+    private final ProjectService projectService;
 
-    public TaskController(TaskService taskService, SubProjectService subProjectService, UserService userService) {
+    public TaskController(TaskService taskService, SubProjectService subProjectService, UserService userService, ProjectService projectService) {
         this.taskService = taskService;
         this.subProjectService = subProjectService;
         this.userService = userService;
+        this.projectService = projectService;
     }
 
 
@@ -50,7 +53,7 @@ public class TaskController {
             model.addAttribute("task", taskService.findTaskById(taskId));
             model.addAttribute("subProject", subProjectService.findSubProjectBySubProjectId(subProjectId));
             model.addAttribute("assignedUser", userService.findUserAssignedToTaskByTaskId(taskId));
-            model.addAttribute("projectId", projectId);
+            model.addAttribute("project", projectService.findProjectById(projectId));
 
             return "viewTask";
     }

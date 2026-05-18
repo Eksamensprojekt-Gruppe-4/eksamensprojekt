@@ -6,6 +6,7 @@
     <title th:text="${subProjects.subProjectName} + ' — Alpha Solutions'">Sub Project — Alpha Solutions</title>
     <link rel="stylesheet" th:href="@{/styles.css}"/>
     <link rel="stylesheet" th:href="@{/projects.css}"/>
+    <link rel="stylesheet" th:href="@{/breadcrumb.css}"/>
 </head>
 <body>
 
@@ -26,9 +27,10 @@
 
         <div class="page-header">
             <div>
-                <p class="subproject-breadcrumb">
-                    <a th:href="@{/projects/{projectId}(projectId=${project.projectId})}" th:text="${project.projectName}">Project</a>
-                    &rsaquo; Sub Project
+                <p class="breadcrumb">
+                    <a th:href="@{/projects/myProjects}">My Projects</a>
+                    &rsaquo; <a th:href="@{/projects/{projectId}(projectId=${project.projectId})}" th:text="${project.projectName}">Project</a>
+                    &rsaquo; <span th:text="${subProjects.subProjectName}"></span>
                 </p>
                 <h2 th:text="${subProjects.subProjectName}">Sub Project Name</h2>
                 <p class="project-description" th:text="${subProjects.subProjectDescription}"></p>
