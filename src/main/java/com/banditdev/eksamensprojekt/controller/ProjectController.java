@@ -55,28 +55,19 @@ public class ProjectController {
         User currentLoggedInUser = (User) session.getAttribute("user");
 
         Project project = projectService.findProjectById(projectId);
-        List<SubProject> subProjects = subProjectService.findSubProjectsByProjectId(projectId);
-        List<User> assignedUsers = userService.findUsersAssignedToProjectByProjectId(projectId);
-
-        Map<Integer, List<Task>> tasksBySubProject = new HashMap<>();
-        for (SubProject sp : subProjects) {
-            tasksBySubProject.put(sp.getSubProjectId(), taskService.findTasksBySubProjectId(sp.getSubProjectId()));
-        }
-
-        Map<Integer, User> usersById = new HashMap<>();
-        for (User user : userService.findAllUsers()) {
-            usersById.put(user.getUserId(), user);
-        }
 
         if (project == null) {
             return "redirect:/projects/myProjects";
         }
 
+        List<SubProject> subProjects = subProjectService.findSubProjectsByProjectId(projectId);
+        List<User> assignedUsers = userService.findUsersAssignedToProjectByProjectId(projectId);
+
         model.addAttribute("project", project);
         model.addAttribute("subProjects", subProjects);
-        model.addAttribute("tasksBySubProject", tasksBySubProject);
+        model.addAttribute("tasksBySubProject", taskService.tasksBySubProject(subProjects));
         model.addAttribute("assignedUsers", assignedUsers);
-        model.addAttribute("usersById", usersById);
+        model.addAttribute("usersById", userService.getUsersMappedById());
 
         return "projectView";
     }
