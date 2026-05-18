@@ -1,3 +1,8 @@
+main {
+    background-color: var(--color-bg-alt);
+    min-height: calc(100vh - 65px);
+}
+
 input, textarea, select {
     width: 100%;
     padding: 0.6rem 0.75rem;
