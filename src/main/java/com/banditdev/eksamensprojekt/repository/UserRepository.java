@@ -149,4 +149,32 @@ public class UserRepository {
                 projectId
         );
     }
+
+    public User returnOwnerOfProjectByProjectId(int projectId) {
+        String sql = """
+                SELECT
+                    u.user_id,
+                    u.user_name,
+                    u.user_username,
+                    u.user_password,
+                    u.user_experience,
+                    u.user_role
+                FROM project p
+                JOIN user u ON p.owner_user_id = u.user_id
+                WHERE p.project_id = ?
+                """;
+
+        try {
+            return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> new User(
+                    rs.getInt("user_id"),
+                    rs.getString("user_name"),
+                    rs.getString("user_username"),
+                    rs.getString("user_password"),
+                    UserExperience.valueOf(rs.getString("user_experience")),
+                    UserRole.valueOf(rs.getString("user_role"))
+            ), projectId);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
 }

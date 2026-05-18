@@ -1,5 +1,6 @@
 package com.banditdev.eksamensprojekt.service;
 
+import com.banditdev.eksamensprojekt.model.*;
 import com.banditdev.eksamensprojekt.exception.UserNotFoundException;
 import com.banditdev.eksamensprojekt.model.Project;
 import com.banditdev.eksamensprojekt.model.SubProject;
@@ -95,5 +96,22 @@ public class UserService {
         userRepository.editOwnUser(currentUserFromDatabase);
 
         return currentUserFromDatabase;
+    }
+
+    public boolean validateUserIsManager(User user) {
+        return user.getUserRole() == UserRole.MANAGER;
+    }
+
+    public boolean validateUserIsAdmin(User user) {
+        return user.getUserRole() == UserRole.ADMIN;
+    }
+
+    public boolean validateUserIsProjectOwner(int userId, int projectId) {
+        User owner = userRepository.returnOwnerOfProjectByProjectId(projectId);
+        return owner != null && (owner.getUserId() == userId);
+    }
+
+    public boolean isUserLoggedIn(User user) {
+        return user != null;
     }
 }
