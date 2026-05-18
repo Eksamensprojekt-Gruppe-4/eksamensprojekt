@@ -43,7 +43,7 @@ public class TaskController {
     public String saveNewTask(@ModelAttribute Task task, @PathVariable int projectId, @PathVariable int subProjectId, HttpSession session) {
 
         taskService.addTask(task, task.getUserId(), subProjectId);
-        //måske lav et return til "viewTask" i stedet for ? Måske er det dårligt userflow.
+
         return "redirect:/projects/" + projectId + "/subprojects/" + subProjectId;
     }
 

@@ -84,15 +84,11 @@ public class SubProjectController {
         SubProject subProject = service.findSubProjectBySubProjectId(subProjectId);
         List<Task> tasks = taskService.findTasksBySubProjectId(subProjectId);
 
-        Map<Integer, User> usersById = new HashMap<>();
-        for (User user : userService.findAllUsers()) {
-            usersById.put(user.getUserId(), user);
-        }
-
         model.addAttribute("project", project);
         model.addAttribute("subProjects", subProject);
         model.addAttribute("tasksBySubProject", tasks);
-        model.addAttribute("usersById", usersById); // NEW
+        model.addAttribute("usersById", userService.getUsersMappedById());
+
 
         return "subProjectView";
     }
