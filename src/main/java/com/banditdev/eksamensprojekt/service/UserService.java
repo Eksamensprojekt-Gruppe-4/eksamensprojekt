@@ -1,5 +1,6 @@
 package com.banditdev.eksamensprojekt.service;
 
+import com.banditdev.eksamensprojekt.model.*;
 import com.banditdev.eksamensprojekt.exception.UserNotFoundException;
 import com.banditdev.eksamensprojekt.model.Project;
 import com.banditdev.eksamensprojekt.model.SubProject;
