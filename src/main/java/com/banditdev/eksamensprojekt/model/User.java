@@ -18,6 +18,8 @@ public class User {
         this.userRole = userRole;
     }
 
+    public User() {}
+
     public int getUserId() {
         return userId;
     }

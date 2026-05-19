@@ -7,11 +7,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import static com.banditdev.eksamensprojekt.model.UserExperience.SENIOR;
 import static com.banditdev.eksamensprojekt.model.UserRole.MANAGER;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
@@ -51,6 +52,31 @@ class UserServiceTest {
 
         assertEquals("oldpass", result.getUserPassword());
         assertEquals("newusername", result.getUserUsername());
+    }
+
+    @Test
+    void createUser_succeedsWhenUsernameIsAvailable() {
+        User newUser = new User();
+        newUser.setUserUsername("brandnew");
+        when(userRepository.findUserByUserUsername("brandnew")).thenReturn(null);
+
+        assertDoesNotThrow(() -> userService.createUser(newUser));
+    }
+
+    @Test
+    void deleteUserById_succeedsWhenDeletingOtherUser() {
+        assertDoesNotThrow(() -> userService.deleteUserById(2, 1));
+        verify(userRepository).deleteUserByUserId(2);
+    }
+
+    @Test
+    void updateUserAsAdmin_succeedsWhenUsernameIsOwnUsername() {
+        User existing = new User(1, "Anders", "anders123", "pass1234", SENIOR, MANAGER);
+        User updatedUser = new User(1, "Anders Updated", "anders123", "pass1234", SENIOR, MANAGER);
+        when(userRepository.findUserByUserUsername("anders123")).thenReturn(existing);
+
+        assertDoesNotThrow(() -> userService.updateUserAsAdmin(updatedUser));
+        verify(userRepository).updateUserAsAdmin(updatedUser);
     }
 
 }
