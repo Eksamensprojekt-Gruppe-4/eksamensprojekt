@@ -1,6 +1,7 @@
 package com.banditdev.eksamensprojekt.controller;
 
 import com.banditdev.eksamensprojekt.model.User;
+import com.banditdev.eksamensprojekt.model.UserRole;
 import com.banditdev.eksamensprojekt.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
@@ -80,5 +81,18 @@ public class UserController {
         session.setAttribute("user", userService.updateUserProfile(currentLoggedInUser.getUserId(),user));
 
         return "redirect:/profile/view";
+    }
+
+    @GetMapping("adminPanel")
+    public String showAdminPanel(HttpSession session) {
+
+        User currentLoggedInUser = (User) session.getAttribute("user");
+        if (!userService.isUserLoggedIn(currentLoggedInUser)) {
+            return "redirect:/profile/login";
+        } else if (currentLoggedInUser.getUserRole() != UserRole.ADMIN) {
+            return "redirect:/projects/myProjects";
+        } else {
+            return "adminPanelView";
+        }
     }
 }
