@@ -30,7 +30,10 @@ public class TaskController {
     @GetMapping("/add")
     public String showAddNewTaskForm(@PathVariable int projectId, @PathVariable int subProjectId, HttpSession session, Model model) {
 
-        //TODO lav HttpSession logik!
+        User currentLoggedInUser = (User) session.getAttribute("user");
+        if (!userService.isUserLoggedIn(currentLoggedInUser)) {
+            return "redirect:/profile/login";
+        }
 
         model.addAttribute("task", new Task());
         model.addAttribute("subProject", subProjectService.findSubProjectBySubProjectId(subProjectId));
@@ -42,6 +45,11 @@ public class TaskController {
     @PostMapping("/add")
     public String saveNewTask(@ModelAttribute Task task, @PathVariable int projectId, @PathVariable int subProjectId, HttpSession session) {
 
+        User currentLoggedInUser = (User) session.getAttribute("user");
+        if (!userService.isUserLoggedIn(currentLoggedInUser)) {
+            return "redirect:/profile/login";
+        }
+
         taskService.addTask(task, task.getUserId(), subProjectId);
 
         return "redirect:/projects/" + projectId + "/subprojects/" + subProjectId;
@@ -49,6 +57,11 @@ public class TaskController {
 
     @GetMapping("/{taskId}/view")
     public String viewTask(@PathVariable int taskId, @PathVariable int projectId, @PathVariable int subProjectId, HttpSession session, Model model) {
+
+        User currentLoggedInUser = (User) session.getAttribute("user");
+        if (!userService.isUserLoggedIn(currentLoggedInUser)) {
+            return "redirect:/profile/login";
+        }
 
             model.addAttribute("task", taskService.findTaskById(taskId));
             model.addAttribute("subProject", subProjectService.findSubProjectBySubProjectId(subProjectId));
@@ -61,6 +74,11 @@ public class TaskController {
     @GetMapping("/{taskId}/edit")
     public String editTask(@PathVariable int projectId, @PathVariable int subProjectId, @PathVariable int taskId, HttpSession session, Model model) {
 
+        User currentLoggedInUser = (User) session.getAttribute("user");
+        if (!userService.isUserLoggedIn(currentLoggedInUser)) {
+            return "redirect:/profile/login";
+        }
+
         model.addAttribute("task", taskService.findTaskById(taskId));
         model.addAttribute("subProject", subProjectService.findSubProjectBySubProjectId(subProjectId));
         model.addAttribute("users", userService.findUsersAssignedToProjectByProjectId(projectId));
@@ -72,6 +90,11 @@ public class TaskController {
     @PostMapping("/{taskId}/edit")
         public String updateTask(@ModelAttribute Task task, @PathVariable int projectId, @PathVariable int subProjectId, @PathVariable int taskId, HttpSession session) {
 
+        User currentLoggedInUser = (User) session.getAttribute("user");
+        if (!userService.isUserLoggedIn(currentLoggedInUser)) {
+            return "redirect:/profile/login";
+        }
+
             task.setTaskId(taskId);
             task.setSubProjectId(subProjectId);
             taskService.updateTask(task);
@@ -80,6 +103,11 @@ public class TaskController {
 
     @PostMapping("{taskId}/delete")
     public String deleteTaskByTaskId(@PathVariable int projectId, @PathVariable int subProjectId, @PathVariable int taskId, HttpSession session) {
+
+        User currentLoggedInUser = (User) session.getAttribute("user");
+        if (!userService.isUserLoggedIn(currentLoggedInUser)) {
+            return "redirect:/profile/login";
+        }
 
         taskService.deleteTaskByTaskId(taskId);
         return "redirect:/projects/" + projectId + "/subprojects/" + subProjectId;

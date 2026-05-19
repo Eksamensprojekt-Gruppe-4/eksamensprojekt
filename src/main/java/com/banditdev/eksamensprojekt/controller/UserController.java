@@ -41,9 +41,9 @@ public class UserController {
 
     @GetMapping("view")
     public String viewProfile(HttpSession session, Model model) {
-        User currentLoggedInUser = (User) session.getAttribute("user");
 
-        if (currentLoggedInUser == null) {
+        User currentLoggedInUser = (User) session.getAttribute("user");
+        if (!userService.isUserLoggedIn(currentLoggedInUser)) {
             return "redirect:/profile/login";
         }
 
@@ -53,9 +53,9 @@ public class UserController {
 
     @GetMapping("edit")
     public String editProfile(HttpSession session, Model model) {
-        User currentLoggedInUser = (User) session.getAttribute("user");
 
-        if (currentLoggedInUser == null) {
+        User currentLoggedInUser = (User) session.getAttribute("user");
+        if (!userService.isUserLoggedIn(currentLoggedInUser)) {
             return "redirect:/profile/login";
         }
 
@@ -73,6 +73,9 @@ public class UserController {
     public String updateProfile(@ModelAttribute User user, HttpSession session) {
 
         User currentLoggedInUser = (User) session.getAttribute("user");
+        if (!userService.isUserLoggedIn(currentLoggedInUser)) {
+            return "redirect:/profile/login";
+        }
 
         session.setAttribute("user", userService.updateUserProfile(currentLoggedInUser.getUserId(),user));
 

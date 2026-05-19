@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title th:text="${project.projectName} + ' — Alpha Solutions'">Project — Alpha Solutions</title>
+    <link rel="stylesheet" th:href="@{/styles.css}"/>
+    <link rel="stylesheet" th:href="@{/projects.css}"/>
+    <link rel="stylesheet" th:href="@{/breadcrumb.css}"/>
+</head>
+<body>
+
+<header>
+    <div class="logo">Alpha Solutions</div>
+    <nav>
+        <ul>
+            <li><a th:href="@{/projects/myProjects}">My Projects</a></li>
+            <li><a th:href="@{/projects/allProjects}">All Projects</a></li>
+            <li><a th:href="@{/profile/view}">Profile</a></li>
+            <li><a th:href="@{/profile/logout}">Log out</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main>
+    <section class="container">
+
+        <div class="page-header">
+            <div>
+                <p class="breadcrumb">
+                    <a th:href="@{/projects/myProjects}">My Projects</a>
+                    &rsaquo; <span th:text="${project.projectName}"></span>
+                </p>
+                <h2 th:text="${project.projectName}">Project Name</h2>
+                <p class="project-description" th:text="${project.projectDescription}"></p>
+            </div>
+        </div>
+
+        <table class="projects-table project-meta-table">
+            <thead>
+            <tr>
+                <th>Start Date</th>
+                <th>Deadline (Est.)</th>
+                <th>Hours — Estimated</th>
+                <th>Hours — Actual</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td th:text="${project.projectStartDate != null ? project.projectStartDate : '—'}"></td>
+                <td th:text="${project.projectEstimatedDeadline != null ? project.projectEstimatedDeadline : '—'}"></td>
+                <td th:text="${project.projectEstimatedHours + 'h'}"></td>
+                <td th:text="${project.projectActualHours + 'h'}"></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div>
+            <table class="projects-table">
+
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Username</th>
+                    <th>Experience</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+                <tr th:each="user, iterStat : ${assignedUsers}">
+                    <td th:text="${iterStat.count}">1</td>
+                    <td th:text="${user.userName}">Name</td>
+                    <td th:text="${user.userExperience}">Experience</td>
+                </tr>
+
+                <tr th:if="${assignedUsers == null or #lists.isEmpty(assignedUsers)}">
+                    <td colspan="3">No users assigned to this project.</td>
+                </tr>
+
+                </tbody>
+
+            </table>
+        </div>
+
+        <br><br>
+        <div class="page-header subprojects-heading">
+            <h3>Sub Projects <span class="project-id-badge" th:text="${#lists.size(subProjects)}">0</span></h3>
+        </div>
+
+        <div class="empty-state" th:if="${subProjects == null or subProjects.isEmpty()}">
+            <p>No sub-projects yet.</p>
+        </div>
+
+        <div th:each="sp : ${subProjects}" class="subproject-block">
+
+            <div class="subproject-block-header">
+                <div class="subproject-info">
+                    <span class="project-name" th:text="${sp.subProjectName}">Sub Project Name</span>
+                    <span class="project-description" th:text="${sp.subProjectDescription}"></span>
+                </div>
+                <div class="project-detail-actions">
+                    <a th:href="@{/projects/{projectId}/subprojects/{subProjectId}(projectId=${project.projectId},subProjectId=${sp.subProjectId})}" class="btn-sm btn-view">View</a>
+                </div>
+            </div>
+
+            <table class="projects-table tasks-table">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Hours Est / Act</th>
+                    <th>Assignee</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="task : ${tasksBySubProject[sp.subProjectId]}">
+                    <td><span class="project-name" th:text="${task.taskName}">Task</span></td>
+                    <td><span class="subproject-description" th:text="${sp.subProjectDescription}"></span></td>
+                    <td class="project-date">
+                        <span th:text="${task.taskEstimatedHours} + 'h'">0</span>
+                        /
+                        <span th:text="${task.taskActualHours > 0 ? task.taskActualHours  + 'h' : '—'}">—</span>
+                    </td>
+                    <td>
+                        <span th:if="${task.userId != 0 and usersById[task.userId] != null}"
+                              th:text="${usersById[task.userId].userName}">
+                        </span>
+                        <span class="project-id-badge"
+                              th:if="${task.userId == 0 or usersById[task.userId] == null}">—</span>
+                    </td>
+                </tr>
+                <tr th:if="${tasksBySubProject[sp.subProjectId] == null or #lists.isEmpty(tasksBySubProject[sp.subProjectId])}">
+                    <td colspan="4" class="tasks-empty-row">No tasks yet.</td>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+    </section>
+</main>
+
+</body>
+</html>
