@@ -36,7 +36,7 @@ public class SubProjectController {
     public String showSubProjectForm(@PathVariable int projectId, Model model, HttpSession session) {
 
         User currentLoggedInUser = (User) session.getAttribute("user");
-        if (!userService.isUserLoggedIn(currentLoggedInUser)) {
+        if (!userService.isUserLoggedIn(currentLoggedInUser) || !userService.canEditProject(currentLoggedInUser, projectId)) {
             return "redirect:/profile/login";
         }
 
@@ -51,7 +51,7 @@ public class SubProjectController {
                            @ModelAttribute SubProject subProject, HttpSession session) {
 
         User currentLoggedInUser = (User) session.getAttribute("user");
-        if (!userService.isUserLoggedIn(currentLoggedInUser)) {
+        if (!userService.isUserLoggedIn(currentLoggedInUser) || !userService.canEditProject(currentLoggedInUser, projectId)) {
             return "redirect:/profile/login";
         }
 
@@ -66,7 +66,7 @@ public class SubProjectController {
                                    @PathVariable int subProjectId, HttpSession session) {
 
         User currentLoggedInUser = (User) session.getAttribute("user");
-        if (!userService.isUserLoggedIn(currentLoggedInUser)) {
+        if (!userService.isUserLoggedIn(currentLoggedInUser) || !userService.canEditProject(currentLoggedInUser, projectId)) {
             return "redirect:/profile/login";
         }
 
@@ -80,7 +80,7 @@ public class SubProjectController {
                                   Model model, HttpSession session) {
 
         User currentLoggedInUser = (User) session.getAttribute("user");
-        if (!userService.isUserLoggedIn(currentLoggedInUser)) {
+        if (!userService.isUserLoggedIn(currentLoggedInUser) || !userService.canEditProject(currentLoggedInUser, projectId)) {
             return "redirect:/profile/login";
         }
 
@@ -95,7 +95,7 @@ public class SubProjectController {
                                  @ModelAttribute SubProject subProject, HttpSession session) {
 
         User currentLoggedInUser = (User) session.getAttribute("user");
-        if (!userService.isUserLoggedIn(currentLoggedInUser)) {
+        if (!userService.isUserLoggedIn(currentLoggedInUser) || !userService.canEditProject(currentLoggedInUser, projectId)) {
             return "redirect:/profile/login";
         }
 
@@ -122,6 +122,12 @@ public class SubProjectController {
         model.addAttribute("tasksBySubProject", tasks);
         model.addAttribute("usersById", userService.getUsersMappedById());
 
-        return "subProjectView";
+
+        if (userService.canEditProject(currentLoggedInUser,projectId)) {
+            return "subProjectView";
+        } else {
+            return "subProjectViewNoEdit";
+        }
     }
+
 }

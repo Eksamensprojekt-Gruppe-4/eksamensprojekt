@@ -114,4 +114,8 @@ public class UserService {
     public boolean isUserLoggedIn(User user) {
         return user != null;
     }
+
+    public boolean canEditProject(User user, int projectId) {
+        return user.getUserRole() == UserRole.ADMIN || ((user.getUserRole() == UserRole.MANAGER && validateUserIsProjectOwner(user.getUserId(), projectId)));
+    }
 }
