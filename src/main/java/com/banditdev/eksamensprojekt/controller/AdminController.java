@@ -21,21 +21,6 @@ public class AdminController {
 
     @GetMapping("")
     public String showAdminPanel(Model model, HttpSession session) {
-
-        User currentLoggedInUser = (User) session.getAttribute("user");
-        if (!userService.isUserLoggedIn(currentLoggedInUser)) {
-            return "redirect:/profile/login";
-        } else if (currentLoggedInUser.getUserRole() != UserRole.ADMIN) {
-            return "redirect:/projects/myProjects";
-        } else {
-            model.addAttribute("users", userService.findAllUsers());
-            return "adminPanelView";
-        }
-    }
-
-    @PostMapping("delete/{userId}")
-    public String deleteUserAsAdmin(@PathVariable int userId, HttpSession session) {
-
         User currentLoggedInUser = (User) session.getAttribute("user");
         if (!userService.isUserLoggedIn(currentLoggedInUser)) {
             return "redirect:/profile/login";
@@ -43,11 +28,8 @@ public class AdminController {
             return "redirect:/projects/myProjects";
         }
 
-        if (currentLoggedInUser.getUserId() == userId) {
-            return "redirect:/adminPanel";
-        }
-        userService.deleteByUserId(userId);
-        return "redirect:/adminPanel";
+        model.addAttribute("users", userService.findAllUsers());
+        return "adminPanelView";
     }
 
     @GetMapping("create")
@@ -104,6 +86,23 @@ public class AdminController {
 
         user.setUserId(userId);
         userService.updateUserAsAdmin(user);
+        return "redirect:/adminPanel";
+    }
+
+    @PostMapping("delete/{userId}")
+    public String deleteUserAsAdmin(@PathVariable int userId, HttpSession session) {
+        User currentLoggedInUser = (User) session.getAttribute("user");
+        if (!userService.isUserLoggedIn(currentLoggedInUser)) {
+            return "redirect:/profile/login";
+        } else if (currentLoggedInUser.getUserRole() != UserRole.ADMIN) {
+            return "redirect:/projects/myProjects";
+        }
+
+        try {
+            userService.deleteUserById(userId, currentLoggedInUser.getUserId());
+        } catch (IllegalArgumentException e) {
+            return "redirect:/adminPanel";
+        }
         return "redirect:/adminPanel";
     }
 }

@@ -3,8 +3,6 @@ package com.banditdev.eksamensprojekt.service;
 import com.banditdev.eksamensprojekt.model.*;
 import com.banditdev.eksamensprojekt.exception.UserNotFoundException;
 import com.banditdev.eksamensprojekt.model.Project;
-import com.banditdev.eksamensprojekt.model.SubProject;
-import com.banditdev.eksamensprojekt.model.Task;
 import com.banditdev.eksamensprojekt.model.User;
 import com.banditdev.eksamensprojekt.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -27,7 +25,7 @@ public class UserService {
 
     public User findUserByUserUsername(String userUsername) {
         User user = userRepository.findUserByUserUsername(userUsername);
-        if(user == null){
+        if (user == null) {
             throw new UserNotFoundException(userUsername);
         }
         return user;
@@ -48,8 +46,8 @@ public class UserService {
 
     public User findUserByUserId(int userIdToFind) {
         User user = userRepository.findUserByUserId(userIdToFind);
-        if (user == null){
-            throw new UserNotFoundException (userIdToFind);
+        if (user == null) {
+            throw new UserNotFoundException(userIdToFind);
         }
         return user;
     }
@@ -64,11 +62,9 @@ public class UserService {
 
     public Map<Integer, User> getUsersMappedById() {
         Map<Integer, User> usersByUserIdMap = new HashMap<>();
-
         for (User user : findAllUsers()) {
             usersByUserIdMap.put(user.getUserId(), user);
         }
-
         return usersByUserIdMap;
     }
 
@@ -83,18 +79,13 @@ public class UserService {
     }
 
     public User updateUserProfile(int userId, User formUser) {
-
         User currentUserFromDatabase = userRepository.findUserByUserId(userId);
-
         currentUserFromDatabase.setUserUsername(formUser.getUserUsername());
-
         if (formUser.getUserPassword() != null &&
                 !formUser.getUserPassword().trim().isEmpty()) {
             currentUserFromDatabase.setUserPassword(formUser.getUserPassword());
         }
-
         userRepository.editOwnUser(currentUserFromDatabase);
-
         return currentUserFromDatabase;
     }
 
@@ -116,18 +107,29 @@ public class UserService {
     }
 
     public boolean canEditProject(User user, int projectId) {
-        return user.getUserRole() == UserRole.ADMIN || ((user.getUserRole() == UserRole.MANAGER && validateUserIsProjectOwner(user.getUserId(), projectId)));
-    }
-
-    public void deleteByUserId(int userId) {
-        userRepository.deleteUserByUserId(userId);
+        return user.getUserRole() == UserRole.ADMIN ||
+                (user.getUserRole() == UserRole.MANAGER && validateUserIsProjectOwner(user.getUserId(), projectId));
     }
 
     public void createUser(User user) {
+        if (userRepository.findUserByUserUsername(user.getUserUsername()) != null) {
+            throw new IllegalArgumentException("Username is already taken");
+        }
         userRepository.createUser(user);
     }
 
+    public void deleteUserById(int userId, int currentAdminId) {
+        if (userId == currentAdminId) {
+            throw new IllegalArgumentException("Admin cannot delete themselves");
+        }
+        userRepository.deleteUserByUserId(userId);
+    }
+
     public void updateUserAsAdmin(User user) {
+        User existing = userRepository.findUserByUserUsername(user.getUserUsername());
+        if (existing != null && existing.getUserId() != user.getUserId()) {
+            throw new IllegalArgumentException("Username is already taken");
+        }
         userRepository.updateUserAsAdmin(user);
     }
 }
