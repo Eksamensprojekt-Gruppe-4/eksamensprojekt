@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Profile — Alpha Solutions</title>
+  <link rel="stylesheet" th:href="@{/styles.css}"/>
+  <link rel="stylesheet" th:href="@{/profile.css}"/>
+</head>
+<body>
+
+<header>
+  <div class="logo">Alpha Solutions</div>
+  <nav>
+    <ul>
+      <li><a th:href="@{/projects/myProjects}">My Projects</a></li>
+      <li><a th:href="@{/projects/allProjects}">All Projects</a></li>
+      <li><a th:href="@{/profile/view}">Profile</a></li>
+      <li><a th:href="@{/profile/logout}">Log out</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <section class="container">
+
+    <h2>My Profile</h2>
+
+    <div class="card profile-card">
+
+      <p>
+        <strong>Name</strong><br/>
+        <span th:text="${user.userName}">Anders Nielsen</span>
+      </p>
+
+      <p>
+        <strong>Username</strong><br/>
+        <span th:text="${user.userUsername}">anders123</span>
+      </p>
+
+      <p>
+        <strong>Password</strong><br/>
+        ••••••••
+      </p>
+
+      <div class="btn-row">
+        <a th:href="@{/profile/edit}" class="btn">Edit profile</a>
+        <a th:href="@{/adminPanel}" class="btn btn-outline">Admin panel</a>
+      </div>
+
+    </div>
+
+  </section>
+</main>
+
+</body>
+</html>
