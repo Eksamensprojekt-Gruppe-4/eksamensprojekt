@@ -57,7 +57,7 @@
                     </td>
                     <td>
                         <span class="deadline-badge"
-                              th:text="${project.projectEstimatedDeadline != null ? project.projectEstimatedDeadline : 'No deadline'}"></span>
+                              th:text="${estimatedEndDates[project.projectId] != null ? estimatedEndDates[project.projectId] : 'No deadline'}"></span>
                     </td>
                     <td>
                         <a th:href="@{/projects/{projectId}(projectId=${project.projectId})}" class="btn-sm btn-view">View</a>

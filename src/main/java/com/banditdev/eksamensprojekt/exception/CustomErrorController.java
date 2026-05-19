@@ -10,7 +10,7 @@ public class CustomErrorController {
 
     @RequestMapping("/error")
     public String handleError(HttpServletRequest request, Model model) {
-        Integer status = (Integer) request.getAttribute("javax.servlet.error.status_code");
+        Integer status = (Integer) request.getAttribute("jakarta.servlet.error.status_code");
 
         model.addAttribute("status", status != null ? status : 500);
         model.addAttribute("error", status != null && status == 404

@@ -51,4 +51,12 @@ public class TaskService {
 
         return tasksBySubProjectMap;
     }
+
+    public double calculateEstimatedHoursForSubProject(int subProjectId) {
+        double total = 0;
+        for (Task task : findTasksBySubProjectId(subProjectId)) {
+            total += task.getTaskEstimatedHours();
+        }
+        return total;
+    }
 }
