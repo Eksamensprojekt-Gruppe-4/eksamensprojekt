@@ -46,10 +46,15 @@ public class UserController {
         User currentLoggedInUser = (User) session.getAttribute("user");
         if (!userService.isUserLoggedIn(currentLoggedInUser)) {
             return "redirect:/profile/login";
-        }
 
-        model.addAttribute("user", currentLoggedInUser);
-        return "profileOverview";
+        } else if (currentLoggedInUser.getUserRole() == UserRole.ADMIN) {
+            model.addAttribute("user", currentLoggedInUser);
+            return "profileOverviewAdmin";
+
+        } else {
+            model.addAttribute("user", currentLoggedInUser);
+            return "profileOverview";
+        }
     }
 
     @GetMapping("edit")
@@ -81,18 +86,5 @@ public class UserController {
         session.setAttribute("user", userService.updateUserProfile(currentLoggedInUser.getUserId(),user));
 
         return "redirect:/profile/view";
-    }
-
-    @GetMapping("adminPanel")
-    public String showAdminPanel(HttpSession session) {
-
-        User currentLoggedInUser = (User) session.getAttribute("user");
-        if (!userService.isUserLoggedIn(currentLoggedInUser)) {
-            return "redirect:/profile/login";
-        } else if (currentLoggedInUser.getUserRole() != UserRole.ADMIN) {
-            return "redirect:/projects/myProjects";
-        } else {
-            return "adminPanelView";
-        }
     }
 }
