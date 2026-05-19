@@ -47,14 +47,14 @@ class ProjectRepositoryTest {
         List<Project> result = projectRepository.findProjectsByUserId(sofieId);
 
         assertEquals(1, result.size());
-        assertEquals("Intern HR System", result.get(0).getProjectName());
+        assertEquals("Intern HR System", result.getFirst().getProjectName());
     }
 
     @Test
     void findProjectById_shouldReturnProject() {
         int andersId = userRepository.findUserByUserUsername("anders123").getUserId();
         List<Project> projects = projectRepository.findProjectsByUserId(andersId);
-        int projectId = projects.get(0).getProjectId();
+        int projectId = projects.getFirst().getProjectId();
 
         Project result = projectRepository.findProjectById(projectId);
 
@@ -112,7 +112,7 @@ class ProjectRepositoryTest {
     void updateProject_shouldUpdateDetails() {
         int andersId = userRepository.findUserByUserUsername("anders123").getUserId();
         List<Project> projects = projectRepository.findProjectsByUserId(andersId);
-        Project existing = projects.get(0);
+        Project existing = projects.getFirst();
 
         LocalDate newDate = LocalDate.now().plusDays(1);
         projectRepository.updateProject(existing.getProjectId(), "Updated Name", "Updated Desc", newDate);
@@ -128,7 +128,7 @@ class ProjectRepositoryTest {
     void removeAllUsersFromProject_shouldClearAssignedUsers() {
         int andersId = userRepository.findUserByUserUsername("anders123").getUserId();
         List<Project> projects = projectRepository.findProjectsByUserId(andersId);
-        int projectId = projects.get(0).getProjectId();
+        int projectId = projects.getFirst().getProjectId();
 
         projectRepository.removeAllUsersFromProject(projectId);
 
