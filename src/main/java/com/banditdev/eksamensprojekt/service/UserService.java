@@ -1,5 +1,7 @@
 package com.banditdev.eksamensprojekt.service;
 
+import com.banditdev.eksamensprojekt.model.*;
+import com.banditdev.eksamensprojekt.exception.UserNotFoundException;
 import com.banditdev.eksamensprojekt.model.Project;
 import com.banditdev.eksamensprojekt.model.SubProject;
 import com.banditdev.eksamensprojekt.model.Task;
@@ -24,7 +26,11 @@ public class UserService {
     }
 
     public User findUserByUserUsername(String userUsername) {
-        return userRepository.findUserByUserUsername(userUsername);
+        User user = userRepository.findUserByUserUsername(userUsername);
+        if(user == null){
+            throw new UserNotFoundException(userUsername);
+        }
+        return user;
     }
 
     public boolean validateUser(String userUsername, String userPassword) {
@@ -41,7 +47,11 @@ public class UserService {
     }
 
     public User findUserByUserId(int userIdToFind) {
-        return userRepository.findUserByUserId(userIdToFind);
+        User user = userRepository.findUserByUserId(userIdToFind);
+        if (user == null){
+            throw new UserNotFoundException (userIdToFind);
+        }
+        return user;
     }
 
     public List<User> findUsersAssignedToProjectByProjectId(int projectId) {
@@ -86,5 +96,26 @@ public class UserService {
         userRepository.editOwnUser(currentUserFromDatabase);
 
         return currentUserFromDatabase;
+    }
+
+    public boolean validateUserIsManager(User user) {
+        return user.getUserRole() == UserRole.MANAGER;
+    }
+
+    public boolean validateUserIsAdmin(User user) {
+        return user.getUserRole() == UserRole.ADMIN;
+    }
+
+    public boolean validateUserIsProjectOwner(int userId, int projectId) {
+        User owner = userRepository.returnOwnerOfProjectByProjectId(projectId);
+        return owner != null && (owner.getUserId() == userId);
+    }
+
+    public boolean isUserLoggedIn(User user) {
+        return user != null;
+    }
+
+    public boolean canEditProject(User user, int projectId) {
+        return user.getUserRole() == UserRole.ADMIN || ((user.getUserRole() == UserRole.MANAGER && validateUserIsProjectOwner(user.getUserId(), projectId)));
     }
 }

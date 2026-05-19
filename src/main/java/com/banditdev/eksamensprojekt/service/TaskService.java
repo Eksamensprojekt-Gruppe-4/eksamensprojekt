@@ -1,5 +1,6 @@
 package com.banditdev.eksamensprojekt.service;
 
+import com.banditdev.eksamensprojekt.exception.TaskNotFoundException;
 import com.banditdev.eksamensprojekt.model.SubProject;
 import com.banditdev.eksamensprojekt.model.Task;
 import com.banditdev.eksamensprojekt.repository.TaskRepository;
@@ -22,7 +23,11 @@ public class TaskService {
     }
 
     public Task findTaskById(int taskId) {
-        return taskRepository.findTaskById(taskId);
+        Task task = taskRepository.findTaskById(taskId);
+        if(task == null){
+            throw new TaskNotFoundException(taskId);
+        }
+        return task;
     }
 
     public void updateTask(Task task) {

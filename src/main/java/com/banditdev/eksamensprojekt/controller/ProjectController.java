@@ -36,9 +36,9 @@ public class ProjectController {
 
     @GetMapping("myProjects")
     public String showOwnProjects(HttpSession session, Model model) {
-        User currentLoggedInUser = (User) session.getAttribute("user");
 
-        if (currentLoggedInUser == null) {
+        User currentLoggedInUser = (User) session.getAttribute("user");
+        if (!userService.isUserLoggedIn(currentLoggedInUser)) {
             return "redirect:/profile/login";
         }
 
@@ -53,12 +53,11 @@ public class ProjectController {
     public String showProject(@PathVariable int projectId, HttpSession session, Model model) {
 
         User currentLoggedInUser = (User) session.getAttribute("user");
+        if (!userService.isUserLoggedIn(currentLoggedInUser)) {
+            return "redirect:/profile/login";
+        }
 
         Project project = projectService.findProjectById(projectId);
-
-        if (project == null) {
-            return "redirect:/projects/myProjects";
-        }
 
         List<SubProject> subProjects = subProjectService.findSubProjectsByProjectId(projectId);
         List<User> assignedUsers = userService.findUsersAssignedToProjectByProjectId(projectId);
@@ -69,12 +68,20 @@ public class ProjectController {
         model.addAttribute("assignedUsers", assignedUsers);
         model.addAttribute("usersById", userService.getUsersMappedById());
 
-        return "projectView";
+        if (userService.canEditProject(currentLoggedInUser,projectId)) {
+            return "projectView";
+        } else {
+            return "projectViewNoEdit";
+        }
     }
 
-
     @GetMapping("/add")
-    public String showAddProjectForm(Model model) {
+    public String showAddProjectForm(Model model, HttpSession session) {
+
+        User currentLoggedInUser = (User) session.getAttribute("user");
+        if (!userService.isUserLoggedIn(currentLoggedInUser)) {
+            return "redirect:/profile/login";
+        }
 
         model.addAttribute("project", new Project());
         model.addAttribute("allUsers",userService.findAllUsers());
@@ -89,11 +96,14 @@ public class ProjectController {
                              HttpSession session,
                              Model model) {
 
-        User currentUser = (User) session.getAttribute("user");
-        Project createdProject;
+        User currentLoggedInUser = (User) session.getAttribute("user");
+        if (!userService.isUserLoggedIn(currentLoggedInUser)) {
+            return "redirect:/profile/login";
+        }
 
+        Project createdProject;
         try {
-            createdProject = projectService.addProject(project, currentUser.getUserId());
+            createdProject = projectService.addProject(project, currentLoggedInUser.getUserId());
             projectService.addAssignedUserIdsToDatabase(createdProject.getProjectId(), listOfUserIdsFromAssignedUsers);
         } catch (IllegalArgumentException e) {
             model.addAttribute("error", e.getMessage());
@@ -101,16 +111,16 @@ public class ProjectController {
             model.addAttribute("today", LocalDate.now());
             return "projectCreate";
         }
+
         return "redirect:/projects/" + createdProject.getProjectId();
     }
 
     @PostMapping("/delete/{projectId}")
     public String deleteProject(@PathVariable int projectId, HttpSession session) {
 
-        User user = (User) session.getAttribute("user");
-
-        if (user == null) {
-            return "redirect:user/login";
+        User currentLoggedInUser = (User) session.getAttribute("user");
+        if (!userService.isUserLoggedIn(currentLoggedInUser) || !userService.canEditProject(currentLoggedInUser, projectId)) {
+            return "redirect:/profile/login";
         }
 
         projectService.removeAllUsersFromProject(projectId);
@@ -119,7 +129,13 @@ public class ProjectController {
     }
 
     @GetMapping("/edit/{projectId}")
-    public String showEditProject(@PathVariable int projectId, Model model) {
+    public String showEditProject(@PathVariable int projectId, Model model, HttpSession session) {
+
+        User currentLoggedInUser = (User) session.getAttribute("user");
+        if (!userService.isUserLoggedIn(currentLoggedInUser) || !userService.canEditProject(currentLoggedInUser, projectId)) {
+            return "redirect:/profile/login";
+        }
+
         model.addAttribute("project", projectService.findProjectById(projectId));
         model.addAttribute("allUsers", userService.findAllUsers());
         model.addAttribute("assignedUsersIds", userService.findUserIdsAssignedToProjectByProjectId(projectId));
@@ -132,9 +148,13 @@ public class ProjectController {
     public String editProject(@PathVariable int projectId,
                               @RequestParam String projectName,
                               @RequestParam String projectDescription,
-                              @RequestParam LocalDate projectStartDate,
-                              @RequestParam(required = false) List<Integer> listOfUserIdsFromAssignedUsers,
-                              Model model) {
+                              @RequestParam LocalDate projectStartDate, @RequestParam(required = false) List<Integer> listOfUserIdsFromAssignedUsers, HttpSession session, Model model) {
+
+        User currentLoggedInUser = (User) session.getAttribute("user");
+        if (!userService.isUserLoggedIn(currentLoggedInUser) || !userService.canEditProject(currentLoggedInUser, projectId)) {
+            return "redirect:/profile/login";
+        }
+
         try {
             projectService.updateProject(projectId, projectName, projectDescription, projectStartDate);
         } catch (IllegalArgumentException e) {
@@ -154,9 +174,9 @@ public class ProjectController {
 
     @GetMapping("allProjects")
     public String showAllProjects(HttpSession session, Model model) {
-        User currentUser = (User) session.getAttribute("user");
 
-        if (currentUser == null) {
+        User currentLoggedInUser = (User) session.getAttribute("user");
+        if (!userService.isUserLoggedIn(currentLoggedInUser)) {
             return "redirect:/profile/login";
         }
 

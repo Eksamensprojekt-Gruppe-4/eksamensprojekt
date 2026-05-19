@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>View Task — Alpha Solutions</title>
+    <link rel="stylesheet" th:href="@{/styles.css}"/>
+    <link rel="stylesheet" th:href="@{/forms.css}"/>
+    <link rel="stylesheet" th:href="@{/breadcrumb.css}"/>
+</head>
+<body>
+
+<header>
+    <div class="logo">Alpha Solutions</div>
+    <nav>
+        <ul>
+            <li><a th:href="@{/projects/myProjects}">My Projects</a></li>
+            <li><a th:href="@{/projects/allProjects}">All Projects</a></li>
+            <li><a th:href="@{/profile/view}">Profile</a></li>
+            <li><a th:href="@{/profile/logout}">Log out</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main>
+    <div class="form-card">
+
+        <p class="breadcrumb">
+            <a th:href="@{/projects/myProjects}">My Projects</a>
+            &rsaquo; <a th:href="@{/projects/{projectId}(projectId=${project.projectId})}" th:text="${project.projectName}">Project</a>
+            &rsaquo; <a th:href="@{/projects/{projectId}/subprojects/{subProjectId}(projectId=${project.projectId},subProjectId=${subProject.subProjectId})}" th:text="${subProject.subProjectName}">Subproject</a>
+            &rsaquo; <span th:text="${task.taskName}">Task</span>
+        </p>
+
+        <h2 th:text="${task.taskName}">Task name</h2>
+        <p class="form-subtitle"
+           th:text="'Part of: ' + ${subProject.subProjectName}">Part of: Sub-project name</p>
+
+        <div class="field">
+            <label>Description</label>
+            <p th:text="${task.taskDescription != null and !#strings.isEmpty(task.taskDescription) ? task.taskDescription : 'No description provided.'}">
+                Task description goes here.
+            </p>
+        </div>
+
+        <div class="field">
+            <label>Estimated hours</label>
+            <p th:text="${task.taskEstimatedHours}">0.0</p>
+        </div>
+
+        <div class="field">
+            <label>Actual hours</label>
+            <p th:text="${task.taskActualHours}">0.0</p>
+        </div>
+
+        <hr class="form-divider"/>
+
+        <div class="field">
+            <label>Assigned to</label>
+            <p th:text="${assignedUser != null ? assignedUser.userName + ' (' + assignedUser.userUsername + ')' : 'Unassigned'}">
+                User name (username)
+            </p>
+        </div>
+
+        <div class="form-actions">
+            <a th:href="@{/projects/{projectId}/subprojects/{subProjectId}(projectId=${projectId},subProjectId=${subProject.subProjectId})}"
+               class="btn btn-outline">Back</a>
+        </div>
+
+    </div>
+</main>
+
+</body>
+</html>

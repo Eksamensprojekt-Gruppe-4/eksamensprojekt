@@ -33,7 +33,13 @@ public class SubProjectController {
     }
 
     @GetMapping("/new")
-    public String showSubProjectForm(@PathVariable int projectId, Model model) {
+    public String showSubProjectForm(@PathVariable int projectId, Model model, HttpSession session) {
+
+        User currentLoggedInUser = (User) session.getAttribute("user");
+        if (!userService.isUserLoggedIn(currentLoggedInUser) || !userService.canEditProject(currentLoggedInUser, projectId)) {
+            return "redirect:/profile/login";
+        }
+
         model.addAttribute("projectId", projectId);
         model.addAttribute("subProject", new SubProject());
 
@@ -42,7 +48,13 @@ public class SubProjectController {
 
     @PostMapping
     public String createSubProject(@PathVariable int projectId,
-                           @ModelAttribute SubProject subProject) {
+                           @ModelAttribute SubProject subProject, HttpSession session) {
+
+        User currentLoggedInUser = (User) session.getAttribute("user");
+        if (!userService.isUserLoggedIn(currentLoggedInUser) || !userService.canEditProject(currentLoggedInUser, projectId)) {
+            return "redirect:/profile/login";
+        }
+
         subProject.setProjectId(projectId);
         service.createSubProject(subProject);
 
@@ -51,7 +63,13 @@ public class SubProjectController {
 
     @PostMapping("/{subProjectId}/delete")
     public String deleteSubProject(@PathVariable int projectId,
-                                   @PathVariable int subProjectId) {
+                                   @PathVariable int subProjectId, HttpSession session) {
+
+        User currentLoggedInUser = (User) session.getAttribute("user");
+        if (!userService.isUserLoggedIn(currentLoggedInUser) || !userService.canEditProject(currentLoggedInUser, projectId)) {
+            return "redirect:/profile/login";
+        }
+
         service.deleteSubProjectById(subProjectId);
         return "redirect:/projects/" + projectId;
     }
@@ -59,7 +77,13 @@ public class SubProjectController {
     @GetMapping("/{subProjectId}/edit")
     public String showEditProject(@PathVariable int projectId,
                                   @PathVariable int subProjectId,
-                                  Model model) {
+                                  Model model, HttpSession session) {
+
+        User currentLoggedInUser = (User) session.getAttribute("user");
+        if (!userService.isUserLoggedIn(currentLoggedInUser) || !userService.canEditProject(currentLoggedInUser, projectId)) {
+            return "redirect:/profile/login";
+        }
+
         model.addAttribute("subProject", service.findSubProjectBySubProjectId(subProjectId));
         model.addAttribute("projectId", projectId);
         return "editSubProject";
@@ -68,7 +92,13 @@ public class SubProjectController {
     @PostMapping("/{subProjectId}/edit")
     public String editSubProject(@PathVariable int projectId,
                                  @PathVariable int subProjectId,
-                                 @ModelAttribute SubProject subProject){
+                                 @ModelAttribute SubProject subProject, HttpSession session) {
+
+        User currentLoggedInUser = (User) session.getAttribute("user");
+        if (!userService.isUserLoggedIn(currentLoggedInUser) || !userService.canEditProject(currentLoggedInUser, projectId)) {
+            return "redirect:/profile/login";
+        }
+
         subProject.setSubProjectId(subProjectId);
         subProject.setProjectId(projectId);
         service.updateSubProject(subProject);
@@ -79,6 +109,9 @@ public class SubProjectController {
     public String showSubProject(@PathVariable int projectId, HttpSession session, @PathVariable int subProjectId, Model model) {
 
         User currentLoggedInUser = (User) session.getAttribute("user");
+        if (!userService.isUserLoggedIn(currentLoggedInUser)) {
+            return "redirect:/profile/login";
+        }
 
         Project project = projectService.findProjectById(projectId);
         SubProject subProject = service.findSubProjectBySubProjectId(subProjectId);
@@ -90,6 +123,11 @@ public class SubProjectController {
         model.addAttribute("usersById", userService.getUsersMappedById());
 
 
-        return "subProjectView";
+        if (userService.canEditProject(currentLoggedInUser,projectId)) {
+            return "subProjectView";
+        } else {
+            return "subProjectViewNoEdit";
+        }
     }
+
 }

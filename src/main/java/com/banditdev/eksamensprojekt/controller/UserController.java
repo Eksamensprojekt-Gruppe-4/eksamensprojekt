@@ -1,6 +1,7 @@
 package com.banditdev.eksamensprojekt.controller;
 
 import com.banditdev.eksamensprojekt.model.User;
+import com.banditdev.eksamensprojekt.model.UserRole;
 import com.banditdev.eksamensprojekt.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
@@ -41,21 +42,26 @@ public class UserController {
 
     @GetMapping("view")
     public String viewProfile(HttpSession session, Model model) {
+
         User currentLoggedInUser = (User) session.getAttribute("user");
-
-        if (currentLoggedInUser == null) {
+        if (!userService.isUserLoggedIn(currentLoggedInUser)) {
             return "redirect:/profile/login";
-        }
 
-        model.addAttribute("user", currentLoggedInUser);
-        return "profileOverview";
+        } else if (currentLoggedInUser.getUserRole() == UserRole.ADMIN) {
+            model.addAttribute("user", currentLoggedInUser);
+            return "profileOverviewAdmin";
+
+        } else {
+            model.addAttribute("user", currentLoggedInUser);
+            return "profileOverview";
+        }
     }
 
     @GetMapping("edit")
     public String editProfile(HttpSession session, Model model) {
-        User currentLoggedInUser = (User) session.getAttribute("user");
 
-        if (currentLoggedInUser == null) {
+        User currentLoggedInUser = (User) session.getAttribute("user");
+        if (!userService.isUserLoggedIn(currentLoggedInUser)) {
             return "redirect:/profile/login";
         }
 
@@ -73,6 +79,9 @@ public class UserController {
     public String updateProfile(@ModelAttribute User user, HttpSession session) {
 
         User currentLoggedInUser = (User) session.getAttribute("user");
+        if (!userService.isUserLoggedIn(currentLoggedInUser)) {
+            return "redirect:/profile/login";
+        }
 
         session.setAttribute("user", userService.updateUserProfile(currentLoggedInUser.getUserId(),user));
 
