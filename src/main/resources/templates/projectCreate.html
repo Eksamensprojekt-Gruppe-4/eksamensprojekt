@@ -31,12 +31,17 @@
             <p class="error" th:if="${error}" th:text="${error}"></p>
             <div class="field">
                 <label for="projectName">Project name</label>
-                <input type="text" id="projectName" name="projectName" placeholder="Enter project name" required/>
+                <input type="text" id="projectName" name="projectName"
+                       placeholder="Enter project name"
+                       maxlength="50" pattern=".*\S.*"
+                       title="Project name cannot be only spaces" required/>
             </div>
 
             <div class="field">
                 <label for="projectDescription">Description</label>
-                <textarea id="projectDescription" name="projectDescription" placeholder="What is this project about?"></textarea>
+                <textarea id="projectDescription" name="projectDescription"
+                          placeholder="What is this project about?"
+                          maxlength="400"></textarea>
             </div>
 
 

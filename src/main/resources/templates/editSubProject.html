@@ -32,13 +32,17 @@
             <div class="field">
                 <label for="subProjectName">Name</label>
                 <input type="text" id="subProjectName" name="subProjectName"
-                       th:value="${subProject.subProjectName}" required/>
+                       th:value="${subProject.subProjectName}"
+                       maxlength="50" pattern=".*\S.*"
+                       title="Sub-project name cannot be only spaces" required/>
             </div>
 
             <div class="field">
                 <label for="subProjectDescription">Description</label>
                 <textarea id="subProjectDescription" name="subProjectDescription"
-                          th:text="${subProject.subProjectDescription}"></textarea>
+                          th:text="${subProject.subProjectDescription}"
+                          maxlength="400"
+                ></textarea>
             </div>
 
             <div class="form-actions">

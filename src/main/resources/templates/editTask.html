@@ -36,22 +36,32 @@
             <div class="field">
                 <label for="taskName">Task name</label>
                 <input type="text" id="taskName" name="taskName"
-                       th:value="${task.taskName}" required/>
+                       th:value="${task.taskName}"
+                       maxlength="50" pattern=".*\S.*"
+                       title="Task name cannot be only spaces" required/>
             </div>
 
             <div class="field">
                 <label for="taskDescription">Description</label>
-                <textarea id="taskDescription" name="taskDescription" th:text="${task.taskDescription}"></textarea>
+                <textarea id="taskDescription" name="taskDescription"
+                          th:text="${task.taskDescription}" maxlength="400"
+                ></textarea>
             </div>
 
             <div class="field">
                 <label for="taskEstimatedHours">Estimated hours</label>
-                <input type="number" id="taskEstimatedHours" name="taskEstimatedHours" th:value="${task.taskEstimatedHours}" min="0" step="0.5"/>
+                <input type="number" id="taskEstimatedHours"
+                       name="taskEstimatedHours"
+                       th:value="${task.taskEstimatedHours}"
+                       min="0" step="0.5" max="99"/>
             </div>
 
             <div class="field">
                 <label for="taskActualHours">Actual hours</label>
-                <input type="number" id="taskActualHours" name="taskActualHours" th:value="${task.taskActualHours}" min="0" step="0.5"/>
+                <input type="number" id="taskActualHours"
+                       name="taskActualHours"
+                       th:value="${task.taskActualHours}"
+                       min="0" step="0.5" max="99"/>
             </div>
 
             <hr class="form-divider"/>

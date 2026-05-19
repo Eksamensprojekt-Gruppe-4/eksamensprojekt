@@ -33,17 +33,26 @@
 
             <div class="field">
                 <label for="taskName">Task name</label>
-                <input type="text" id="taskName" name="taskName" placeholder="Enter task name" required/>
+                <input type="text" id="taskName" name="taskName"
+                       placeholder="Enter task name"
+                       maxlength="50" pattern=".*\S.*"
+                       title="Task name cannot be only spaces" required/>
             </div>
 
             <div class="field">
                 <label for="taskDescription">Description</label>
-                <textarea id="taskDescription" name="taskDescription" placeholder="What needs to be done?"></textarea>
+                <textarea id="taskDescription" name="taskDescription"
+                          placeholder="What needs to be done?"
+                          maxlength="400"
+                ></textarea>
             </div>
 
             <div class="field">
                 <label for="taskEstimatedHours">Estimated hours</label>
-                <input type="number" id="taskEstimatedHours" name="taskEstimatedHours" placeholder="0.0" min="0" step="0.5"/>
+                <input type="number" id="taskEstimatedHours"
+                       name="taskEstimatedHours"
+                       placeholder="0.0"
+                       min="0" step="0.5" max="99"/>
             </div>
 
             <hr class="form-divider"/>
