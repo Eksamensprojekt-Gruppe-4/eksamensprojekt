@@ -121,7 +121,7 @@ public class SubProjectController {
         model.addAttribute("subProjects", subProject);
         model.addAttribute("tasksBySubProject", tasks);
         model.addAttribute("usersById", userService.getUsersMappedById());
-
+        model.addAttribute("subProjectEstimatedHours", taskService.calculateEstimatedHoursForSubProject(subProjectId));
 
         if (userService.canEditProject(currentLoggedInUser,projectId)) {
             return "subProjectView";

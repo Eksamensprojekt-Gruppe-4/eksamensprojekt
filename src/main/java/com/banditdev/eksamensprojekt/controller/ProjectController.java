@@ -45,6 +45,7 @@ public class ProjectController {
         List<Project> projects = projectService.findProjectsByUserId(currentLoggedInUser.getUserId());
 
         model.addAttribute("projects", projects);
+        model.addAttribute("estimatedEndDates", projectService.getEstimatedEndDatesByProjectId(projects));
 
         return "projectsOwnedOverview";
     }
@@ -67,6 +68,8 @@ public class ProjectController {
         model.addAttribute("tasksBySubProject", taskService.tasksBySubProject(subProjects));
         model.addAttribute("assignedUsers", assignedUsers);
         model.addAttribute("usersById", userService.getUsersMappedById());
+        model.addAttribute("projectEstimatedHours", projectService.calculateEstimatedHoursForProject(projectId));
+        model.addAttribute("estimatedEndDate", projectService.calculateEstimatedEndDate(projectId));
 
         if (userService.canEditProject(currentLoggedInUser,projectId)) {
             return "projectView";
