@@ -34,7 +34,7 @@ public class TaskRepository {
     public void addNewTask(Task task, int userId, int subProjectId) {
 
         String sql = """
-                INSERT INTO project_db.task (task_name, task_description, task_estimated_hours, task_actual_hours, user_id, sub_project_id)
+                INSERT INTO task (task_name, task_description, task_estimated_hours, task_actual_hours, user_id, sub_project_id)
                 VALUES (?, ?, ?, ?, ?, ?)
                 """;
 

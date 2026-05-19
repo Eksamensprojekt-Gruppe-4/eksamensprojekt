@@ -1,10 +1,13 @@
 package com.banditdev.eksamensprojekt.repository;
 
+import com.banditdev.eksamensprojekt.model.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -16,31 +19,114 @@ class UserRepositoryTest {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private ProjectRepository projectRepository;
+
     @Test
-    void editOwnUser() {
+    void findAllUsers_shouldReturnFiveUsers() {
+        List<User> result = userRepository.findAllUsers();
+
+        assertEquals(5, result.size());
     }
 
     @Test
-    void findUserByUserUsername() {
+    void findUserByUserUsername_shouldReturnCorrectUser() {
+        User result = userRepository.findUserByUserUsername("anders123");
+
+        assertNotNull(result);
+        assertEquals("Anders Nielsen", result.getUserName());
     }
 
     @Test
-    void findAllUsers() {
+    void findUserByUserUsername_shouldReturnNull_whenNotFound() {
+        User result = userRepository.findUserByUserUsername("something");
+
+        assertNull(result);
     }
 
     @Test
-    void findUserAssignedToTaskByTaskId() {
+    void findUserByUserUsername_shouldBeCaseInsensitive() {
+        User result = userRepository.findUserByUserUsername("ANDERS123");
+
+        assertNotNull(result);
+        assertEquals("Anders Nielsen", result.getUserName());
     }
 
     @Test
-    void findUserByUserId() {
+    void findUserByUserId_shouldReturnCorrectUser() {
+        int userId = userRepository.findUserByUserUsername("anders123").getUserId();
+
+        User result = userRepository.findUserByUserId(userId);
+
+        assertNotNull(result);
+        assertEquals("anders123", result.getUserUsername());
     }
 
     @Test
-    void findUsersAssignedToProjectByProjectId() {
+    void findUserByUserId_shouldReturnNull() {
+        User result = userRepository.findUserByUserId(9999);
+
+        assertNull(result);
     }
 
     @Test
-    void findUserIdsAssignedToProjectByProjectId() {
+    void editOwnUser_shouldUpdateUsernameAndPassword() {
+        User user = userRepository.findUserByUserUsername("anders123");
+        user.setUserUsername("anders_updated");
+        user.setUserPassword("1230");
+
+        userRepository.editOwnUser(user);
+
+        User updated = userRepository.findUserByUserId(user.getUserId());
+        assertEquals("anders_updated", updated.getUserUsername());
+        assertEquals("1230", updated.getUserPassword());
+    }
+
+    @Test
+    void findUsersAssignedToProjectByProjectId_shouldReturnThreeUsers() {
+        int andersId = userRepository.findUserByUserUsername("anders123").getUserId();
+        int projectId = projectRepository.findProjectsByUserId(andersId).getFirst().getProjectId();
+
+        List<User> result = userRepository.findUsersAssignedToProjectByProjectId(projectId);
+
+        assertEquals(3, result.size());
+    }
+
+    @Test
+    void findUserIdsAssignedToProjectByProjectId_shouldReturnCorrectIds() {
+        int andersId = userRepository.findUserByUserUsername("anders123").getUserId();
+        int projectId = projectRepository.findProjectsByUserId(andersId).getFirst().getProjectId();
+
+        List<Integer> result = userRepository.findUserIdsAssignedToProjectByProjectId(projectId);
+
+        assertEquals(3, result.size());
+        assertTrue(result.contains(andersId));
+    }
+
+    @Test
+    void findUserAssignedToTaskByTaskId_shouldReturnCorrectUser() {
+        int andersId = userRepository.findUserByUserUsername("anders123").getUserId();
+        int projectId = projectRepository.findProjectsByUserId(andersId).getFirst().getProjectId();
+
+        List<User> assignedUsers = userRepository.findUsersAssignedToProjectByProjectId(projectId);
+        assertFalse(assignedUsers.isEmpty());
+    }
+
+    @Test
+    void returnOwnerOfProjectByProjectId_shouldReturnAnders() {
+        int andersId = userRepository.findUserByUserUsername("anders123").getUserId();
+        int projectId = projectRepository.findProjectsByUserId(andersId).getFirst().getProjectId();
+
+        User result = userRepository.returnOwnerOfProjectByProjectId(projectId);
+
+        assertNotNull(result);
+        assertEquals("Anders Nielsen", result.getUserName());
+    }
+
+    @Test
+    void returnOwnerOfProjectByProjectId_shouldReturnNull() {
+        User result = userRepository.returnOwnerOfProjectByProjectId(9999);
+
+        assertNull(result);
     }
 }
