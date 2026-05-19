@@ -32,13 +32,15 @@
             <div class="field">
                 <label for="projectName">Project name</label>
                 <input type="text" id="projectName" name="projectName"
-                       th:value="${project.projectName}" required/>
+                       th:value="${project.projectName}"
+                       maxlength="50" pattern=".*\S.*"
+                       title="Project name cannot only be spaces" required/>
             </div>
 
             <div class="field">
                 <label for="projectDescription">Description</label>
                 <textarea id="projectDescription" name="projectDescription"
-                          th:text="${project.projectDescription}"></textarea>
+                          th:text="${project.projectDescription}" maxlength="400"></textarea>
             </div>
 
             <div class="field">

@@ -27,16 +27,22 @@
         <h2>Create sub-project</h2>
         <p class="form-subtitle" th:text="'Part of project #' + ${projectId}">Part of project #1</p>
 
-        <form th:action="@{/projects/{id}/subprojects(id=${projectId})}" th:object="${subProject}" method="post">
+        <form th:action="@{/projects/{id}/subprojects(id=${projectId})}" method="post">
 
             <div class="field">
                 <label for="subProjectName">Name</label>
-                <input type="text" id="subProjectName" th:field="*{subProjectName}" placeholder="Enter sub-project name" required/>
+                <input type="text" id="subProjectName" name="subProjectName"
+                       placeholder="Enter sub-project name"
+                       maxlength="50" pattern=".*\S.*"
+                       title="Sub-project name cannot be only spaces" required/>
             </div>
 
             <div class="field">
                 <label for="subProjectDescription">Description</label>
-                <textarea id="subProjectDescription" th:field="*{subProjectDescription}" placeholder="What does this sub-project cover?"></textarea>
+                <textarea id="subProjectDescription" name="subProjectDescription"
+                          placeholder="What does this sub-project cover?"
+                          maxlength="400"
+                ></textarea>
             </div>
 
             <div class="form-actions-2">

@@ -34,13 +34,21 @@
             <div class="field">
                 <label for="userName">Name</label>
                 <input type="text" id="userName" name="userName"
-                       th:value="${user.userName}" required/>
+                       th:value="${user.userName}"
+                       maxlength="50"
+                       pattern="(?=.*\p{L})[\p{L} '-]+"
+                       title="Name must contain at least one letter – only letters, spaces, hyphens and apostrophes allowed"
+                       required/>
             </div>
 
             <div class="field">
                 <label for="userUsername">Username</label>
                 <input type="text" id="userUsername" name="userUsername"
-                       th:value="${user.userUsername}" required/>
+                       th:value="${user.userUsername}"
+                       minlength="3" maxlength="50"
+                       pattern="(?=.*[A-Za-z])[A-Za-z0-9]+"
+                       title="Username must contain at least one letter – only letters and digits are allowed"
+                       required/>
             </div>
 
             <hr class="form-divider"/>
@@ -48,7 +56,8 @@
             <div class="field">
                 <label for="userPassword">New password</label>
                 <input type="password" id="userPassword" name="userPassword"
-                       placeholder="Leave blank to keep current"/>
+                       placeholder="Leave blank to keep current"
+                       minlength="8" maxlength="50"/>
             </div>
 
             <div class="form-actions-2">
