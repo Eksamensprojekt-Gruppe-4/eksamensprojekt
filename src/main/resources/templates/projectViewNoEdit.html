@@ -48,8 +48,8 @@
             <tbody>
             <tr>
                 <td th:text="${project.projectStartDate != null ? project.projectStartDate : '—'}"></td>
-                <td th:text="${project.projectEstimatedDeadline != null ? project.projectEstimatedDeadline : '—'}"></td>
-                <td th:text="${project.projectEstimatedHours + 'h'}"></td>
+                <td th:text="${estimatedEndDate}"></td>
+                <td th:text="${projectEstimatedHours + 'h'}"></td>
                 <td th:text="${project.projectActualHours + 'h'}"></td>
             </tr>
             </tbody>
