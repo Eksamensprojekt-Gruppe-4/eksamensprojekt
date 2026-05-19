@@ -111,8 +111,6 @@ public class ProjectController {
             model.addAttribute("today", LocalDate.now());
             return "projectCreate";
         }
-        createdProject = projectService.addProject(project, currentLoggedInUser.getUserId());
-        projectService.addAssignedUserIdsToDatabase(createdProject.getProjectId(), listOfUserIdsFromAssignedUsers);
 
         return "redirect:/projects/" + createdProject.getProjectId();
     }
