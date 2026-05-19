@@ -78,9 +78,4 @@ public class ProjectService {
             throw new IllegalArgumentException("Start date cannot be in the past");
         }
     }
-
-    public boolean userOwnsProject(User user, int projectId) {
-        Project project = projectRepository.findProjectById(projectId);
-        return project!= null && projectRepository.findProjectsByUserId(user.getUserId()).stream().anyMatch(p -> p.getProjectId() == projectId);
-    }
 }

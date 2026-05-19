@@ -59,10 +59,6 @@ public class ProjectController {
 
         Project project = projectService.findProjectById(projectId);
 
-        if (project == null) {
-            return "redirect:/projects/myProjects";
-        }
-
         List<SubProject> subProjects = subProjectService.findSubProjectsByProjectId(projectId);
         List<User> assignedUsers = userService.findUsersAssignedToProjectByProjectId(projectId);
 
@@ -72,7 +68,11 @@ public class ProjectController {
         model.addAttribute("assignedUsers", assignedUsers);
         model.addAttribute("usersById", userService.getUsersMappedById());
 
-        return "projectView";
+        if (userService.canEditProject(currentLoggedInUser,projectId)) {
+            return "projectView";
+        } else {
+            return "projectViewNoEdit";
+        }
     }
 
     @GetMapping("/add")
@@ -121,7 +121,7 @@ public class ProjectController {
     public String deleteProject(@PathVariable int projectId, HttpSession session) {
 
         User currentLoggedInUser = (User) session.getAttribute("user");
-        if (!userService.isUserLoggedIn(currentLoggedInUser)) {
+        if (!userService.isUserLoggedIn(currentLoggedInUser) || !userService.canEditProject(currentLoggedInUser, projectId)) {
             return "redirect:/profile/login";
         }
 
@@ -134,7 +134,7 @@ public class ProjectController {
     public String showEditProject(@PathVariable int projectId, Model model, HttpSession session) {
 
         User currentLoggedInUser = (User) session.getAttribute("user");
-        if (!userService.isUserLoggedIn(currentLoggedInUser)) {
+        if (!userService.isUserLoggedIn(currentLoggedInUser) || !userService.canEditProject(currentLoggedInUser, projectId)) {
             return "redirect:/profile/login";
         }
 
@@ -153,7 +153,7 @@ public class ProjectController {
                               @RequestParam LocalDate projectStartDate, @RequestParam(required = false) List<Integer> listOfUserIdsFromAssignedUsers, HttpSession session, Model model) {
 
         User currentLoggedInUser = (User) session.getAttribute("user");
-        if (!userService.isUserLoggedIn(currentLoggedInUser)) {
+        if (!userService.isUserLoggedIn(currentLoggedInUser) || !userService.canEditProject(currentLoggedInUser, projectId)) {
             return "redirect:/profile/login";
         }
 

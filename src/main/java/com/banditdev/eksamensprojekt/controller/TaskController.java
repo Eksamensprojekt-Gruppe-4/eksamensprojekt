@@ -31,7 +31,7 @@ public class TaskController {
     public String showAddNewTaskForm(@PathVariable int projectId, @PathVariable int subProjectId, HttpSession session, Model model) {
 
         User currentLoggedInUser = (User) session.getAttribute("user");
-        if (!userService.isUserLoggedIn(currentLoggedInUser)) {
+        if (!userService.isUserLoggedIn(currentLoggedInUser) || !userService.canEditProject(currentLoggedInUser, projectId)) {
             return "redirect:/profile/login";
         }
 
@@ -46,7 +46,7 @@ public class TaskController {
     public String saveNewTask(@ModelAttribute Task task, @PathVariable int projectId, @PathVariable int subProjectId, HttpSession session) {
 
         User currentLoggedInUser = (User) session.getAttribute("user");
-        if (!userService.isUserLoggedIn(currentLoggedInUser)) {
+        if (!userService.isUserLoggedIn(currentLoggedInUser) || !userService.canEditProject(currentLoggedInUser, projectId)) {
             return "redirect:/profile/login";
         }
 
@@ -68,14 +68,19 @@ public class TaskController {
             model.addAttribute("assignedUser", userService.findUserAssignedToTaskByTaskId(taskId));
             model.addAttribute("project", projectService.findProjectById(projectId));
 
-            return "viewTask";
+
+            if (userService.canEditProject(currentLoggedInUser,projectId)) {
+                return "viewTask";
+            } else {
+                return "viewTaskNoEdit";
+            }
     }
 
     @GetMapping("/{taskId}/edit")
     public String editTask(@PathVariable int projectId, @PathVariable int subProjectId, @PathVariable int taskId, HttpSession session, Model model) {
 
         User currentLoggedInUser = (User) session.getAttribute("user");
-        if (!userService.isUserLoggedIn(currentLoggedInUser)) {
+        if (!userService.isUserLoggedIn(currentLoggedInUser) || !userService.canEditProject(currentLoggedInUser, projectId)) {
             return "redirect:/profile/login";
         }
 
@@ -91,7 +96,7 @@ public class TaskController {
         public String updateTask(@ModelAttribute Task task, @PathVariable int projectId, @PathVariable int subProjectId, @PathVariable int taskId, HttpSession session) {
 
         User currentLoggedInUser = (User) session.getAttribute("user");
-        if (!userService.isUserLoggedIn(currentLoggedInUser)) {
+        if (!userService.isUserLoggedIn(currentLoggedInUser) || !userService.canEditProject(currentLoggedInUser, projectId)) {
             return "redirect:/profile/login";
         }
 
@@ -105,7 +110,7 @@ public class TaskController {
     public String deleteTaskByTaskId(@PathVariable int projectId, @PathVariable int subProjectId, @PathVariable int taskId, HttpSession session) {
 
         User currentLoggedInUser = (User) session.getAttribute("user");
-        if (!userService.isUserLoggedIn(currentLoggedInUser)) {
+        if (!userService.isUserLoggedIn(currentLoggedInUser) || !userService.canEditProject(currentLoggedInUser, projectId)) {
             return "redirect:/profile/login";
         }
 
