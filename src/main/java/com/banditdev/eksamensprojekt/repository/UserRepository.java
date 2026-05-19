@@ -177,4 +177,39 @@ public class UserRepository {
             return null;
         }
     }
+
+    public void deleteUserByUserId(int userId) {
+        String sql = "DELETE FROM user WHERE user_id = ?";
+        jdbcTemplate.update(sql, userId);
+    }
+
+    public void createUser(User user) {
+        String sql = """
+            INSERT INTO user (user_name, user_username, user_password, user_role, user_experience)
+            VALUES (?, ?, ?, ?, ?)
+            """;
+        jdbcTemplate.update(sql,
+                user.getUserName(),
+                user.getUserUsername(),
+                user.getUserPassword(),
+                user.getUserRole().name(),
+                user.getUserExperience().name()
+        );
+    }
+
+    public void updateUserAsAdmin(User user) {
+        String sql = """
+            UPDATE user
+            SET user_name = ?, user_username = ?, user_role = ?, user_experience = ?, user_password = ?
+            WHERE user_id = ?
+            """;
+        jdbcTemplate.update(sql,
+                user.getUserName(),
+                user.getUserUsername(),
+                user.getUserRole().name(),
+                user.getUserExperience().name(),
+                user.getUserPassword(),
+                user.getUserId()
+        );
+    }
 }

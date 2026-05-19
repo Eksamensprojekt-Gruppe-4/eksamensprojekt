@@ -1,10 +1,85 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Admin Panel — Alpha Solutions</title>
+    <link rel="stylesheet" th:href="@{/styles.css}"/>
+    <link rel="stylesheet" th:href="@{/projects.css}"/>
 </head>
 <body>
+
+<header>
+    <div class="logo">Alpha Solutions</div>
+    <nav>
+        <ul>
+            <li><a th:href="@{/projects/myProjects}">My Projects</a></li>
+            <li><a th:href="@{/projects/allProjects}">All Projects</a></li>
+            <li><a th:href="@{/profile/view}">Profile</a></li>
+            <li><a th:href="@{/profile/logout}">Log out</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main>
+    <section class="container">
+
+        <div class="page-header">
+            <h2>Admin Panel — Users</h2>
+            <a th:href="@{/adminPanel/create}" class="btn">New user</a>
+        </div>
+
+        <div th:if="${users != null and !users.isEmpty()}">
+            <table class="projects-table">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Username</th>
+                    <th>Role</th>
+                    <th>Experience</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="user : ${users}">
+                    <td>
+                        <span class="project-id-badge" th:text="${user.userId}"></span>
+                    </td>
+                    <td>
+                        <span class="project-name" th:text="${user.userName}"></span>
+                    </td>
+                    <td>
+                        <span th:text="${user.userUsername}"></span>
+                    </td>
+                    <td>
+                        <span th:text="${user.userRole}"></span>
+                    </td>
+                    <td>
+                        <span th:text="${user.userExperience}"></span>
+                    </td>
+                    <td>
+                        <div class="project-detail-actions">
+                            <a th:href="@{/adminPanel/edit/{userId}(userId=${user.userId})}"
+                               class="btn-sm btn-edit">Edit</a>
+                            <form th:action="@{/adminPanel/delete/{userId}(userId=${user.userId})}"
+                                  method="post">
+                                <button type="submit" class="btn-sm btn-delete"
+                                        onclick="return confirm('Delete this user?')">Delete</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="empty-state" th:if="${users == null or users.isEmpty()}">
+            <p>No users found in the system.</p>
+        </div>
+
+    </section>
+</main>
 
 </body>
 </html>

@@ -73,12 +73,12 @@ public class UserService {
     }
 
     public Map<Integer, User> getOwnersByProjectIdMap(List<Project> allProjects) {
-
         Map<Integer, User> ownersByProject = new HashMap<>();
         for (Project project : allProjects) {
-            ownersByProject.put(project.getProjectId(), findUserByUserId(project.getOwnerUserId()));
+            if (project.getOwnerUserId() != 0) {
+                ownersByProject.put(project.getProjectId(), findUserByUserId(project.getOwnerUserId()));
+            }
         }
-
         return ownersByProject;
     }
 
@@ -117,5 +117,17 @@ public class UserService {
 
     public boolean canEditProject(User user, int projectId) {
         return user.getUserRole() == UserRole.ADMIN || ((user.getUserRole() == UserRole.MANAGER && validateUserIsProjectOwner(user.getUserId(), projectId)));
+    }
+
+    public void deleteByUserId(int userId) {
+        userRepository.deleteUserByUserId(userId);
+    }
+
+    public void createUser(User user) {
+        userRepository.createUser(user);
+    }
+
+    public void updateUserAsAdmin(User user) {
+        userRepository.updateUserAsAdmin(user);
     }
 }

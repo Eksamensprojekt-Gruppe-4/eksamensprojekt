@@ -1,6 +1,8 @@
 package com.banditdev.eksamensprojekt.repository;
 
 import com.banditdev.eksamensprojekt.model.User;
+import com.banditdev.eksamensprojekt.model.UserExperience;
+import com.banditdev.eksamensprojekt.model.UserRole;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -128,5 +130,48 @@ class UserRepositoryTest {
         User result = userRepository.returnOwnerOfProjectByProjectId(9999);
 
         assertNull(result);
+    }
+
+    @Test
+    void createUser_shouldIncreaseUserCountByOne() {
+        User user = new User();
+        user.setUserName("Test User");
+        user.setUserUsername("testuser");
+        user.setUserPassword("testpass");
+        user.setUserRole(UserRole.EMPLOYEE);
+        user.setUserExperience(UserExperience.JUNIOR);
+
+        userRepository.createUser(user);
+
+        List<User> result = userRepository.findAllUsers();
+        assertEquals(6, result.size());
+    }
+
+    @Test
+    void deleteUserById_shouldDecreaseUserCountByOne() {
+        int userId = userRepository.findUserByUserUsername("lars271").getUserId();
+
+        userRepository.deleteUserByUserId(userId);
+
+        assertNull(userRepository.findUserByUserId(userId));
+    }
+
+    @Test
+    void updateUserAsAdmin_shouldUpdateAllFields() {
+        User user = userRepository.findUserByUserUsername("anders123");
+        user.setUserName("Updated Name");
+        user.setUserUsername("updated_username");
+        user.setUserPassword("newpassword");
+        user.setUserRole(UserRole.EMPLOYEE);
+        user.setUserExperience(UserExperience.INTERN);
+
+        userRepository.updateUserAsAdmin(user);
+
+        User updated = userRepository.findUserByUserId(user.getUserId());
+        assertEquals("Updated Name", updated.getUserName());
+        assertEquals("updated_username", updated.getUserUsername());
+        assertEquals("newpassword", updated.getUserPassword());
+        assertEquals(UserRole.EMPLOYEE, updated.getUserRole());
+        assertEquals(UserExperience.INTERN, updated.getUserExperience());
     }
 }

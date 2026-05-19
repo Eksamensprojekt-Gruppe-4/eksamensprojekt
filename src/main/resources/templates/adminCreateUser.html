@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Create User — Alpha Solutions</title>
+  <link rel="stylesheet" th:href="@{/styles.css}"/>
+  <link rel="stylesheet" th:href="@{/forms.css}"/>
+</head>
+<body>
+
+<header>
+  <div class="logo">Alpha Solutions</div>
+  <nav>
+    <ul>
+      <li><a th:href="@{/projects/myProjects}">My Projects</a></li>
+      <li><a th:href="@{/projects/allProjects}">All Projects</a></li>
+      <li><a th:href="@{/profile/view}">Profile</a></li>
+      <li><a th:href="@{/profile/logout}">Log out</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <div class="form-card">
+
+    <h2>Create user</h2>
+    <p class="form-subtitle">Add a new user to the system</p>
+
+    <form th:action="@{/adminPanel/create}" method="post">
+
+      <div class="field">
+        <label for="userName">Name</label>
+        <input type="text" id="userName" name="userName" placeholder="Full name" required/>
+      </div>
+
+      <div class="field">
+        <label for="userUsername">Username</label>
+        <input type="text" id="userUsername" name="userUsername" placeholder="Username" required/>
+      </div>
+
+      <div class="field">
+        <label for="userPassword">Password</label>
+        <input type="password" id="userPassword" name="userPassword" placeholder="Password" required/>
+      </div>
+
+      <hr class="form-divider"/>
+
+      <div class="field">
+        <label for="userRole">Role</label>
+        <select id="userRole" name="userRole" required>
+          <option value="">Select a role</option>
+          <option th:each="role : ${roles}"
+                  th:value="${role}"
+                  th:text="${role}">
+          </option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="userExperience">Experience</label>
+        <select id="userExperience" name="userExperience" required>
+          <option value="">Select experience</option>
+          <option th:each="exp : ${experiences}"
+                  th:value="${exp}"
+                  th:text="${exp}">
+          </option>
+        </select>
+      </div>
+
+      <div class="form-actions-2">
+        <button type="submit" class="btn">Create user</button>
+        <a th:href="@{/adminPanel}" class="btn btn-outline">Cancel</a>
+      </div>
+
+    </form>
+  </div>
+</main>
+
+</body>
+</html>
