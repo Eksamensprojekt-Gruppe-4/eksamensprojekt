@@ -1,7 +1,11 @@
 package com.banditdev.eksamensprojekt.service;
 
 import com.banditdev.eksamensprojekt.model.Project;
+import com.banditdev.eksamensprojekt.model.SubProject;
+import com.banditdev.eksamensprojekt.model.Task;
 import com.banditdev.eksamensprojekt.repository.ProjectRepository;
+import com.banditdev.eksamensprojekt.repository.SubProjectRepository;
+import com.banditdev.eksamensprojekt.repository.TaskRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -18,10 +22,12 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class ProjectServiceTest {
 
+    @Mock ProjectRepository projectRepository;
     @Mock
-    ProjectRepository projectRepository;
-    @InjectMocks
-    ProjectService projectService;
+    SubProjectRepository subProjectRepository;
+    @Mock
+    TaskRepository taskRepository;
+    @InjectMocks ProjectService projectService;
 
     @Test
     void addProject_throwsWhenStartDateIsInPast() {
@@ -65,4 +71,22 @@ class ProjectServiceTest {
         verify(projectRepository).addUserToProject(1, 3);
         verify(projectRepository).addUserToProject(1, 4);
     }
+
+    @Test
+    void calculateEstimatedEndDate_skipsWeekends() {
+        Project project = new Project(1, "Test", "", LocalDate.of(2026, 5, 22), null, 0, 0, 1);
+        SubProject sp = new SubProject(1, "SP", "", 0, 0, 1);
+        Task t1 = new Task(1, "Task", "", 8.0, 0, 1, 1);
+        Task t2 = new Task(2, "Task2", "", 8.0, 0, 1, 1);
+
+        when(projectRepository.findProjectById(1)).thenReturn(project);
+        when(subProjectRepository.findSubProjectsByProjectId(1)).thenReturn(List.of(sp));
+        when(taskRepository.findTasksBySubProjectId(1)).thenReturn(List.of(t1, t2));
+
+        LocalDate result = projectService.calculateEstimatedEndDate(1);
+
+        assertEquals(LocalDate.of(2026, 5, 26), result);
+    }
+
+
 }

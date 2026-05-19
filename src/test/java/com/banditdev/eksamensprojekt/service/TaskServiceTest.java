@@ -44,4 +44,17 @@ class TaskServiceTest {
         assertEquals(1, result.get(1).size());
         assertTrue(result.get(2).isEmpty());
     }
+
+    @Test
+    void calculateEstimatedHoursForSubProject_sumsAllTaskHours() {
+        Task t1 = new Task(1, "Task1", "", 8.0, 0, 1, 1);
+        Task t2 = new Task(2, "Task2", "", 6.0, 0, 1, 1);
+        Task t3 = new Task(3, "Task3", "", 4.0, 0, 1, 1);
+
+        when(taskRepository.findTasksBySubProjectId(1)).thenReturn(List.of(t1, t2, t3));
+
+        double result = taskService.calculateEstimatedHoursForSubProject(1);
+
+        assertEquals(18.0, result);
+    }
 }
